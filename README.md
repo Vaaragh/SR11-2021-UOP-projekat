@@ -23,14 +23,14 @@ Potrebno je kreirati objektni model na osnovu koje će biti razvijeno programsko
 
 U drugoj fazi je potrebno razviti grafički korisnički interfejs upotrebom Java Swing biblioteke koji će omogućiti prijavu na sistem, kao i pristup formama za pregled, izmenu i brisanje podataka o sledećim entitetima:
 
--1.Administratori
--2.Bibliotekari
--3.Članovi
--4.Tipovi članarine
--5.Knjige
--6.Žanrovi knjiga
--7.Primerci knjiga
--8.Iznajmljivanja
+- 1.Administratori
+- 2.Bibliotekari
+- 3.Članovi
+- 4.Tipovi članarine
+- 5.Knjige
+- 6.Žanrovi knjiga
+- 7.Primerci knjiga
+- 8.Iznajmljivanja
 
 U zavisnosti od konkretne implementacije, studenti mogu proizvoljno organizovati date entitete ili dodati druge. Pored ovoga, potrebno je omogućiti dijalog za izmenu podataka o samoj biblioteci.Podaci o svim entitetima se čuvaju u tekstualnim datotekama koje mogu biti u proizvoljnom formatu. Za zadate datoteke, potrebno je ručno implementirati metode za čitanje i pisanje podataka.Za podatke koji imaju predefinisan skup mogućih vrednosti (jezik, tip poveza) potrebno je implementirati odgovarajuće enumeracije.Za svaki od entiteta koji se evidentira potrebno je obezbediti jedinstvenu oznaku (ID) pri čemu je potrebo onemogućiti dodavanje više entiteta sa istom oznakom.Prilikom brisanja, svi entiteti se brišu logički, što znači da podaci o njima treba da ostanu u datotekama, ali obrisani entiteti ne treba da se vide u sistemu.
 
