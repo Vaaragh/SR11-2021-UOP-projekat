@@ -17,6 +17,7 @@ public class Member extends Person {
 		super();
 		
 	}
+	
 	public Member(String id, String name, String lastName, String jmbg, String adress, Gender gender, String membershipNumber, LocalDate lastPayment, int membershipLength, Membership membershipType) {
 		super(id, name, lastName, jmbg, adress, gender);
 		this.membershipNumber = membershipNumber;
