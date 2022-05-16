@@ -1,5 +1,7 @@
 package models;
 
+import Enums.Gender;
+
 public abstract class Person {
 	
 	protected String id;
@@ -7,31 +9,29 @@ public abstract class Person {
 	protected String lastName;
 	protected String jmbg;
 	protected String adress;
-	protected boolean isActive;
-	protected boolean isDeleted;
-	//protected Gender gender; + getter, setter
 	
+	protected Gender gender;
+	
+	protected boolean isDeleted;
+
+	// Constructors
 	
 	public Person() {
-		this.id = "";
-		this.name = "";
-		this.lastName = "";
-		this.jmbg = "";
-		this.adress = "";
-		this.isActive = false;
-		this.isDeleted = false;
+	this.isDeleted = false;
 	}
 	
-	public Person(String name, String lastName, String jmbg, String adress, boolean isActive, boolean isDeleted) {
-		super();
+	public Person(String id, String name, String lastName, String jmbg, String adress, Gender gender) {
+		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
 		this.jmbg = jmbg;
 		this.adress = adress;
-		this.isActive = isActive;
-		this.isDeleted = isDeleted;
+		this.gender = gender;
+		this.isDeleted = false;
 	}
 
+	// Getters and Setters
+	
 	public String getId() {
 		return id;
 	}
@@ -72,12 +72,12 @@ public abstract class Person {
 		this.adress = adress;
 	}
 
-	public boolean isActive() {
-		return isActive;
+	public Gender getGender() {
+		return gender;
 	}
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 
 	public boolean isDeleted() {
@@ -87,9 +87,16 @@ public abstract class Person {
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	
-	
-	
-	
 
+	// toString
+		
+	@Override
+	public String toString() {
+		return this.getClass() + " [id=" + id + ", name=" + name + ", lastName=" + lastName + ", gender=" + gender + "]";
+	}
+	
+	
+	
+	
+	
 }

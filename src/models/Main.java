@@ -1,15 +1,16 @@
 package models;
 
+import Enums.Gender;
+
 public class Main {
 
 	public static void main(String[] args) {
-		Member member = new Member();
-		System.out.println(member.name);
-		System.out.println(member.id);
-		System.out.println(member.lastName);
-		System.out.println(member.jmbg);
-		System.out.println(member.isActive);
-		System.out.println(member.lastPayment);
+		Admin admin = new Admin("123", "Pera", "Peric", "12345", "a", Gender.MALE);
+		Librarian lib = new Librarian("123", "ime", "prezime", "1234", "adresa", Gender.FEMALE);
+		
+		System.out.println(admin);
+
+		System.out.println(lib);
 		
 	
 
