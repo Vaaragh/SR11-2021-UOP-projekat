@@ -1,18 +1,27 @@
 package models;
 
 import Enums.Gender;
+import tools.ToolKit;
 
 public class Main {
 
 	public static void main(String[] args) {
-		Admin admin = new Admin("123", "Pera", "Peric", "12345", "a", Gender.MALE);
-		Librarian lib = new Librarian("123", "ime", "prezime", "1234", "adresa", Gender.FEMALE);
+		Member mem = new Member();
+		mem.id = "12";
+		mem.gender = Gender.MALE;
+		mem.name = "p";
+		mem.membershipType = new Membership("other", 200);
+		System.out.println(mem);
 		
-		System.out.println(admin);
-
-		System.out.println(lib);
 		
-	
+		
+		//Authorisation attempt
+		String stri = "A123";
+		System.out.println(stri.charAt(0));
+		
+		//ToolKit singleton visibility checks
+		ToolKit tool = ToolKit.getTools();
+		System.out.println(tool.getInfo2());
 
 	}
 

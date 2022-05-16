@@ -120,7 +120,7 @@ public class BookCopy {
 	
 	@Override
 	public String toString() {
-		return "BookCopy [id=" + id + ", title=" + title + ", book=" + book + ", printLanguage=" + printLanguage + "]";
+		return "BookCopy [id=" + id + ", title=" + title + ", book=" + book + ", printLanguage=" + printLanguage + "]\n";
 	}
 	
 	
