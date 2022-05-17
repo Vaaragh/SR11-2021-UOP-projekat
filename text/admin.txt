@@ -1,0 +1,2 @@
+1|name|lastName|jmbg|adress|MALE|100|username|password
+2|name2|lastName2|jmbg2|adress2|MALE|100|username2|password2

@@ -14,7 +14,4 @@ public class Admin extends Employee {
 			String username, String password) {
 		super(id, name, lastName, jmbg, adress, gender, wage, username, password);
 	}
-	
-
-
 }

@@ -1,28 +1,33 @@
 package models;
 
+import java.io.IOException;
+import java.time.LocalDate;
+
 import Enums.Gender;
+import managers.AdminManager;
 import tools.ToolKit;
 
 public class Main {
 
-	public static void main(String[] args) {
-		Member mem = new Member();
-		mem.id = "12";
-		mem.gender = Gender.MALE;
-		mem.name = "p";
-		mem.membershipType = new Membership("other", 200);
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		Membership membership = new Membership("CHILD", 200);
+		Member mem = new Member("id","name","lastName", "jmbg", "adress", Gender.FEMALE, "memNum", LocalDate.now(), 3, membership);
 		System.out.println(mem);
-		
-		
-		
-		//Authorisation attempt
-		String stri = "A123";
-		System.out.println(stri.charAt(0));
-		
-		//ToolKit singleton visibility checks
 		ToolKit tool = ToolKit.getTools();
-		System.out.println(tool.getInfo2());
-
+		AdminManager mana = AdminManager.getInstance();
+		mana.loadAdmins();
+		System.out.println(mana.findAdmin("1"));
+		System.out.println(mana.findAdmin("2"));
+		
+		//Authorisation check idea
+//		String stri = "A123";
+//		System.out.println(stri.charAt(0));
+		
+		
+		// writeLine
+//		String st = "";
+//		st += mem;
+//		System.out.println(mem);
 	}
 
 }

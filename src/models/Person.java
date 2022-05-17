@@ -93,10 +93,5 @@ public abstract class Person {
 	@Override
 	public String toString() {
 		return this.getClass() + " [id=" + id + ", name=" + name + ", lastName=" + lastName + ", gender=" + gender + "]";
-	}
-	
-	
-	
-	
-	
+	}	
 }
