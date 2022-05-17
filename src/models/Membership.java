@@ -2,9 +2,11 @@ package models;
 
 public class Membership {
 	
+	protected String id;
 	protected String name;
 	protected int price;
 	protected boolean isDeleted;
+	
 	
 	
 	// Constructors
@@ -13,10 +15,11 @@ public class Membership {
 		this.isDeleted = false;
 	}
 
-	public Membership(String name, int price) {
+	public Membership(String name, int price, String id) {
 		this.name = name;
 		this.price = price;
 		this.isDeleted = false;
+		this.id = id;
 	}
 
 	public String getName() {
@@ -43,8 +46,18 @@ public class Membership {
 		this.isDeleted = isDeleted;
 	}
 
-	// toString
 	
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	// toString
+
 	@Override
 	public String toString() {
 		return "Membership [name=" + name + ", price=" + price + "]";

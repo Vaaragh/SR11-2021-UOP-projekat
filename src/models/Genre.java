@@ -6,7 +6,6 @@ public class Genre {
 	protected String tag;
 	protected String genreDescription;
 	protected boolean isDeleted;
-
 	
 	// Constructors
 	
