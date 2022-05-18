@@ -20,14 +20,14 @@ public abstract class Person {
 	this.isDeleted = false;
 	}
 	
-	public Person(String id, String name, String lastName, String jmbg, String adress, Gender gender) {
+	public Person(String id, String name, String lastName, String jmbg, String adress, Gender gender, boolean isDeleted) {
 		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
 		this.jmbg = jmbg;
 		this.adress = adress;
 		this.gender = gender;
-		this.isDeleted = false;
+		this.isDeleted = isDeleted;
 	}
 
 	// Getters and Setters

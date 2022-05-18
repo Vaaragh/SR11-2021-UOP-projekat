@@ -28,7 +28,7 @@ public class BookCopy {
 	}
 
 	public BookCopy(String id, String title, Book book, int numberOfPages, int printDate, Binding binding,
-			Language printLanguage) {
+			Language printLanguage, boolean isAvailable, boolean isDeleted) {
 		this.id = id;
 		this.title = title;
 		this.book = book;
@@ -36,8 +36,8 @@ public class BookCopy {
 		this.printDate = printDate;
 		this.binding = binding;
 		this.printLanguage = printLanguage;
-		this.isAvailable = true;
-		this.isDeleted = false;
+		this.isAvailable = isAvailable;
+		this.isDeleted = isDeleted;
 	}
 	
 	

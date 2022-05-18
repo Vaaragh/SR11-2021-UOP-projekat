@@ -14,8 +14,8 @@ public abstract class Employee extends Person {
 		super();
 	}
 	
-	public Employee(String id, String name, String lastName, String jmbg, String adress, Gender gender, int wage, String username, String password) {
-		super(id, name, lastName, jmbg, adress, gender);
+	public Employee(String id, String name, String lastName, String jmbg, String adress, Gender gender, int wage, String username, String password, boolean isDeleted) {
+		super(id, name, lastName, jmbg, adress, gender, isDeleted);
 		this.wage = wage;
 		this.userName = username;
 		this.password = password;

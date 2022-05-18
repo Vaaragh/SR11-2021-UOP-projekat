@@ -11,8 +11,8 @@ public class Librarian extends Employee {
 	}
 
 	public Librarian(String id, String name, String lastName, String jmbg, String adress, Gender gender, int wage,
-			String username, String password) {
-		super(id, name, lastName, jmbg, adress, gender, wage, username, password);
+			String username, String password, boolean isDeleted) {
+		super(id, name, lastName, jmbg, adress, gender, wage, username, password, isDeleted);
 	}
 	
 

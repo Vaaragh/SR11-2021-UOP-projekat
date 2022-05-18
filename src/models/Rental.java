@@ -13,6 +13,7 @@ public class Rental {
 	protected Member member;
 	
 	protected ArrayList<BookCopy> bookList;
+	protected boolean isDeleted;
 
 	
 	
@@ -21,12 +22,13 @@ public class Rental {
 	}
 
 	public Rental(LocalDate rentalDate, LocalDate dueDate, Employee enployee, Member member,
-			ArrayList<BookCopy> bookList) {
+			ArrayList<BookCopy> bookList, boolean isDeleted) {
 		this.rentalDate = rentalDate;
 		this.dueDate = dueDate;
 		this.enployee = enployee;
 		this.member = member;
 		this.bookList = bookList;
+		this.isDeleted = isDeleted;
 	}
 
 	public LocalDate getRentalDate() {
@@ -69,7 +71,13 @@ public class Rental {
 		this.bookList = bookList;
 	}
 	
-	
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 
 	@Override
 	public String toString() {

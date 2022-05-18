@@ -26,7 +26,7 @@ public class Book {
 
 
 	public Book(String id, String originalTitle, String author, String description, Genre genre,
-			Language originalLanguage, int publishDate) {
+			Language originalLanguage, int publishDate, boolean isDeleted) {
 		this.id = id;
 		this.originalTitle = originalTitle;
 		this.author = author;
@@ -34,7 +34,7 @@ public class Book {
 		this.genre = genre;
 		this.originalLanguage = originalLanguage;
 		this.publishDate = publishDate;
-		this.isDeleted = false;
+		this.isDeleted = isDeleted;
 	}
 
 	

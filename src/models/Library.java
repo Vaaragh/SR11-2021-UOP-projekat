@@ -23,14 +23,14 @@ public class Library {
 
 
 
-	public Library(String id, String name, String adress, String phone, LocalTime openFrom, LocalTime openUntill) {
+	public Library(String id, String name, String adress, String phone, LocalTime openFrom, LocalTime openUntill, boolean isDeleted) {
 		this.id = id;
 		this.name = name;
 		this.adress = adress;
 		this.phone = phone;
 		this.openFrom = openFrom;
 		this.openUntill = openUntill;
-		this.isDeleted = false;
+		this.isDeleted = isDeleted;
 	}
 
 	

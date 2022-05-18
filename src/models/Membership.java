@@ -15,10 +15,10 @@ public class Membership {
 		this.isDeleted = false;
 	}
 
-	public Membership(String name, int price, String id) {
+	public Membership(String name, int price, String id, boolean isDeleted) {
 		this.name = name;
 		this.price = price;
-		this.isDeleted = false;
+		this.isDeleted = isDeleted;
 		this.id = id;
 	}
 

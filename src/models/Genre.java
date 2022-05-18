@@ -13,11 +13,11 @@ public class Genre {
 		this.isDeleted = false;
 	}
 	
-	public Genre(String id, String tag, String genreDescription) {
+	public Genre(String id, String tag, String genreDescription, boolean isDeleted) {
 		this.id = id;
 		this.tag = tag;
 		this.genreDescription = genreDescription;
-		this.isDeleted = false;
+		this.isDeleted = isDeleted;
 	}
 	
 	// Getters and setters
