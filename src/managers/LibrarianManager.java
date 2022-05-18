@@ -17,7 +17,7 @@ public class LibrarianManager {
 
 	private static LibrarianManager INSTANCE;
 	private HashMap<String,Librarian> allLibrarians;
-	private String FILEPATH = "text/librarian.txt";
+	private static String FILEPATH = "text/librarian.txt";
 	
 	// private Constructor
 	
@@ -44,8 +44,17 @@ public class LibrarianManager {
 		this.allLibrarians = allLibrarians;
 	}
 	
-	// Methods
+	public static String getFILEPATH() {
+		return FILEPATH;
+	}
+
+	public static void setFILEPATH(String fILEPATH) {
+		FILEPATH = fILEPATH;
+	}
 	
+
+	// Methods
+
 	public void loadLibrarians() throws NumberFormatException, IOException{
 		File librarianFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(librarianFile));

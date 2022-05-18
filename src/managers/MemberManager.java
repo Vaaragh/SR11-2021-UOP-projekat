@@ -20,7 +20,7 @@ public class MemberManager {
 	
 	private static MemberManager INSTANCE;
 	private HashMap<String,Member> allMembers;
-	private String FILEPATH = "text/member.txt";
+	private static String FILEPATH = "text/member.txt";
 	private MembershipManager memShiMan;
 	
 	// private Constructor
@@ -49,8 +49,17 @@ public class MemberManager {
 		this.allMembers = allMembers;
 	}
 	
-	// Methods
+	public static String getFILEPATH() {
+		return FILEPATH;
+	}
+
+	public static void setFILEPATH(String fILEPATH) {
+		FILEPATH = fILEPATH;
+	}
+
 	
+	// Methods
+
 	public void loadMembers() throws NumberFormatException, IOException{
 		File adminFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(adminFile));

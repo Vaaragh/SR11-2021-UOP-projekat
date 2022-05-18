@@ -16,7 +16,7 @@ public class MembershipManager {
 	
 	private static MembershipManager INSTANCE;
 	private HashMap<String,Membership> allMemberships;
-	private String FILEPATH = "text/membership.txt";
+	private static String FILEPATH = "text/membership.txt";
 	
 	// private Constructor
 	
@@ -43,9 +43,17 @@ public class MembershipManager {
 	public void setAllMemberships(HashMap<String, Membership> allMemberships) {
 		this.allMemberships = allMemberships;
 	}
-	
+		
+	public static String getFILEPATH() {
+		return FILEPATH;
+	}
+
+	public static void setFILEPATH(String fILEPATH) {
+		FILEPATH = fILEPATH;
+	}
+
 	// Methods
-	
+
 	public void loadMemberships() throws NumberFormatException, IOException{
 		File membershipFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(membershipFile));

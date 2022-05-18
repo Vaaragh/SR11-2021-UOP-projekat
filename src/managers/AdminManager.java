@@ -17,7 +17,7 @@ public class AdminManager {
 	
 	private static AdminManager INSTANCE;
 	private HashMap<String,Admin> allAdmins;
-	private String FILEPATH = "text/admin.txt";
+	private static String FILEPATH = "text/admin.txt";
 	
 	// private Constructor
 	
@@ -44,8 +44,16 @@ public class AdminManager {
 		this.allAdmins = allAdmins;
 	}
 	
-	// Methods
+	public static String getFILEPATH() {
+		return FILEPATH;
+	}
 	
+	public static void setFILEPATH(String fILEPATH) {
+		FILEPATH = fILEPATH;
+	}
+	
+	// Methods
+
 	public void loadAdmins() throws NumberFormatException, IOException{
 		File adminFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(adminFile));

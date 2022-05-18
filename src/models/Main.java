@@ -59,6 +59,7 @@ public class Main {
 		HashMap<String, Rental> rentals = new HashMap<String, Rental>();
 		HashMap<String, Library> libraries = new HashMap<String, Library>();
 		
+		
 		// Objects
 		Library library = new Library("libraryId", "libraryName", "libraryAdress", "libraryPhone", LocalTime.of(8, 0), LocalTime.of(16, 0),false);
 		Admin admin = new Admin("adminId", "adminName", "adminLasstName", "adminJmbg", "adminAdress", Gender.FEMALE, 200, "adminUsername", "adminPassword", false);
@@ -71,53 +72,62 @@ public class Main {
 		Member member = new Member("memberId","memberName","memberLastName", "memberJmbg", "memberAdress", Gender.FEMALE, "memberMembershipNum", LocalDate.now(), 3, membership, false);
 		Rental rental = new Rental(LocalDate.now(), LocalDate.now().plusDays(14), librarian, member, bookCopies,"rentalId", false);
 		
+		
 		// Linking Temporary to Managers
 		libraries.put(library.getId(), library);
 		libMan.setAllLibraries(libraries);
 		libMan.saveLibraries();
 		libMan.loadLibraries();
+		System.out.println(libMan.getAllLibraries());
 		
 		admins.put(admin.getId(), admin);
 		adMan.setAllAdmins(admins);		
 		adMan.saveAdmins();
 		adMan.loadAdmins();
+		System.out.println(adMan.getAllAdmins());
 		
 		librarians.put(librarian.getId(), librarian);
 		liMan.setAllLibrarians(librarians);
 		liMan.saveLibrarians();
 		liMan.loadLibrarians();
+		System.out.println(liMan.getAllLibrarians());
 		
 		genres.put(genre.getId(), genre);
 		genMan.setAllGenres(genres);
 		genMan.saveGenres();
 		genMan.loadGenres();
+		System.out.println(genMan.getAllGenres());
 		
 		books.put(book.getId(), book);
 		booMan.setAllBooks(books);
 		booMan.saveBooks();
 		booMan.loadBooks();
+		System.out.println(booMan.getAllBooks());
 		
 		bookCopies.put(bookCopy.getId(), bookCopy);
 		bookCopies.put(bookCopy1.getId(), bookCopy1);
 		booCoMan.setAllBookCopies(bookCopies);
 		booCoMan.saveBookCopies();
 		booCoMan.loadBookCopies();
+		System.out.println(booCoMan.getAllBookCopies());
 		
 		memberships.put(membership.getId(), membership);
 		memShiMan.setAllMemberships(memberships);
 		memShiMan.saveMemberships();
 		memShiMan.loadMemberships();
+		System.out.println(memShiMan.getAllMemberships());
 		
 		members.put(member.getId(), member);
 		memMan.setAllMembers(members);
 		memMan.saveMembers();
 		memMan.loadMembers();
+		System.out.println(memMan.getAllMembers());
 		
 		rentals.put(rental.getId(), rental);
 		renMan.setAllRentals(rentals);
 		renMan.saveRentals();
 		renMan.loadRentals();
-		
+		System.out.println(renMan.getAllRentals());
 		
 		
 		

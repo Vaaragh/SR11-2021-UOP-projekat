@@ -20,7 +20,7 @@ public class BookCopyManager {
 		
 	private static BookCopyManager INSTANCE;
 	private HashMap<String,BookCopy> allBookCopies;
-	private String FILEPATH = "text/bookCopy.txt";
+	private static String FILEPATH = "text/bookCopy.txt";
 	private BookManager booMan;
 	
 	// private Constructor
@@ -50,8 +50,16 @@ public class BookCopyManager {
 		this.allBookCopies = allBookCopies;
 	}
 	
+	public static String getFILEPATH() {
+		return FILEPATH;
+	}
+
+	public static void setFILEPATH(String fILEPATH) {
+		FILEPATH = fILEPATH;
+	}
+
 	// Methods
-	
+
 	public void loadBookCopies() throws NumberFormatException, IOException{
 		File bookCopyFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(bookCopyFile));

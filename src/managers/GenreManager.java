@@ -17,7 +17,7 @@ public class GenreManager {
 	
 	private static GenreManager INSTANCE;
 	private HashMap<String,Genre> allGenres;
-	private String FILEPATH = "text/genre.txt";
+	private static String FILEPATH = "text/genre.txt";
 	
 	// private Constructor
 	
@@ -45,8 +45,16 @@ public class GenreManager {
 		this.allGenres = allGenres;
 	}
 	
+	public static String getFILEPATH() {
+		return FILEPATH;
+	}
+
+	public static void setFILEPATH(String fILEPATH) {
+		FILEPATH = fILEPATH;
+	}
+
 	// Methods
-	
+
 	public void loadGenres() throws NumberFormatException, IOException{
 		File genreFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(genreFile));

@@ -18,7 +18,7 @@ public class BookManager {
 	
 	private static BookManager INSTANCE;
 	private HashMap<String,Book> allBooks;
-	private String FILEPATH = "text/book.txt";
+	private static String FILEPATH = "text/book.txt";
 	private GenreManager genMan;
 	
 	// private Constructor
@@ -48,8 +48,16 @@ public class BookManager {
 		this.allBooks = allBooks;
 	}
 	
+	public static String getFILEPATH() {
+		return FILEPATH;
+	}
+
+	public static void setFILEPATH(String fILEPATH) {
+		FILEPATH = fILEPATH;
+	}
+
 	// Methods
-	
+
 	public void loadBooks() throws NumberFormatException, IOException{
 		File bookFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(bookFile));

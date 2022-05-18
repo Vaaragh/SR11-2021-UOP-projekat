@@ -20,7 +20,7 @@ public class RentalManager {
 	
 	private static RentalManager INSTANCE;
 	private HashMap<String,Rental> allRentals;
-	private String FILEPATH = "text/rental.txt";
+	private static String FILEPATH = "text/rental.txt";
 	private BookCopyManager booCoMan;
 	private AdminManager adMan;
 	private LibrarianManager liMan;
@@ -47,6 +47,8 @@ public class RentalManager {
 	
 	// Getters and Setters
 	
+	
+	
 	public HashMap<String, Rental> getAllRentals() {
 		return allRentals;
 	}
@@ -55,8 +57,16 @@ public class RentalManager {
 		this.allRentals = allRentals;
 	}
 	
-	// Methods
+	public static String getFILEPATH() {
+		return FILEPATH;
+	}
+
+	public static void setFILEPATH(String fILEPATH) {
+		FILEPATH = fILEPATH;
+	}
 	
+	// Methods
+
 	public void loadRentals() throws NumberFormatException, IOException{
 		File rentalFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(rentalFile));
