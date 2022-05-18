@@ -17,20 +17,20 @@ public class GenreManager {
 	
 	private static GenreManager INSTANCE;
 	private HashMap<String,Genre> allGenres;
-	private String FILEPATH;
+	private String FILEPATH = "text/genre.txt";
 	
 	// private Constructor
 	
-	private GenreManager(String filepath) {
+	private GenreManager() {
 		this.allGenres = new HashMap<String, Genre>();
-		this.FILEPATH = filepath;
+
 	}
 	
 	// Instance
 	
-	public static GenreManager getInstance(String filepath) {
+	public static GenreManager getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new GenreManager(filepath);
+			INSTANCE = new GenreManager();
 		}
 		return INSTANCE;
 	}

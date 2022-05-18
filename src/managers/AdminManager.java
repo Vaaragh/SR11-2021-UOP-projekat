@@ -17,20 +17,19 @@ public class AdminManager {
 	
 	private static AdminManager INSTANCE;
 	private HashMap<String,Admin> allAdmins;
-	private String FILEPATH;
+	private String FILEPATH = "text/admin.txt";
 	
 	// private Constructor
 	
-	private AdminManager(String filepath) {
+	private AdminManager() {
 		this.allAdmins = new HashMap<String, Admin>();
-		this.FILEPATH = filepath;
 	}
 	
 	// Instance
 	
-	public static AdminManager getInstance(String filepath) {
+	public static AdminManager getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new AdminManager(filepath);
+			INSTANCE = new AdminManager();
 		}
 		return INSTANCE;
 	}

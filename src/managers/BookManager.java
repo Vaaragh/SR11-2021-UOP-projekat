@@ -18,23 +18,22 @@ public class BookManager {
 	
 	private static BookManager INSTANCE;
 	private HashMap<String,Book> allBooks;
-	private String FILEPATH;
+	private String FILEPATH = "text/book.txt";
 	private GenreManager genMan;
 	
 	// private Constructor
 	
-	private BookManager(String filepath, String genre) {
+	private BookManager() {
 		this.allBooks = new HashMap<String, Book>();
-		this.FILEPATH = filepath;
-		this.genMan = GenreManager.getInstance(genre);
+		this.genMan = GenreManager.getInstance();
 
 	}
 	
 	// Instance
 	
-	public static BookManager getInstance(String filepath, String genre) {
+	public static BookManager getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new BookManager(filepath, genre);
+			INSTANCE = new BookManager();
 		}
 		return INSTANCE;
 	}

@@ -20,23 +20,22 @@ public class BookCopyManager {
 		
 	private static BookCopyManager INSTANCE;
 	private HashMap<String,BookCopy> allBookCopies;
-	private String FILEPATH;
+	private String FILEPATH = "text/bookCopy.txt";
 	private BookManager booMan;
 	
 	// private Constructor
 	
-	private BookCopyManager(String filepath, String book, String genre) {
+	private BookCopyManager() {
 		this.allBookCopies = new HashMap<String, BookCopy>();
-		this.FILEPATH = filepath;
-		this.booMan = BookManager.getInstance(book, genre);
+		this.booMan = BookManager.getInstance();
 
 	}
 	
 	// Instance
 	
-	public static BookCopyManager getInstance(String filepath, String book, String genre) {
+	public static BookCopyManager getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new BookCopyManager(filepath, book, genre);
+			INSTANCE = new BookCopyManager();
 		}
 		return INSTANCE;
 	}

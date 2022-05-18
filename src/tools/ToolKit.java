@@ -5,7 +5,9 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ToolKit {
@@ -48,15 +50,23 @@ public class ToolKit {
 				return o1.getName().compareTo(o2.getName());
 			}
 		});
-		methods.forEach((el) -> System.out.println(el.getName().toString())); // Helper for coding positions
+//		methods.forEach((el) -> System.out.println(el.getName().toString())); // Helper for coding positions
 		for (int i = 0; i< methods.size(); i++) { // Generating specific segment for the fileFormat
 			Method x = methods.get(i);
 			Object s = x.invoke(obj); // calls the method on the object, getting the value for the field
 			if (s.getClass().getPackageName().equalsIgnoreCase("models")) { // check for basic types vs custom written classes
 				String id = getIdMethod(s.getClass()).invoke(s).toString(); // gets the getId method for specific object (no duck type?)
 				fileFormat += id + "|";
+			}else if(s instanceof HashMap){
+				String allelements = "";
+				Set<?> set = ((HashMap<?, ?>)s).keySet();
+				for (Object s1: set) {
+					allelements += s1 + ";";
+				}
+				fileFormat += allelements + "|";
 			}else {
 				fileFormat += s + "|";
+				
 			}
 			
 		}

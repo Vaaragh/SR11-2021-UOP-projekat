@@ -17,20 +17,19 @@ public class LibrarianManager {
 
 	private static LibrarianManager INSTANCE;
 	private HashMap<String,Librarian> allLibrarians;
-	private String FILEPATH;
+	private String FILEPATH = "text/librarian.txt";
 	
 	// private Constructor
 	
-	private LibrarianManager(String filepath) {
+	private LibrarianManager() {
 		this.allLibrarians = new HashMap<String, Librarian>();
-		this.FILEPATH = filepath;
 	}
 	
 	// Instance
 	
-	public static LibrarianManager getInstance(String filepath) {
+	public static LibrarianManager getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new LibrarianManager(filepath);
+			INSTANCE = new LibrarianManager();
 		}
 		return INSTANCE;
 	}
