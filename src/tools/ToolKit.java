@@ -9,11 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ToolKit {
-	
-	// Constructor
-	
-	// Methods	
-	
 	// ---ATTEMPT AT AUTO GENERATING fileLine THROUGH FIELDS ---//
 	// ---Had issues with IllegallAccessException ---//
 //	public List<Field> getAllFields(Class clss){	
@@ -28,12 +23,15 @@ public class ToolKit {
 //		return result;	
 //	}
 	
-	public static List<Method> getMethods(Class clss){
+	
+	// Get a list of all methods and filter them to get all getters
+	public static List<Method> getMethods(Class<? extends Object> clss){
 		List<Method> methodList = Arrays.stream(clss.getMethods()).filter(f -> (f.getName().startsWith("g")||f.getName().startsWith("i")) && !(f.getName().equals("getClass"))).collect(Collectors.toList());
 		return methodList;
 	}
 	
-	public static Method getIdMethod(Class clss){
+	// Get getID method for nested objects
+	public static Method getIdMethod(Class<? extends Object> clss){
 		List<Method> methodList = Arrays.stream(clss.getMethods()).filter(f -> (f.getName().equals("getId"))).collect(Collectors.toList());
 		Method method = methodList.get(0);
 		return method;
@@ -42,26 +40,23 @@ public class ToolKit {
 	public static String generateFileLine(Object obj) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		String fileFormat = "";
 		List<Method> methods = getMethods(obj.getClass());
-		Collections.sort(methods, new Comparator<Method>() {
+		Collections.sort(methods, new Comparator<Method>() {  // Sorted for consistent positioning
 
+			// Override for comparing Methods (default doesn't implement Comparable)
 			@Override
 			public int compare(Method o1, Method o2) {
-				return o1.hashCode() - o2.hashCode();
+				return o1.getName().compareTo(o2.getName());
 			}
 		});
-		methods.forEach((el) -> System.out.println(el.getName().toString()));
-		for (int i = 0; i< methods.size(); i++) {
-//			System.out.println(fi.get(i));   Check
+		methods.forEach((el) -> System.out.println(el.getName().toString())); // Helper for coding positions
+		for (int i = 0; i< methods.size(); i++) { // Generating specific segment for the fileFormat
 			Method x = methods.get(i);
-//			System.out.println(x.invoke(obj));   Check
-			Object s = x.invoke(obj);
-			if (s.getClass().getPackageName().equalsIgnoreCase("models")) {
-				String id = getIdMethod(s.getClass()).invoke(s).toString();
+			Object s = x.invoke(obj); // calls the method on the object, getting the value for the field
+			if (s.getClass().getPackageName().equalsIgnoreCase("models")) { // check for basic types vs custom written classes
+				String id = getIdMethod(s.getClass()).invoke(s).toString(); // gets the getId method for specific object (no duck type?)
 				fileFormat += id + "|";
-//				System.out.println("da  ---  "+ id +"-----------" + x.getReturnType().toString()); // Check
 			}else {
 				fileFormat += s + "|";
-//				System.out.println("ne  ---  " +s +"-----------" + x.getReturnType().toString()); // Check
 			}
 			
 		}

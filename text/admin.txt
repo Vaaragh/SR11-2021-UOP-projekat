@@ -1,1 +1,1 @@
-200|adminPassword|false|false|false|false|FEMALE|FEMALE|FEMALE|adminId|
+adminAdress|FEMALE|adminId|adminJmbg|adminLasstName|adminName|adminPassword|adminUsername|200|false|

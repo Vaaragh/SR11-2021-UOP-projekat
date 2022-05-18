@@ -10,46 +10,46 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import Enums.Gender;
-import models.Admin;
+import models.Librarian;
 import tools.ToolKit;
 
-public class AdminManager {
-	
-	private static AdminManager INSTANCE;
-	private HashMap<String,Admin> allAdmins;
+public class LibrarianManager {
+
+	private static LibrarianManager INSTANCE;
+	private HashMap<String,Librarian> allLibrarians;
 	private String FILEPATH;
 	
 	// private Constructor
 	
-	private AdminManager(String filepath) {
-		this.allAdmins = new HashMap<String, Admin>();
+	private LibrarianManager(String filepath) {
+		this.allLibrarians = new HashMap<String, Librarian>();
 		this.FILEPATH = filepath;
 	}
 	
 	// Instance
 	
-	public static AdminManager getInstance(String filepath) {
+	public static LibrarianManager getInstance(String filepath) {
 		if (INSTANCE == null) {
-			INSTANCE = new AdminManager(filepath);
+			INSTANCE = new LibrarianManager(filepath);
 		}
 		return INSTANCE;
 	}
 	
 	// Getters and Setters
 	
-	public HashMap<String, Admin> getAllAdmins() {
-		return allAdmins;
+	public HashMap<String, Librarian> getAllLibrarians() {
+		return allLibrarians;
 	}
 	
-	public void setAllAdmins(HashMap<String, Admin> allAdmins) {
-		this.allAdmins = allAdmins;
+	public void setAllLibrarians(HashMap<String, Librarian> allLibrarians) {
+		this.allLibrarians = allLibrarians;
 	}
 	
 	// Methods
 	
-	public void loadAdmins() throws NumberFormatException, IOException{
-		File adminFile = new File(FILEPATH);
-		BufferedReader reader = new BufferedReader(new FileReader(adminFile));
+	public void loadLibrarians() throws NumberFormatException, IOException{
+		File librarianFile = new File(FILEPATH);
+		BufferedReader reader = new BufferedReader(new FileReader(librarianFile));
 		String line;
 		while((line = reader.readLine()) != null) {
 			String [] splitLine = line.split("\\|");
@@ -64,18 +64,18 @@ public class AdminManager {
 			String lastName = splitLine[4];
 			boolean deleted = Boolean.parseBoolean(splitLine[9]);
 			
-			Admin admin = new Admin(id, name, lastName, jmbg, adress, gender, wage, username, password,deleted);
-			this.allAdmins.put(id, admin);
+			Librarian librarian = new Librarian(id, name, lastName, jmbg, adress, gender, wage, username, password, deleted);
+			this.allLibrarians.put(id, librarian);
 		}
 		reader.close();
 	}
 	
-	public void saveAdmins() throws IOException {
-		File adminFile = new File(FILEPATH);
-		BufferedWriter writer = new BufferedWriter(new FileWriter(adminFile));
-		this.allAdmins.forEach((key, value) -> {
+	public void saveLibrarians() throws IOException {
+		File librarianFile = new File(FILEPATH);
+		BufferedWriter writer = new BufferedWriter(new FileWriter(librarianFile));
+		this.allLibrarians.forEach((key, value) -> {
 			try {
-				writer.write(ToolKit.generateFileLine(this.allAdmins.get(key)));
+				writer.write(ToolKit.generateFileLine(this.allLibrarians.get(key)));
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -91,10 +91,11 @@ public class AdminManager {
 		
 	}
 	
-	public Admin findAdmin(String id){
-		return this.allAdmins.get(id);
+	public Librarian findLibrarian(String id){
+		return this.allLibrarians.get(id);
 	}
 
 
 	
 }
+

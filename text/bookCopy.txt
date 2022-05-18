@@ -1,0 +1,1 @@
+HARDCOVER|bookId|copyId|150|1999|FRENCH|copyTitle|true|false|
