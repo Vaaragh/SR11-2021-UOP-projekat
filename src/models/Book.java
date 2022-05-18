@@ -114,7 +114,7 @@ public class Book {
 		return isDeleted;
 	}
 
-
+	
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}

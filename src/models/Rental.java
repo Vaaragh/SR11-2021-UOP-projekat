@@ -1,35 +1,40 @@
 package models;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Rental {
+	
+	protected String id;
 	
 	protected LocalDate rentalDate;
 	protected LocalDate dueDate;
 	
-	protected Employee enployee;
+	protected Employee employee;
 	
 	protected Member member;
 	
-	protected ArrayList<BookCopy> bookList;
+	protected HashMap<String, BookCopy> bookList;
 	protected boolean isDeleted;
 
 	
 	
 	
+
 	public Rental() {
 	}
 
-	public Rental(LocalDate rentalDate, LocalDate dueDate, Employee enployee, Member member,
-			ArrayList<BookCopy> bookList, boolean isDeleted) {
+	public Rental(LocalDate rentalDate, LocalDate dueDate, Employee employee, Member member,
+			HashMap<String, BookCopy> bookList,String id, boolean isDeleted) {
 		this.rentalDate = rentalDate;
 		this.dueDate = dueDate;
-		this.enployee = enployee;
+		this.employee = employee;
 		this.member = member;
 		this.bookList = bookList;
 		this.isDeleted = isDeleted;
+		this.id = id;
 	}
+	
 
 	public LocalDate getRentalDate() {
 		return rentalDate;
@@ -47,14 +52,14 @@ public class Rental {
 		this.dueDate = dueDate;
 	}
 
-	public Employee getEnployee() {
-		return enployee;
+	public Employee getEmployee() {
+		return employee;
 	}
-
-	public void setEnployee(Employee enployee) {
-		this.enployee = enployee;
+	
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
-
+	
 	public Member getMember() {
 		return member;
 	}
@@ -63,11 +68,11 @@ public class Rental {
 		this.member = member;
 	}
 
-	public ArrayList<BookCopy> getBookList() {
+	public HashMap<String, BookCopy> getBookList() {
 		return bookList;
 	}
 
-	public void setBookList(ArrayList<BookCopy> bookList) {
+	public void setBookList(HashMap<String, BookCopy> bookList) {
 		this.bookList = bookList;
 	}
 	
@@ -78,10 +83,19 @@ public class Rental {
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {
-		return "Rental [enployee=" + enployee.id + ", member=" + member.id + ", bookList=" + bookList + "]";
+		return "Rental [enployee=" + employee.id + ", member=" + member.id + ", bookList=" + bookList + "]";
 	}
 	
 	

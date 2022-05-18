@@ -3,6 +3,7 @@ package models;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 
 import Enums.Binding;
@@ -13,6 +14,10 @@ import managers.BookCopyManager;
 import managers.BookManager;
 import managers.GenreManager;
 import managers.LibrarianManager;
+import managers.LibraryManager;
+import managers.MemberManager;
+import managers.MembershipManager;
+import managers.RentalManager;
 
 public class Main {
 
@@ -25,28 +30,23 @@ public class Main {
 		String GENRE_FILE = "text/genre.txt";
 		String BOOK_FILE = "text/book.txt";
 		String BOOK_COPY_FILE = "text/bookCopy.txt";
+		String MEMBERSHIP_FILE = "text/membership.txt";
+		String MEMBER_FILE = "text/member.txt";
+		String RENTAL_FILE = "text/rental.txt";
+		String LIBRARY_FILE = "text/library.txt";
+		
 		
 		//Managers
-		AdminManager adMan = AdminManager.getInstance(ADMIN_FILE);
-		LibrarianManager libMan = LibrarianManager.getInstance(LIBRARIAN_FILE);
-		GenreManager genMan = GenreManager.getInstance(GENRE_FILE);
-		BookManager booMan = BookManager.getInstance(BOOK_FILE, GENRE_FILE);
-		BookCopyManager booCoMan = BookCopyManager.getInstance(BOOK_COPY_FILE, BOOK_FILE, GENRE_FILE);
+		AdminManager adMan = AdminManager.getInstance();
+		LibrarianManager liMan = LibrarianManager.getInstance();
+		GenreManager genMan = GenreManager.getInstance();
+		BookManager booMan = BookManager.getInstance();
+		BookCopyManager booCoMan = BookCopyManager.getInstance();
+		MembershipManager memShiMan = MembershipManager.getInstance();
+		MemberManager memMan = MemberManager.getInstance();
+		RentalManager renMan = RentalManager.getInstance();
+		LibraryManager libMan = LibraryManager.getInstance();
 		
-		
-		
-		
-		// Objects
-		Admin admin = new Admin("adminId", "adminName", "adminLasstName", "adminJmbg", "adminAdress", Gender.FEMALE, 200, "adminUsername", "adminPassword", false);
-		Librarian librarian = new Librarian("librarianId", "librarianName", "librarianLastName", "librarianJmbg", "librarianAdress", Gender.OTHER, 100, "librarianUsername", "librarianPassword", false);
-		Genre genre = new Genre("genreId", "genreTag", "genreDescription", false);
-		Book book = new Book("bookId", "bookOgTitle", "bookAuthor", "bookDescription", genre, Language.ENGLISH, 1992, false);
-		BookCopy bookCopy = new BookCopy("copyId","copyTitle", book,150,1999,Binding.HARDCOVER,Language.FRENCH, true, false);
-		
-		
-		Membership membership = new Membership("MembershipType", 200, "MembershipId",false);
-		Member mem = new Member("memberId","memberName","memberLastName", "memberJmbg", "memberAdress", Gender.FEMALE, "memberMembershipNum", LocalDate.now(), 3, membership, false);
-
 		
 		// Temporary HashMaps
 		HashMap<String, Admin> admins = new HashMap<String, Admin>();
@@ -54,37 +54,69 @@ public class Main {
 		HashMap<String, Genre> genres = new HashMap<String, Genre>();
 		HashMap<String, Book> books = new HashMap<String, Book>();
 		HashMap<String, BookCopy> bookCopies = new HashMap<String, BookCopy>();
+		HashMap<String, Membership> memberships = new HashMap<String, Membership>();
+		HashMap<String, Member> members = new HashMap<String, Member>();
+		HashMap<String, Rental> rentals = new HashMap<String, Rental>();
+		HashMap<String, Library> libraries = new HashMap<String, Library>();
 		
-		
+		// Objects
+		Library library = new Library("libraryId", "libraryName", "libraryAdress", "libraryPhone", LocalTime.of(8, 0), LocalTime.of(16, 0),false);
+		Admin admin = new Admin("adminId", "adminName", "adminLasstName", "adminJmbg", "adminAdress", Gender.FEMALE, 200, "adminUsername", "adminPassword", false);
+		Librarian librarian = new Librarian("librarianId", "librarianName", "librarianLastName", "librarianJmbg", "librarianAdress", Gender.OTHER, 100, "librarianUsername", "librarianPassword", false);
+		Genre genre = new Genre("genreId", "genreTag", "genreDescription", false);
+		Book book = new Book("bookId", "bookOgTitle", "bookAuthor", "bookDescription", genre, Language.ENGLISH, 1992, false);
+		BookCopy bookCopy = new BookCopy("copyId","copyTitle", book,150,1999,Binding.HARDCOVER,Language.FRENCH, true, false);
+		BookCopy bookCopy1 = new BookCopy("copyId2","copyTitle", book,150,1999,Binding.HARDCOVER,Language.FRENCH, true, false);
+		Membership membership = new Membership("MembershipType", 200, "MembershipId",false);
+		Member member = new Member("memberId","memberName","memberLastName", "memberJmbg", "memberAdress", Gender.FEMALE, "memberMembershipNum", LocalDate.now(), 3, membership, false);
+		Rental rental = new Rental(LocalDate.now(), LocalDate.now().plusDays(14), librarian, member, bookCopies,"rentalId", false);
 		
 		// Linking Temporary to Managers
+		libraries.put(library.getId(), library);
+		libMan.setAllLibraries(libraries);
+		libMan.saveLibraries();
+		libMan.loadLibraries();
+		
 		admins.put(admin.getId(), admin);
 		adMan.setAllAdmins(admins);		
-		adMan.loadAdmins();
 		adMan.saveAdmins();
+		adMan.loadAdmins();
 		
 		librarians.put(librarian.getId(), librarian);
-		libMan.setAllLibrarians(librarians);
-		libMan.loadLibrarians();
-		libMan.saveLibrarians();
+		liMan.setAllLibrarians(librarians);
+		liMan.saveLibrarians();
+		liMan.loadLibrarians();
 		
 		genres.put(genre.getId(), genre);
 		genMan.setAllGenres(genres);
-		genMan.loadGenres();
 		genMan.saveGenres();
 		genMan.loadGenres();
-
 		
 		books.put(book.getId(), book);
 		booMan.setAllBooks(books);
-		booMan.loadBooks();
 		booMan.saveBooks();
+		booMan.loadBooks();
 		
 		bookCopies.put(bookCopy.getId(), bookCopy);
+		bookCopies.put(bookCopy1.getId(), bookCopy1);
 		booCoMan.setAllBookCopies(bookCopies);
-		booCoMan.loadBookCopies();
 		booCoMan.saveBookCopies();
+		booCoMan.loadBookCopies();
 		
+		memberships.put(membership.getId(), membership);
+		memShiMan.setAllMemberships(memberships);
+		memShiMan.saveMemberships();
+		memShiMan.loadMemberships();
+		
+		members.put(member.getId(), member);
+		memMan.setAllMembers(members);
+		memMan.saveMembers();
+		memMan.loadMembers();
+		
+		rentals.put(rental.getId(), rental);
+		renMan.setAllRentals(rentals);
+		renMan.saveRentals();
+		renMan.loadRentals();
 		
 		
 		

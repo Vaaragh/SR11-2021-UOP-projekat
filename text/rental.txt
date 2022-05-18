@@ -1,0 +1,1 @@
+copyId;copyId2;|2022-06-01|librarianId|rentalId|memberId|2022-05-18|false|

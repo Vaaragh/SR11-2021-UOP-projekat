@@ -1,1 +1,2 @@
 HARDCOVER|bookId|copyId|150|1999|FRENCH|copyTitle|true|false|
+HARDCOVER|bookId|copyId2|150|1999|FRENCH|copyTitle|true|false|
