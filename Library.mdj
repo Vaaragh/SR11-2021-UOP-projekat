@@ -729,7 +729,7 @@
 											"top": 93,
 											"width": 191,
 											"height": 13,
-											"text": "#lastPayement: LocalDate",
+											"text": "#lastPayment: LocalDate",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2979,7 +2979,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": 208,
-											"top": 80,
+											"top": 64,
 											"height": 13
 										},
 										{
@@ -2990,7 +2990,7 @@
 											},
 											"font": "Arial;13;1",
 											"left": 509,
-											"top": 239,
+											"top": 231,
 											"width": 191,
 											"height": 13,
 											"text": "Rental"
@@ -3004,7 +3004,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": 208,
-											"top": 80,
+											"top": 64,
 											"width": 73.67724609375,
 											"height": 13,
 											"text": "(from Model)"
@@ -3018,14 +3018,14 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": 208,
-											"top": 80,
+											"top": 64,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 504,
-									"top": 232,
+									"top": 224,
 									"width": 201,
 									"height": 25,
 									"stereotypeLabel": {
@@ -3062,10 +3062,10 @@
 											},
 											"font": "Arial;13;0",
 											"left": 509,
-											"top": 262,
+											"top": 254,
 											"width": 191,
 											"height": 13,
-											"text": "-datumIznajmljivanja: LocalDate",
+											"text": "#rentalDate: LocalDate",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3079,18 +3079,35 @@
 											},
 											"font": "Arial;13;0",
 											"left": 509,
-											"top": 277,
+											"top": 269,
 											"width": 191,
 											"height": 13,
-											"text": "-datumVracanja: LocalDate",
+											"text": "#dueDate: LocalDate",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGA3k1wMj4Z8Is=",
+											"_parent": {
+												"$ref": "AAAAAAGAi7rjHnlHlZ8="
+											},
+											"model": {
+												"$ref": "AAAAAAGA3k1wHD4Ws/A="
+											},
+											"font": "Arial;13;0",
+											"left": 509,
+											"top": 284,
+											"width": 191,
+											"height": 13,
+											"text": "#isDeleted: boolean",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 504,
-									"top": 257,
+									"top": 249,
 									"width": 201,
-									"height": 38
+									"height": 53
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -3103,7 +3120,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 504,
-									"top": 295,
+									"top": 302,
 									"width": 201,
 									"height": 10
 								},
@@ -3119,7 +3136,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 104,
-									"top": 40,
+									"top": 32,
 									"width": 10,
 									"height": 10
 								},
@@ -3135,7 +3152,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 104,
-									"top": 40,
+									"top": 32,
 									"width": 10,
 									"height": 10
 								}
@@ -3143,9 +3160,9 @@
 							"font": "Arial;13;0",
 							"containerChangeable": true,
 							"left": 504,
-							"top": 232,
+							"top": 224,
 							"width": 201,
-							"height": 73,
+							"height": 88,
 							"nameCompartment": {
 								"$ref": "AAAAAAGAi7rjHXlCAjU="
 							},
@@ -4589,7 +4606,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 589,
-									"top": 176,
+									"top": 172,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -4610,7 +4627,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 574,
-									"top": 176,
+									"top": 172,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -4631,7 +4648,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 618,
-									"top": 177,
+									"top": 173,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -4652,7 +4669,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 589,
-									"top": 199,
+									"top": 191,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -4673,7 +4690,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 575,
-									"top": 196,
+									"top": 188,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -4694,7 +4711,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 616,
-									"top": 203,
+									"top": 195,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -4802,7 +4819,7 @@
 								"$ref": "AAAAAAGAi7rjHXlBzpY="
 							},
 							"lineStyle": 1,
-							"points": "604:231;604:136",
+							"points": "604:223;604:136",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGA3DlQrgusP3I="
@@ -4861,7 +4878,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 756,
-									"top": 246,
+									"top": 245,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -4882,7 +4899,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 756,
-									"top": 231,
+									"top": 230,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -4903,7 +4920,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 756,
-									"top": 276,
+									"top": 275,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -4924,7 +4941,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 730,
-									"top": 246,
+									"top": 245,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -4986,7 +5003,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 761,
-									"top": 272,
+									"top": 271,
 									"width": 41.919921875,
 									"height": 13,
 									"alpha": 0.40024079505158516,
@@ -5008,7 +5025,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 778,
-									"top": 232,
+									"top": 231,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -5026,7 +5043,7 @@
 										"$ref": "AAAAAAGA3DmhnxQuTls="
 									},
 									"font": "Arial;13;0",
-									"left": 776,
+									"left": 775,
 									"top": 247,
 									"width": 19.5126953125,
 									"height": 13,
@@ -5074,7 +5091,7 @@
 								"$ref": "AAAAAAGAi7rjHXlBzpY="
 							},
 							"lineStyle": 1,
-							"points": "705:267;807:267",
+							"points": "705:267;807:266",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGA3DmhnxQxtQY="
@@ -6696,7 +6713,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGAi4jiEfUQiyI="
 							},
-							"name": "lastPayement",
+							"name": "lastPayment",
 							"visibility": "protected",
 							"type": "LocalDate"
 						},
@@ -7469,8 +7486,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGAi7rjHXk/ozI="
 							},
-							"name": "datumIznajmljivanja",
-							"visibility": "private",
+							"name": "rentalDate",
+							"visibility": "protected",
 							"type": "LocalDate"
 						},
 						{
@@ -7479,9 +7496,19 @@
 							"_parent": {
 								"$ref": "AAAAAAGAi7rjHXk/ozI="
 							},
-							"name": "datumVracanja",
-							"visibility": "private",
+							"name": "dueDate",
+							"visibility": "protected",
 							"type": "LocalDate"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGA3k1wHD4Ws/A=",
+							"_parent": {
+								"$ref": "AAAAAAGAi7rjHXk/ozI="
+							},
+							"name": "isDeleted",
+							"visibility": "protected",
+							"type": "boolean"
 						}
 					]
 				},
