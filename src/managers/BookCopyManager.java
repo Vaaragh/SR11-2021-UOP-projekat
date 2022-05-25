@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-
 import Enums.Language;
 import Enums.Binding;
 import models.Book;
@@ -102,6 +101,10 @@ public class BookCopyManager {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
 			}
 		});
 		writer.close();
@@ -112,4 +115,11 @@ public class BookCopyManager {
 	public BookCopy findBookCopy(String id){
 		return this.allBookCopies.get(id);
 	}
+	
+	
+	
+	
+	
+	
+	
 }

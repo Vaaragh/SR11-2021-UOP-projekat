@@ -1,10 +1,17 @@
 package models;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import Enums.Binding;
 import Enums.Gender;
@@ -18,10 +25,11 @@ import managers.LibraryManager;
 import managers.MemberManager;
 import managers.MembershipManager;
 import managers.RentalManager;
+import tools.ToolKit;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public static void main(String[] args) throws IOException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		
 		
 		// Files
@@ -74,62 +82,105 @@ public class Main {
 		
 		
 		// Linking Temporary to Managers
-		libraries.put(library.getId(), library);
-		libMan.setAllLibraries(libraries);
-		libMan.saveLibraries();
-		libMan.loadLibraries();
-		System.out.println(libMan.getAllLibraries());
+//		libraries.put(library.getId(), library);
+//		libMan.setAllLibraries(libraries);
+//		libMan.saveLibraries();
+//		libMan.loadLibraries();
+//		System.out.println(libMan.getAllLibraries());
+//		
+//		admins.put(admin.getId(), admin);
+//		adMan.setAllAdmins(admins);		
+//		adMan.saveAdmins();
+//		adMan.loadAdmins();
+//		System.out.println(adMan.getAllAdmins());
+//		
+//		librarians.put(librarian.getId(), librarian);
+//		liMan.setAllLibrarians(librarians);
+//		liMan.saveLibrarians();
+//		liMan.loadLibrarians();
+//		System.out.println(liMan.getAllLibrarians());
+//		
+//		genres.put(genre.getId(), genre);
+//		genMan.setAllGenres(genres);
+//		genMan.saveGenres();
+//		genMan.loadGenres();
+//		System.out.println(genMan.getAllGenres());
+//		
+//		books.put(book.getId(), book);
+//		booMan.setAllBooks(books);
+//		booMan.saveBooks();
+//		booMan.loadBooks();
+//		System.out.println(booMan.getAllBooks());
+//		
+//		bookCopies.put(bookCopy.getId(), bookCopy);
+//		bookCopies.put(bookCopy1.getId(), bookCopy1);
+//		booCoMan.setAllBookCopies(bookCopies);
+//		booCoMan.saveBookCopies();
+//		booCoMan.loadBookCopies();
+//		System.out.println(booCoMan.getAllBookCopies());
+//		
+//		memberships.put(membership.getId(), membership);
+//		memShiMan.setAllMemberships(memberships);
+//		memShiMan.saveMemberships();
+//		memShiMan.loadMemberships();
+//		System.out.println(memShiMan.getAllMemberships());
+//		
+//		members.put(member.getId(), member);
+//		memMan.setAllMembers(members);
+//		memMan.saveMembers();
+//		memMan.loadMembers();
+//		System.out.println(memMan.getAllMembers());
+//		
+//		rentals.put(rental.getId(), rental);
+//		renMan.setAllRentals(rentals);
+//		renMan.saveRentals();
+//		renMan.loadRentals();
+//		System.out.println(renMan.getAllRentals());
 		
-		admins.put(admin.getId(), admin);
-		adMan.setAllAdmins(admins);		
-		adMan.saveAdmins();
-		adMan.loadAdmins();
-		System.out.println(adMan.getAllAdmins());
-		
-		librarians.put(librarian.getId(), librarian);
-		liMan.setAllLibrarians(librarians);
-		liMan.saveLibrarians();
-		liMan.loadLibrarians();
-		System.out.println(liMan.getAllLibrarians());
-		
-		genres.put(genre.getId(), genre);
-		genMan.setAllGenres(genres);
-		genMan.saveGenres();
-		genMan.loadGenres();
-		System.out.println(genMan.getAllGenres());
-		
-		books.put(book.getId(), book);
-		booMan.setAllBooks(books);
-		booMan.saveBooks();
-		booMan.loadBooks();
-		System.out.println(booMan.getAllBooks());
-		
-		bookCopies.put(bookCopy.getId(), bookCopy);
-		bookCopies.put(bookCopy1.getId(), bookCopy1);
-		booCoMan.setAllBookCopies(bookCopies);
-		booCoMan.saveBookCopies();
-		booCoMan.loadBookCopies();
-		System.out.println(booCoMan.getAllBookCopies());
-		
-		memberships.put(membership.getId(), membership);
-		memShiMan.setAllMemberships(memberships);
-		memShiMan.saveMemberships();
-		memShiMan.loadMemberships();
-		System.out.println(memShiMan.getAllMemberships());
-		
-		members.put(member.getId(), member);
-		memMan.setAllMembers(members);
-		memMan.saveMembers();
-		memMan.loadMembers();
-		System.out.println(memMan.getAllMembers());
-		
-		rentals.put(rental.getId(), rental);
-		renMan.setAllRentals(rentals);
-		renMan.saveRentals();
-		renMan.loadRentals();
-		System.out.println(renMan.getAllRentals());
+		HashMap <String, Method> setHash = new HashMap<String, Method>();
+		HashMap <String, Method> getHash = new HashMap<String, Method>();
+
+		List<Method> listSetters = ToolKit.getSetters(admin.getClass());
+		List<Method> listGetters = ToolKit.getGetters(admin.getClass());
+		List<String> listAllSuperFields = ToolKit.getAllFieldStrings(rental.getClass());
+
+
+		listAllSuperFields.forEach((f) -> System.out.println(f));
+		Method method = ToolKit.getIdMethod(bookCopy.getClass());
+		System.out.println(method);
 		
 		
+//		for (String f: listFields) {
+//			
+//			for (int i = 0; i<listSetters.size(); i++) {
+//				
+//			if (listSetters.get(i).getName().toLowerCase().contains(f.substring(2))) {
+//				System.out.println(f + " for method " + listSetters.get(i).getName().toLowerCase());
+//				setHash.put(f,listSetters.get(i));			
+//				
+//			}
+//			if (listGetters.get(i).getName().toLowerCase().contains(f)) {
+//				getHash.put(f, listGetters.get(i));
+//			}
+//			}
+//		}
+//		Set <?> keySet = setHash.keySet();
+//		for (Object s: keySet) {
+//			System.out.println(s+ "------"+ setHash.get(s));
+//		}
+//		System.out.println("=----------=");
+//		
+//		
+//		for (Object s: keySet) {
+//			System.out.println(s+ "------"+ getHash.get(s));
+//		}
+		
+//		for (int i = 0; i< listFields.size(); i++) {
+//			System.out.println(listSetters.get(i).getName());
+//			System.out.println(listGetters.get(i).getName());
+//			System.out.println(listFields.get(i).getName());
+//			System.out.println("------------");
+//		}
 		
 
 		
@@ -151,3 +202,5 @@ public class Main {
 	}
 
 }
+
+

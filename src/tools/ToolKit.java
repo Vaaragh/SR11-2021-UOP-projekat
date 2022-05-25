@@ -1,7 +1,10 @@
 package tools;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,37 +14,23 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ToolKit {
-	// ---ATTEMPT AT AUTO GENERATING fileLine THROUGH FIELDS ---//
-	// ---Had issues with IllegallAccessException ---//
-//	public List<Field> getAllFields(Class clss){	
-//		if (clss == null) {
-//			return Collections.emptyList();
-//		}
-//		List<Field> result = new ArrayList<>(getAllFields(clss.getSuperclass()));
-//		List<Field> filteredFields = Arrays.stream(clss.getDeclaredFields())
-//				.filter(f -> Modifier.isPublic(f.getModifiers()) || Modifier.isProtected(f.getModifiers())|| Modifier.isPrivate(f.getModifiers()))
-//				.collect(Collectors.toList());
-//		result.addAll(filteredFields);
-//		return result;	
-//	}
-	
 	
 	// Get a list of all methods and filter them to get all getters
-	public static List<Method> getMethods(Class<? extends Object> clss){
-		List<Method> methodList = Arrays.stream(clss.getMethods()).filter(f -> (f.getName().startsWith("g")||f.getName().startsWith("i")) && !(f.getName().equals("getClass"))).collect(Collectors.toList());
+	public static List<Method> getGetters(Class<? extends Object> clss){
+		List<Method> methodList = Arrays.stream(clss.getMethods()).filter(f -> (f.getName().startsWith("get")||f.getName().startsWith("is")) && !(f.getName().equals("getClass"))).collect(Collectors.toList());
 		return methodList;
 	}
 	
 	// Get getID method for nested objects
-	public static Method getIdMethod(Class<? extends Object> clss){
-		List<Method> methodList = Arrays.stream(clss.getMethods()).filter(f -> (f.getName().equals("getId"))).collect(Collectors.toList());
-		Method method = methodList.get(0);
+	public static Method getIdMethod(Class<? extends Object> clss) throws NoSuchMethodException, SecurityException{
+		Method method = clss.getMethod("getId", (Class<?>[])null);
 		return method;
 	}
 	
-	public static String generateFileLine(Object obj) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	// generate fileLine for writing into text for specific object
+	public static String generateFileLine(Object obj) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		String fileFormat = "";
-		List<Method> methods = getMethods(obj.getClass());
+		List<Method> methods = getGetters(obj.getClass());
 		Collections.sort(methods, new Comparator<Method>() {  // Sorted for consistent positioning
 
 			// Override for comparing Methods (default doesn't implement Comparable)
@@ -52,20 +41,20 @@ public class ToolKit {
 		});
 //		methods.forEach((el) -> System.out.println(el.getName().toString())); // Helper for coding positions
 		for (int i = 0; i< methods.size(); i++) { // Generating specific segment for the fileFormat
-			Method x = methods.get(i);
-			Object s = x.invoke(obj); // calls the method on the object, getting the value for the field
-			if (s.getClass().getPackageName().equalsIgnoreCase("models")) { // check for basic types vs custom written classes
-				String id = getIdMethod(s.getClass()).invoke(s).toString(); // gets the getId method for specific object (no duck type?)
+			Method method = methods.get(i);
+			Object value = method.invoke(obj); // calls the method on the object, getting the value for the field
+			if (value.getClass().getPackageName().equalsIgnoreCase("models")) { // check for basic types vs custom types (Objects)
+				String id = getIdMethod(value.getClass()).invoke(value).toString(); // gets the getId method for specific object (no duck type?)
 				fileFormat += id + "|";
-			}else if(s instanceof HashMap){
+			}else if(value instanceof HashMap){
 				String allelements = "";
-				Set<?> set = ((HashMap<?, ?>)s).keySet();
+				Set<?> set = ((HashMap<?, ?>)value).keySet();
 				for (Object s1: set) {
 					allelements += s1 + ";";
 				}
 				fileFormat += allelements + "|";
 			}else {
-				fileFormat += s + "|";
+				fileFormat += value + "|";
 				
 			}
 			
@@ -73,21 +62,52 @@ public class ToolKit {
 		fileFormat += "\n";
 		System.out.println(fileFormat);
 		return fileFormat;
-		
-		
-		// ---OLD ATTEMPT WITH FIELDS--- //
-//		List<Field> f = this.getAllFields(obj.getClass());
-//		System.out.println(f);
-//		for (int i = 0; i < f.size(); i++) {
-//			Field current = f.get(i);
-//			Field cur;
-//			System.out.println(current);
-//			System.out.println(current.get(obj)); 
-//			fileFormat += (String)(f.get(i).get(obj)) + "|";		
-//		}
-//		return fileFormat;
 	}
+	
+	
+	
+	
+	
+	// Test Block
+	
+	// Get a list of all methods and filter them to get all setters
+	public static List<Method> getSetters(Class<? extends Object> clss) {
+		List<Method> methodList = Arrays.stream(clss.getMethods()).filter(f -> (f.getName().startsWith("set"))).collect(Collectors.toList());
+		return methodList;
+	}
+	// Get a list of all declared fields of a class and the superclass, for alignment of methods
+	public static List<Field> getAllFields(Class<? extends Object> clss){	
+		if (clss == null) {
+			return Collections.emptyList();
+		}
+		List<Field> result = new ArrayList<>(getAllFields(clss.getSuperclass()));
+		List<Field> filteredFields = Arrays.stream(clss.getDeclaredFields())
+				.filter(f -> Modifier.isPublic(f.getModifiers()) || Modifier.isProtected(f.getModifiers()))
+				.collect(Collectors.toList());
+		result.addAll(filteredFields);
+		List<String> returnList = new ArrayList<String>();
+		result.forEach((f) -> returnList.add(f.getName().toLowerCase()));
+		return result;	
+	}
+	
+	// Turn the fields into Strings, for sorting and alignment of methods
+	public static List<String> getAllFieldStrings(Class<? extends Object> clss){
+		List <Field> fields = getAllFields(clss);
+		List<String> returnList = new ArrayList<String>();
+		fields.forEach((f) -> returnList.add(f.getName().toLowerCase()));
+		Collections.sort(returnList, new Comparator<String>() {
 
+
+			@Override
+			public int compare(String o1, String o2) {
+				return o1.compareTo(o2);
+			}
+			
+		});
+		return returnList;
+	}
+	
+	
 	
 
 }

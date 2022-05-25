@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-
 import Enums.Language;
 import models.Book;
 import models.Genre;
@@ -58,12 +57,13 @@ public class BookManager {
 
 	// Methods
 
-	public void loadBooks() throws NumberFormatException, IOException{
+	public void loadBooks() throws NumberFormatException, IOException {
+
 		File bookFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(bookFile));
 		String line;
 		while((line = reader.readLine()) != null) {
-			String [] splitLine = line.split("\\|");
+			String [] splitLine = line.split("\\|");			
 				String author = splitLine[0];
 				String description = splitLine[1];
 				Genre genre = null;
@@ -81,7 +81,7 @@ public class BookManager {
 				
 				Book book = new Book(id, title, author, description, genre, language, publishdate, deleted);
 				this.allBooks.put(id, book);
-			}
+				}
 			reader.close();
 		}
 	
@@ -99,6 +99,10 @@ public class BookManager {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
 			}
 		});
 		writer.close();
@@ -108,7 +112,7 @@ public class BookManager {
 	
 	public Book findBook(String id){
 		return this.allBooks.get(id);
-	}
+	}	
 }
 
 
