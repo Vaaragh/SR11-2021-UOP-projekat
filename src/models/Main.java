@@ -6,13 +6,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-
 import Enums.Binding;
 import Enums.Gender;
 import Enums.Language;
@@ -137,53 +133,36 @@ public class Main {
 //		renMan.loadRentals();
 //		System.out.println(renMan.getAllRentals());
 		
-		HashMap <String, Method> setHash = new HashMap<String, Method>();
-		HashMap <String, Method> getHash = new HashMap<String, Method>();
-
-		List<Method> listSetters = ToolKit.getSetters(admin.getClass());
-		List<Method> listGetters = ToolKit.getGetters(admin.getClass());
-		List<String> listAllSuperFields = ToolKit.getAllFieldStrings(rental.getClass());
-
-
-		listAllSuperFields.forEach((f) -> System.out.println(f));
-		Method method = ToolKit.getIdMethod(bookCopy.getClass());
-		System.out.println(method);
 		
 		
-//		for (String f: listFields) {
-//			
-//			for (int i = 0; i<listSetters.size(); i++) {
-//				
-//			if (listSetters.get(i).getName().toLowerCase().contains(f.substring(2))) {
-//				System.out.println(f + " for method " + listSetters.get(i).getName().toLowerCase());
-//				setHash.put(f,listSetters.get(i));			
-//				
-//			}
-//			if (listGetters.get(i).getName().toLowerCase().contains(f)) {
-//				getHash.put(f, listGetters.get(i));
-//			}
-//			}
-//		}
-//		Set <?> keySet = setHash.keySet();
-//		for (Object s: keySet) {
-//			System.out.println(s+ "------"+ setHash.get(s));
-//		}
-//		System.out.println("=----------=");
-//		
-//		
-//		for (Object s: keySet) {
-//			System.out.println(s+ "------"+ getHash.get(s));
-//		}
+		// TEST BLOCK
 		
-//		for (int i = 0; i< listFields.size(); i++) {
-//			System.out.println(listSetters.get(i).getName());
-//			System.out.println(listGetters.get(i).getName());
-//			System.out.println(listFields.get(i).getName());
-//			System.out.println("------------");
-//		}
-		
+		ArrayList<Object> allObjects = new ArrayList<Object>();
+		allObjects.add(rental);
+		allObjects.add(member);
+		allObjects.add(admin);
+		allObjects.add(librarian);
+		allObjects.add(book);
+		allObjects.add(bookCopy);
+		allObjects.add(genre);
+		allObjects.add(membership);
+		allObjects.add(library);
 
 		
+		// Object Testing
+		Object test = rental;
+		
+		System.out.println(ToolKit.getAllFields(test.getClass()).size());
+		HashMap<Field, Method> hashSet = ToolKit.getSetterHash(test.getClass(),ToolKit.getAllFields(test.getClass()));
+		HashMap<Field, Method> hashGet = ToolKit.getGetterHash(test.getClass(),ToolKit.getAllFields(test.getClass()));
+		
+		for (Field f: hashSet.keySet()) {
+			System.out.println(f.getName() + "----"+ hashSet.get(f).getName());
+		}
+		System.out.println("------------");
+		for (Field f: hashGet.keySet()) {
+			System.out.println(f.getName() + "----"+ hashGet.get(f).getName());
+		}	
 		
 		
 		//Authorisation check idea

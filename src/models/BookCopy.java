@@ -5,7 +5,7 @@ import Enums.Language;
 
 public class BookCopy {
 	
-	protected String id;
+	protected String identification;
 	protected String title;
 	
 	protected Book book;
@@ -29,7 +29,7 @@ public class BookCopy {
 
 	public BookCopy(String id, String title, Book book, int numberOfPages, int printDate, Binding binding,
 			Language printLanguage, boolean isAvailable, boolean isDeleted) {
-		this.id = id;
+		this.identification = id;
 		this.title = title;
 		this.book = book;
 		this.numberOfPages = numberOfPages;
@@ -43,12 +43,12 @@ public class BookCopy {
 	
 	// Getters and setters
 
-	public String getId() {
-		return id;
+	public String getIdentification() {
+		return identification;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setIdentification(String id) {
+		this.identification = id;
 	}
 
 	public String getTitle() {
@@ -120,7 +120,7 @@ public class BookCopy {
 	
 	@Override
 	public String toString() {
-		return "BookCopy [id=" + id + ", title=" + title + ", book=" + book + ", printLanguage=" + printLanguage + "]\n";
+		return "BookCopy [id=" + identification + ", title=" + title + ", book=" + book + ", printLanguage=" + printLanguage + "]\n";
 	}
 	
 	

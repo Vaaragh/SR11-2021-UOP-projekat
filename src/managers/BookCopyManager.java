@@ -66,12 +66,7 @@ public class BookCopyManager {
 		while((line = reader.readLine()) != null) {
 			String [] splitLine = line.split("\\|");
 			Binding binding = Binding.valueOf(splitLine[0]);
-			Book book = null;
-			for (Book b: booMan.getAllBooks().values()) {
-				if (b.getId().equals(splitLine[1])) {
-					book = b;
-				}
-			}
+			Book book = booMan.findBook(splitLine[1]);
 			String id = splitLine[2];
 			int numPages = Integer.parseInt(splitLine[3]);
 			int printDate = Integer.parseInt(splitLine[4]);

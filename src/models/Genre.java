@@ -2,8 +2,8 @@ package models;
 
 public class Genre {
 	
-	protected String id;
-	protected String tag;
+	protected String identification;
+	protected String genreName;
 	protected String genreDescription;
 	protected boolean isDeleted;
 	
@@ -14,28 +14,28 @@ public class Genre {
 	}
 	
 	public Genre(String id, String tag, String genreDescription, boolean isDeleted) {
-		this.id = id;
-		this.tag = tag;
+		this.identification = id;
+		this.genreName = tag;
 		this.genreDescription = genreDescription;
 		this.isDeleted = isDeleted;
 	}
 	
 	// Getters and setters
 
-	public String getId() {
-		return id;
+	public String getIdentification() {
+		return identification;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setIdentification(String id) {
+		this.identification = id;
 	}
 
-	public String getTag() {
-		return tag;
+	public String getGenreName() {
+		return genreName;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void setGenreName(String tag) {
+		this.genreName = tag;
 	}
 
 	public String getGenreDescription() {
@@ -58,7 +58,7 @@ public class Genre {
 
 	@Override
 	public String toString() {
-		return "Genre [id=" + id + ", tag=" + tag + "]";
+		return "Genre [id=" + identification + ", tag=" + genreName + "]";
 	}
 	
 	

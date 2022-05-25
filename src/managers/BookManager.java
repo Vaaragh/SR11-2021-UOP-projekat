@@ -66,12 +66,7 @@ public class BookManager {
 			String [] splitLine = line.split("\\|");			
 				String author = splitLine[0];
 				String description = splitLine[1];
-				Genre genre = null;
-				for (Genre g: genMan.getAllGenres().values()) {
-					if (g.getId().equals(splitLine[2])) {
-						genre = g;
-					}
-				}
+				Genre genre = genMan.findGenre(splitLine[2]);
 				String id = splitLine[3];
 				Language language = Language.valueOf(splitLine[4]);
 				String title = splitLine[5];

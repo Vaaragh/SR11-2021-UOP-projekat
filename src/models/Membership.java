@@ -2,7 +2,7 @@ package models;
 
 public class Membership {
 	
-	protected String id;
+	protected String identification;
 	protected String name;
 	protected int price;
 	protected boolean isDeleted;
@@ -19,7 +19,7 @@ public class Membership {
 		this.name = name;
 		this.price = price;
 		this.isDeleted = isDeleted;
-		this.id = id;
+		this.identification = id;
 	}
 
 	public String getName() {
@@ -48,12 +48,12 @@ public class Membership {
 
 	
 	
-	public String getId() {
-		return id;
+	public String getIdentification() {
+		return identification;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setIdentification(String id) {
+		this.identification = id;
 	}
 
 	// toString

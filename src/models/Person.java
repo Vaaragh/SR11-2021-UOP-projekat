@@ -4,9 +4,9 @@ import Enums.Gender;
 
 public abstract class Person {
 	
-	protected String id;
-	protected String name;
-	protected String lastName;
+	protected String identification;
+	protected String firstName;
+	protected String familyName;
 	protected String jmbg;
 	protected String adress;
 	
@@ -20,10 +20,10 @@ public abstract class Person {
 	this.isDeleted = false;
 	}
 	
-	public Person(String id, String name, String lastName, String jmbg, String adress, Gender gender, boolean isDeleted) {
-		this.id = id;
-		this.name = name;
-		this.lastName = lastName;
+	public Person(String id, String firstName, String familyName, String jmbg, String adress, Gender gender, boolean isDeleted) {
+		this.identification = id;
+		this.firstName = firstName;
+		this.familyName = familyName;
 		this.jmbg = jmbg;
 		this.adress = adress;
 		this.gender = gender;
@@ -32,28 +32,28 @@ public abstract class Person {
 
 	// Getters and Setters
 	
-	public String getId() {
-		return id;
+	public String getIdentification() {
+		return identification;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setIdidentification(String id) {
+		this.identification = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getfirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setfirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getFamilyName() {
+		return familyName;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setFamilyName(String familyName) {
+		this.familyName = familyName;
 	}
 
 	public String getJmbg() {
@@ -92,6 +92,6 @@ public abstract class Person {
 		
 	@Override
 	public String toString() {
-		return this.getClass() + " [id=" + id + ", name=" + name + ", lastName=" + lastName + ", gender=" + gender + "]";
+		return this.getClass() + " [id=" + identification + ", firstName=" + firstName + ", familyName=" + familyName + ", gender=" + gender + "]";
 	}	
 }

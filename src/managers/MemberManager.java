@@ -74,12 +74,7 @@ public class MemberManager {
 			LocalDate lastPayement = LocalDate.parse(splitLine[5]);
 			int membershipLen = Integer.parseInt(splitLine[6]);
 			String memNum = splitLine[7];
-			Membership type = null;
-			for (Membership m: memShiMan.getAllMemberships().values()) {
-				if (m.getId().equals(splitLine[8])) {
-					type = m;
-				}
-			}
+			Membership type = memShiMan.findMembership(splitLine[8]);
 			String name = splitLine[9];
 			boolean deleted = Boolean.parseBoolean(splitLine[10]);
 			

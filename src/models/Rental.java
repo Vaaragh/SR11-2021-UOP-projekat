@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Rental {
 	
-	protected String id;
+	protected String identification;
 	
 	protected LocalDate rentalDate;
 	protected LocalDate dueDate;
@@ -32,7 +32,7 @@ public class Rental {
 		this.member = member;
 		this.bookList = bookList;
 		this.isDeleted = isDeleted;
-		this.id = id;
+		this.identification = id;
 	}
 	
 
@@ -85,17 +85,17 @@ public class Rental {
 	}
 	
 
-	public String getId() {
-		return id;
+	public String getIdentification() {
+		return identification;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setIdentification(String id) {
+		this.identification = id;
 	}
 
 	@Override
 	public String toString() {
-		return "Rental [enployee=" + employee.id + ", member=" + member.id + ", bookList=" + bookList + "]";
+		return "Rental [enployee=" + employee.identification + ", member=" + member.identification + ", bookList=" + bookList + "]";
 	}
 	
 	

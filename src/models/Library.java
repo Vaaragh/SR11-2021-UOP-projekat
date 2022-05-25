@@ -4,7 +4,7 @@ import java.time.LocalTime;
 
 public class Library {
 	
-	protected String id;
+	protected String identification;
 	protected String name;
 	protected String adress;
 	protected String phone;
@@ -24,7 +24,7 @@ public class Library {
 
 
 	public Library(String id, String name, String adress, String phone, LocalTime openFrom, LocalTime openUntill, boolean isDeleted) {
-		this.id = id;
+		this.identification = id;
 		this.name = name;
 		this.adress = adress;
 		this.phone = phone;
@@ -36,14 +36,14 @@ public class Library {
 	
 	// Getters and Setters
 
-	public String getId() {
-		return id;
+	public String getIdentification() {
+		return identification;
 	}
 
 
 
-	public void setId(String id) {
-		this.id = id;
+	public void setIdentification(String id) {
+		this.identification = id;
 	}
 
 

@@ -4,7 +4,7 @@ import Enums.Language;
 
 public class Book {
 	
-	protected String id;
+	protected String identification;
 	protected String originalTitle;
 	protected String author;
 	protected String description;
@@ -27,7 +27,7 @@ public class Book {
 
 	public Book(String id, String originalTitle, String author, String description, Genre genre,
 			Language originalLanguage, int publishDate, boolean isDeleted) {
-		this.id = id;
+		this.identification = id;
 		this.originalTitle = originalTitle;
 		this.author = author;
 		this.description = description;
@@ -40,13 +40,13 @@ public class Book {
 	
 	// Getters and Setters
 
-	public String getId() {
-		return id;
+	public String getIdentification() {
+		return identification;
 	}
 
 
-	public void setId(String id) {
-		this.id = id;
+	public void setIdentification(String id) {
+		this.identification = id;
 	}
 
 
@@ -124,7 +124,7 @@ public class Book {
 	
 	@Override
 	public String toString() {
-		return "Book [id=" + id + ", originalTitle=" + originalTitle + ", genre=" + genre + "]";
+		return "Book [id=" + identification + ", originalTitle=" + originalTitle + ", genre=" + genre + "]";
 	}
 	
 	

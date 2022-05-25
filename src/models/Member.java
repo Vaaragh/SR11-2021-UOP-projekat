@@ -18,8 +18,8 @@ public class Member extends Person {
 		
 	}
 	
-	public Member(String id, String name, String lastName, String jmbg, String adress, Gender gender, String membershipNumber, LocalDate lastPayment, int membershipLength, Membership membershipType, boolean isDeleted) {
-		super(id, name, lastName, jmbg, adress, gender, isDeleted);
+	public Member(String id, String firstName, String surName, String jmbg, String adress, Gender gender, String membershipNumber, LocalDate lastPayment, int membershipLength, Membership membershipType, boolean isDeleted) {
+		super(id, firstName, surName, jmbg, adress, gender, isDeleted);
 		this.membershipNumber = membershipNumber;
 		this.lastPayment = lastPayment;
 		this.membershipLength = membershipLength;
@@ -57,7 +57,7 @@ public class Member extends Person {
 	
 	@Override
 	public String toString() {
-		return this.getClass() + "[membershipPrice=" + membershipType.price + ", id=" + id + ", name=" + name + "]";
+		return this.getClass() + "[membershipPrice=" + membershipType.price + ", id=" + identification + ", firstName=" + firstName + "]";
 	}
 	
 	
