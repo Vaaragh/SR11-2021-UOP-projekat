@@ -57,7 +57,7 @@ public class BookManager {
 
 	// Methods
 
-	public void loadBooks() throws NumberFormatException, IOException {
+	public void loadBooksDEPRECATED() throws NumberFormatException, IOException {
 
 		File bookFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(bookFile));
@@ -79,6 +79,21 @@ public class BookManager {
 				}
 			reader.close();
 		}
+	public void loadBooks() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+		File bookFile = new File(FILEPATH);
+		BufferedReader reader = new BufferedReader(new FileReader(bookFile));
+		String line;
+		while((line = reader.readLine()) != null) {
+			Book book = new Book();
+			String [] splitLine= line.split("\\|");			
+			ToolKit.objectFromArray(splitLine, book);
+			this.allBooks.put(book.getIdentification(), book);
+			}
+			reader.close();
+	}
+	
+	
 	
 	public void saveBooks() throws IOException {
 		File bookFile = new File(FILEPATH);

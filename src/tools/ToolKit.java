@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,6 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import Enums.Binding;
+import Enums.Gender;
+import Enums.Language;
+import managers.GenreManager;
 
 public class ToolKit {
 	
@@ -53,7 +60,7 @@ public class ToolKit {
 	
 	// Get getID method for nested objects
 	public static Method getIdMethod(Class<? extends Object> clss) throws NoSuchMethodException, SecurityException{
-		Method method = clss.getMethod("getId", (Class<?>[])null);
+		Method method = clss.getMethod("getIdentification", (Class<?>[])null);
 		return method;
 	}
 	
@@ -124,11 +131,51 @@ public class ToolKit {
 	// Test Block
 	
 	
-	public static Object objectFromArray(String[] array, Object object) {
-		
+	public static Object objectFromArray(String[] array, Object object) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		List<Field> fieldSet = ToolKit.getAllFields(object.getClass());
+		HashMap<Field, Method> allSetters = ToolKit.getSetterHash(object.getClass(), fieldSet);
+		for (int i=0; i<fieldSet.size();i++) {
+//			System.out.println(fieldSet.get(i).getGenericType().getTypeName());
+			allSetters.get(fieldSet.get(i)).invoke(object, ToolKit.valueCast(fieldSet.get(i), array[i]));
+		}
 		return object;
 	}
 	
+	public static Object castValue(Field field, String string) {
+		if (field.getGenericType().getTypeName().equals("boolean")) {
+			return Boolean.parseBoolean(string);
+		} else if (field.getGenericType().getTypeName().equals("int")) {
+			return Integer.parseInt(string);
+		} else if (field.getGenericType().getTypeName().equals("Enums.Gender")) {
+			return Gender.valueOf(string);
+		} else if (field.getGenericType().getTypeName().equals("Enums.Language")) {
+			return Language.valueOf(string);
+		} else if (field.getGenericType().getTypeName().equals("Enums.Binding")) {
+			return Binding.valueOf(string);
+		} else if (field.getGenericType().getTypeName().equals("java.time.LocalTime")) {
+			return LocalTime.parse(string);
+		} else if (field.getGenericType().getTypeName().equals("java.time.LocalDate")) {
+			return LocalDate.parse(string);
+		}
+		return string;
+	}
+	
+	public static Object valueCast(Field field, String val) {
+		String name = field.getGenericType().getTypeName();
+		switch (name) {
+		case "boolean": return Boolean.parseBoolean(val);
+		case "int" : return Integer.parseInt(val);
+		case "Enums.Gender" : return Gender.valueOf(val);
+		case "Enums.Language" : return Language.valueOf(val);
+		case "Enums.Binding" : return Binding.valueOf(val);
+		case "java.time.LocalTime" : return LocalTime.parse(val);
+		case "java.time.LocalDate" : return LocalDate.parse(val);
+		case "models.Genre" : return GenreManager.getInstance().findGenre(val);
+		case "java.lang.String" : break;
+		
+		}
+		return val;
+	}
 
 	
 	

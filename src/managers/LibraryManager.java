@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalTime;
 import java.util.HashMap;
 
 import models.Library;
@@ -59,23 +58,16 @@ public class LibraryManager {
 	
 	// Methods
 
-	public void loadLibraries() throws NumberFormatException, IOException{
+	public void loadLibraries() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		File libraryFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(libraryFile));
 		String line;
 		while((line = reader.readLine()) != null) {
-			String [] splitLine = line.split("\\|");
-			String adress = splitLine[0];
-			String id = splitLine[1];
-			String name = splitLine[2];
-			LocalTime open = LocalTime.parse(splitLine[3]);
-			LocalTime close = LocalTime.parse(splitLine[4]);
-			String phone = splitLine[5];
-			boolean deleted = Boolean.parseBoolean(splitLine[6]);
-				
-				Library library = new Library(id, name, adress, phone, open, close, deleted);
-				this.allLibraries.put(id, library);
-			}
+			Library library = new Library();
+			String [] split = line.split("\\|");
+			ToolKit.objectFromArray(split, library);
+			this.allLibraries.put(library.getIdentification(), library);
+		}
 			reader.close();
 		}
 	

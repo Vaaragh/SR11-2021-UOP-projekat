@@ -65,7 +65,7 @@ public class Main {
 		
 		
 		// Objects
-		Library library = new Library("libraryId", "libraryName", "libraryAdress", "libraryPhone", LocalTime.of(8, 0), LocalTime.of(16, 0),false);
+		Library library = new Library("libraryId", "libraryName", "libraryAdress", "libraryPhone", LocalTime.of(8, 0, 0), LocalTime.of(16, 0, 0),false);
 		Admin admin = new Admin("adminId", "adminName", "adminLasstName", "adminJmbg", "adminAdress", Gender.FEMALE, 200, "adminUsername", "adminPassword", false);
 		Librarian librarian = new Librarian("librarianId", "librarianName", "librarianLastName", "librarianJmbg", "librarianAdress", Gender.OTHER, 100, "librarianUsername", "librarianPassword", false);
 		Genre genre = new Genre("genreId", "genreTag", "genreDescription", false);
@@ -77,57 +77,59 @@ public class Main {
 		Rental rental = new Rental(LocalDate.now(), LocalDate.now().plusDays(14), librarian, member, bookCopies,"rentalId", false);
 		
 		
+		
+		
 		// Linking Temporary to Managers
-//		libraries.put(library.getId(), library);
-//		libMan.setAllLibraries(libraries);
-//		libMan.saveLibraries();
-//		libMan.loadLibraries();
-//		System.out.println(libMan.getAllLibraries());
-//		
-//		admins.put(admin.getId(), admin);
+		libraries.put(library.getIdentification(), library);
+		libMan.setAllLibraries(libraries);
+		libMan.saveLibraries();
+		libMan.loadLibraries();
+		System.out.println(libMan.getAllLibraries());
+		
+//		admins.put(admin.getIdentification(), admin);
 //		adMan.setAllAdmins(admins);		
 //		adMan.saveAdmins();
 //		adMan.loadAdmins();
 //		System.out.println(adMan.getAllAdmins());
 //		
-//		librarians.put(librarian.getId(), librarian);
+//		librarians.put(librarian.getIdentification(), librarian);
 //		liMan.setAllLibrarians(librarians);
 //		liMan.saveLibrarians();
 //		liMan.loadLibrarians();
 //		System.out.println(liMan.getAllLibrarians());
 //		
-//		genres.put(genre.getId(), genre);
-//		genMan.setAllGenres(genres);
-//		genMan.saveGenres();
-//		genMan.loadGenres();
-//		System.out.println(genMan.getAllGenres());
+		genres.put(genre.getIdentification(), genre);
+		genMan.setAllGenres(genres);
+		genMan.saveGenres();
+		genMan.loadGenres();
+		System.out.println(genMan.getAllGenres());
+		
+		books.put(book.getIdentification(), book);
+		booMan.setAllBooks(books);
+		booMan.saveBooks();
+		booMan.loadBooks();
+		System.out.println(booMan.getAllBooks());
 //		
-//		books.put(book.getId(), book);
-//		booMan.setAllBooks(books);
-//		booMan.saveBooks();
-//		booMan.loadBooks();
-//		System.out.println(booMan.getAllBooks());
-//		
-//		bookCopies.put(bookCopy.getId(), bookCopy);
-//		bookCopies.put(bookCopy1.getId(), bookCopy1);
+//		bookCopies.put(bookCopy.getIdentification(), bookCopy);
+//		bookCopies.put(bookCopy1.getIdentification(), bookCopy1);
 //		booCoMan.setAllBookCopies(bookCopies);
 //		booCoMan.saveBookCopies();
 //		booCoMan.loadBookCopies();
 //		System.out.println(booCoMan.getAllBookCopies());
 //		
-//		memberships.put(membership.getId(), membership);
+//		memberships.put(membership.getIdentification(), membership);
 //		memShiMan.setAllMemberships(memberships);
 //		memShiMan.saveMemberships();
 //		memShiMan.loadMemberships();
 //		System.out.println(memShiMan.getAllMemberships());
 //		
-//		members.put(member.getId(), member);
+//		members.put(member.getIdentification(), member);
 //		memMan.setAllMembers(members);
 //		memMan.saveMembers();
 //		memMan.loadMembers();
 //		System.out.println(memMan.getAllMembers());
 //		
-//		rentals.put(rental.getId(), rental);
+//		rentals.put(rental.getIdentification(), rental);
 //		renMan.setAllRentals(rentals);
 //		renMan.saveRentals();
 //		renMan.loadRentals();
@@ -150,14 +152,14 @@ public class Main {
 
 		
 		// Object Testing
-		Object test = rental;
+		Object test = book;
 		
 		System.out.println(ToolKit.getAllFields(test.getClass()).size());
 		HashMap<Field, Method> hashSet = ToolKit.getSetterHash(test.getClass(),ToolKit.getAllFields(test.getClass()));
 		HashMap<Field, Method> hashGet = ToolKit.getGetterHash(test.getClass(),ToolKit.getAllFields(test.getClass()));
 		
 		for (Field f: hashSet.keySet()) {
-			System.out.println(f.getName() + "----"+ hashSet.get(f).getName());
+			System.out.println(f.getGenericType() + "----"+ hashSet.get(f).getName());
 		}
 		System.out.println("------------");
 		for (Field f: hashGet.keySet()) {

@@ -55,7 +55,7 @@ public class GenreManager {
 
 	// Methods
 
-	public void loadGenres() throws NumberFormatException, IOException{
+	public void loadGenresDEPRECATED() throws NumberFormatException, IOException{
 		File genreFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(genreFile));
 		String line;
@@ -71,6 +71,19 @@ public class GenreManager {
 			}
 			reader.close();
 		}
+	
+	public void loadGenres() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		File genreFile = new File(FILEPATH);
+		BufferedReader reader = new BufferedReader(new FileReader(genreFile));
+		String line;
+		while((line = reader.readLine()) != null) {
+			Genre genre = new Genre();
+			String [] splitLine = line.split("\\|");
+			ToolKit.objectFromArray(splitLine, genre);
+			this.allGenres.put(genre.getIdentification(), genre);
+		}
+		reader.close();
+	}
 	
 	public void saveGenres() throws IOException {
 		File genreFile = new File(FILEPATH);
