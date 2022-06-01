@@ -8,6 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import Enums.Gender;
 import models.Admin;
@@ -99,7 +102,25 @@ public class AdminManager {
 	public Admin findAdmin(String id){
 		return this.allAdmins.get(id);
 	}
-
+	
+	// CRUD Operations
+	
+	public void createAdmin(String [] infoArray) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		boolean alreadyExists = false; // Check for existance
+		if (alreadyExists == false) {
+			Admin admin = new Admin();
+			ToolKit.objectFromArray(infoArray, admin);
+			this.allAdmins.put(admin.getIdentification(), admin);
+			
+		}
+	}
+	
+	public void deleteAdmin(String id) {
+		this.allAdmins.get(id).setDeleted(true);
+	}
+	
+	
+	
 
 	
 }
