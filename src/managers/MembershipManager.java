@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import models.Admin;
 import models.Membership;
 import tools.ToolKit;
 
@@ -20,14 +21,15 @@ public class MembershipManager {
 	
 	// private Constructor
 	
-	private MembershipManager() {
+	private MembershipManager() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		this.allMemberships = new HashMap<String, Membership>();
+		this.loadMemberships();
 
 	}
 	
 	// Instance
 	
-	public static MembershipManager getInstance() {
+	public static MembershipManager getInstance() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (INSTANCE == null) {
 			INSTANCE = new MembershipManager();
 		}
@@ -54,22 +56,19 @@ public class MembershipManager {
 
 	// Methods
 
-	public void loadMemberships() throws NumberFormatException, IOException{
+	public void loadMemberships() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		File membershipFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(membershipFile));
 		String line;
 		while((line = reader.readLine()) != null) {
+			Membership membership = new Membership();
 			String [] splitLine = line.split("\\|");
-			String id = splitLine[0];
-			String type = splitLine[1];
-			int price = Integer.parseInt(splitLine[2]);
-			boolean deleted = Boolean.parseBoolean(splitLine[3]);
+			ToolKit.objectFromArray(splitLine, membership);
+			this.allMemberships.put(membership.getIdentification(), membership);
 			
-			Membership membership = new Membership(type, price, id, deleted);
-			this.allMemberships.put(id, membership);
-			}
-			reader.close();
 		}
+		reader.close();
+	}
 	
 	public void saveMemberships() throws IOException {
 		File membershipFile = new File(FILEPATH);

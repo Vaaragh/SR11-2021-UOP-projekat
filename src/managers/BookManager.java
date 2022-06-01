@@ -18,19 +18,18 @@ public class BookManager {
 	private static BookManager INSTANCE;
 	private HashMap<String,Book> allBooks;
 	private static String FILEPATH = "text/book.txt";
-	private GenreManager genMan;
 	
 	// private Constructor
 	
-	private BookManager() {
+	private BookManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allBooks = new HashMap<String, Book>();
-		this.genMan = GenreManager.getInstance();
+		this.loadBooks();
 
 	}
 	
 	// Instance
 	
-	public static BookManager getInstance() {
+	public static BookManager getInstance() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (INSTANCE == null) {
 			INSTANCE = new BookManager();
 		}
@@ -57,28 +56,6 @@ public class BookManager {
 
 	// Methods
 
-	public void loadBooksDEPRECATED() throws NumberFormatException, IOException {
-
-		File bookFile = new File(FILEPATH);
-		BufferedReader reader = new BufferedReader(new FileReader(bookFile));
-		String line;
-		while((line = reader.readLine()) != null) {
-			String [] splitLine = line.split("\\|");			
-				String author = splitLine[0];
-				String description = splitLine[1];
-				Genre genre = genMan.findGenre(splitLine[2]);
-				String id = splitLine[3];
-				Language language = Language.valueOf(splitLine[4]);
-				String title = splitLine[5];
-				int publishdate = Integer.parseInt(splitLine[6]);
-				boolean deleted = Boolean.parseBoolean(splitLine[7]);
-				
-				
-				Book book = new Book(id, title, author, description, genre, language, publishdate, deleted);
-				this.allBooks.put(id, book);
-				}
-			reader.close();
-		}
 	public void loadBooks() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
 		File bookFile = new File(FILEPATH);
@@ -92,8 +69,7 @@ public class BookManager {
 			}
 			reader.close();
 	}
-	
-	
+		
 	
 	public void saveBooks() throws IOException {
 		File bookFile = new File(FILEPATH);

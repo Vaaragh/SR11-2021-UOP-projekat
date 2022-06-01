@@ -1,5 +1,6 @@
 package tools;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,7 +19,16 @@ import java.util.stream.Collectors;
 import Enums.Binding;
 import Enums.Gender;
 import Enums.Language;
+import managers.AdminManager;
+import managers.BookCopyManager;
+import managers.BookManager;
 import managers.GenreManager;
+import managers.LibrarianManager;
+import managers.MemberManager;
+import managers.MembershipManager;
+import managers.RentalManager;
+import models.BookCopy;
+import models.Employee;
 
 public class ToolKit {
 	
@@ -123,44 +133,19 @@ public class ToolKit {
 		return fileFormat;
 	}
 		
-	
-	
-	
-	
-	
-	// Test Block
-	
-	
-	public static Object objectFromArray(String[] array, Object object) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	// Generate object from String split array values	
+	public static Object objectFromArray(String[] array, Object object) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		List<Field> fieldSet = ToolKit.getAllFields(object.getClass());
 		HashMap<Field, Method> allSetters = ToolKit.getSetterHash(object.getClass(), fieldSet);
 		for (int i=0; i<fieldSet.size();i++) {
-//			System.out.println(fieldSet.get(i).getGenericType().getTypeName());
 			allSetters.get(fieldSet.get(i)).invoke(object, ToolKit.valueCast(fieldSet.get(i), array[i]));
 		}
 		return object;
 	}
 	
-	public static Object castValue(Field field, String string) {
-		if (field.getGenericType().getTypeName().equals("boolean")) {
-			return Boolean.parseBoolean(string);
-		} else if (field.getGenericType().getTypeName().equals("int")) {
-			return Integer.parseInt(string);
-		} else if (field.getGenericType().getTypeName().equals("Enums.Gender")) {
-			return Gender.valueOf(string);
-		} else if (field.getGenericType().getTypeName().equals("Enums.Language")) {
-			return Language.valueOf(string);
-		} else if (field.getGenericType().getTypeName().equals("Enums.Binding")) {
-			return Binding.valueOf(string);
-		} else if (field.getGenericType().getTypeName().equals("java.time.LocalTime")) {
-			return LocalTime.parse(string);
-		} else if (field.getGenericType().getTypeName().equals("java.time.LocalDate")) {
-			return LocalDate.parse(string);
-		}
-		return string;
-	}
 	
-	public static Object valueCast(Field field, String val) {
+	// Match case for generic types of fields // Future replace with better cast option?
+	public static Object valueCast(Field field, String val) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		String name = field.getGenericType().getTypeName();
 		switch (name) {
 		case "boolean": return Boolean.parseBoolean(val);
@@ -171,12 +156,32 @@ public class ToolKit {
 		case "java.time.LocalTime" : return LocalTime.parse(val);
 		case "java.time.LocalDate" : return LocalDate.parse(val);
 		case "models.Genre" : return GenreManager.getInstance().findGenre(val);
+		case "models.Book" : return BookManager.getInstance().findBook(val);
+		case "models.Admin" : return AdminManager.getInstance().findAdmin(val);
+		case "models.Librarian" : return LibrarianManager.getInstance().findLibrarian(val);
+		case "models.Member" : return MemberManager.getInstance().findMember(val);
+		case "model.Rantal" : return RentalManager.getInstance().findRental(val);
+		case "models.Membership" : return MembershipManager.getInstance().findMembership(val);
+		case "models.Employee" : 
+			Employee employee = LibrarianManager.getInstance().findLibrarian(val);
+			if (employee == null) {
+				employee = AdminManager.getInstance().findAdmin(val);
+			}
+			return employee;
+		case "java.util.HashMap<java.lang.String, models.BookCopy>": 
+			HashMap <String, BookCopy> allCopies = new HashMap<String, BookCopy>();
+			String [] allbooks = val.split("\\;");
+			for (String s: allbooks) {
+				allCopies.put(s, BookCopyManager.getInstance().findBookCopy(s));
+			}
+			return allCopies;
 		case "java.lang.String" : break;
 		
 		}
 		return val;
 	}
 
+	// Test Block
 	
 	
 	// DEPRECATED

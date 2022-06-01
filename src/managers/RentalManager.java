@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import models.Admin;
 import models.BookCopy;
 import models.Employee;
 import models.Member;
@@ -21,24 +22,18 @@ public class RentalManager {
 	private static RentalManager INSTANCE;
 	private HashMap<String,Rental> allRentals;
 	private static String FILEPATH = "text/rental.txt";
-	private BookCopyManager booCoMan;
-	private AdminManager adMan;
-	private LibrarianManager liMan;
-	private MemberManager memMan;
+
 	
 	// private Constructor
 	
-	private RentalManager() {
+	private RentalManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allRentals = new HashMap<String, Rental>();
-		this.booCoMan = BookCopyManager.getInstance();
-		this.adMan = AdminManager.getInstance();
-		this.liMan = LibrarianManager.getInstance();
-		this.memMan = MemberManager.getInstance();
+		this.loadRentals();
 	}
 	
 	// Instance
 	
-	public static RentalManager getInstance() {
+	public static RentalManager getInstance() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (INSTANCE == null) {
 			INSTANCE = new RentalManager();
 		}
@@ -67,34 +62,19 @@ public class RentalManager {
 	
 	// Methods
 
-	public void loadRentals() throws NumberFormatException, IOException{
+	public void loadRentals() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		File rentalFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(rentalFile));
 		String line;
 		while((line = reader.readLine()) != null) {
+			Rental rental = new Rental();
 			String [] splitLine = line.split("\\|");
-			HashMap <String, BookCopy> allCopies = new HashMap<String, BookCopy>();
-			String [] allbooks = splitLine[0].split("\\;");
-			for (String s: allbooks) {
-				allCopies.put(s, booCoMan.findBookCopy(s));
-			}
-			LocalDate due = LocalDate.parse(splitLine[1]);
-			Employee employee = liMan.findLibrarian(splitLine[2]);
-			if (employee == null) {
-				employee = adMan.findAdmin(splitLine[2]);
-			}
-			String id = splitLine[3];
-			Member member = memMan.findMember(splitLine[4]);
-			LocalDate rentDate = LocalDate.parse(splitLine[5]);
-			boolean deleted = Boolean.parseBoolean(splitLine[6]);
+			ToolKit.objectFromArray(splitLine, rental);
+			this.allRentals.put(rental.getIdentification(), rental);
 			
-			
-			Rental rental = new Rental(rentDate, due, employee, member, allCopies, id, deleted);
-			this.allRentals.put(id, rental);
 		}
 		reader.close();
 	}
-	
 	public void saveRentals() throws IOException {
 		File rentalFile = new File(FILEPATH);
 		BufferedWriter writer = new BufferedWriter(new FileWriter(rentalFile));

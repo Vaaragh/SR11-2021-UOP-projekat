@@ -22,14 +22,15 @@ public class LibraryManager {
 	
 	// private Constructor
 	
-	private LibraryManager() {
+	private LibraryManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allLibraries = new HashMap<String, Library>();
+		this.loadLibraries();
 
 	}
 	
 	// Instance
 	
-	public static LibraryManager getInstance() {
+	public static LibraryManager getInstance() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (INSTANCE == null) {
 			INSTANCE = new LibraryManager();
 		}

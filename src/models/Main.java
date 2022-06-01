@@ -76,7 +76,8 @@ public class Main {
 		Member member = new Member("memberId","memberName","memberLastName", "memberJmbg", "memberAdress", Gender.FEMALE, "memberMembershipNum", LocalDate.now(), 3, membership, false);
 		Rental rental = new Rental(LocalDate.now(), LocalDate.now().plusDays(14), librarian, member, bookCopies,"rentalId", false);
 		
-		
+		renMan.loadRentals();
+		System.out.println(renMan.getAllRentals());
 		
 		
 		// Linking Temporary to Managers
@@ -86,18 +87,18 @@ public class Main {
 		libMan.loadLibraries();
 		System.out.println(libMan.getAllLibraries());
 		
-//		admins.put(admin.getIdentification(), admin);
-//		adMan.setAllAdmins(admins);		
-//		adMan.saveAdmins();
-//		adMan.loadAdmins();
-//		System.out.println(adMan.getAllAdmins());
-//		
-//		librarians.put(librarian.getIdentification(), librarian);
-//		liMan.setAllLibrarians(librarians);
-//		liMan.saveLibrarians();
-//		liMan.loadLibrarians();
-//		System.out.println(liMan.getAllLibrarians());
-//		
+		admins.put(admin.getIdentification(), admin);
+		adMan.setAllAdmins(admins);		
+		adMan.saveAdmins();
+		adMan.loadAdmins();
+		System.out.println(adMan.getAllAdmins());
+		
+		librarians.put(librarian.getIdentification(), librarian);
+		liMan.setAllLibrarians(librarians);
+		liMan.saveLibrarians();
+		liMan.loadLibrarians();
+		System.out.println(liMan.getAllLibrarians());
+		
 		genres.put(genre.getIdentification(), genre);
 		genMan.setAllGenres(genres);
 		genMan.saveGenres();
@@ -109,31 +110,31 @@ public class Main {
 		booMan.saveBooks();
 		booMan.loadBooks();
 		System.out.println(booMan.getAllBooks());
-//		
-//		bookCopies.put(bookCopy.getIdentification(), bookCopy);
-//		bookCopies.put(bookCopy1.getIdentification(), bookCopy1);
-//		booCoMan.setAllBookCopies(bookCopies);
-//		booCoMan.saveBookCopies();
-//		booCoMan.loadBookCopies();
-//		System.out.println(booCoMan.getAllBookCopies());
-//		
-//		memberships.put(membership.getIdentification(), membership);
-//		memShiMan.setAllMemberships(memberships);
-//		memShiMan.saveMemberships();
-//		memShiMan.loadMemberships();
-//		System.out.println(memShiMan.getAllMemberships());
-//		
-//		members.put(member.getIdentification(), member);
-//		memMan.setAllMembers(members);
-//		memMan.saveMembers();
-//		memMan.loadMembers();
-//		System.out.println(memMan.getAllMembers());
-//		
-//		rentals.put(rental.getIdentification(), rental);
-//		renMan.setAllRentals(rentals);
-//		renMan.saveRentals();
-//		renMan.loadRentals();
-//		System.out.println(renMan.getAllRentals());
+		
+		bookCopies.put(bookCopy.getIdentification(), bookCopy);
+		bookCopies.put(bookCopy1.getIdentification(), bookCopy1);
+		booCoMan.setAllBookCopies(bookCopies);
+		booCoMan.saveBookCopies();
+		booCoMan.loadBookCopies();
+		System.out.println(booCoMan.getAllBookCopies());
+		
+		memberships.put(membership.getIdentification(), membership);
+		memShiMan.setAllMemberships(memberships);
+		memShiMan.saveMemberships();
+		memShiMan.loadMemberships();
+		System.out.println(memShiMan.getAllMemberships());
+		
+		members.put(member.getIdentification(), member);
+		memMan.setAllMembers(members);
+		memMan.saveMembers();
+		memMan.loadMembers();
+		System.out.println(memMan.getAllMembers());
+		
+		rentals.put(rental.getIdentification(), rental);
+		renMan.setAllRentals(rentals);
+		renMan.saveRentals();
+		renMan.loadRentals();
+		System.out.println(renMan.getAllRentals());
 		
 		
 		
@@ -152,14 +153,14 @@ public class Main {
 
 		
 		// Object Testing
-		Object test = book;
+		Object test = rental;
 		
 		System.out.println(ToolKit.getAllFields(test.getClass()).size());
 		HashMap<Field, Method> hashSet = ToolKit.getSetterHash(test.getClass(),ToolKit.getAllFields(test.getClass()));
 		HashMap<Field, Method> hashGet = ToolKit.getGetterHash(test.getClass(),ToolKit.getAllFields(test.getClass()));
 		
 		for (Field f: hashSet.keySet()) {
-			System.out.println(f.getGenericType() + "----"+ hashSet.get(f).getName());
+			System.out.println(f.getGenericType().getTypeName() + "----"+ hashSet.get(f).getName());
 		}
 		System.out.println("------------");
 		for (Field f: hashGet.keySet()) {

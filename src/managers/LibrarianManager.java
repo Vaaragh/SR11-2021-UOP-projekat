@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import Enums.Gender;
+import models.Admin;
 import models.Librarian;
 import tools.ToolKit;
 
@@ -21,13 +22,14 @@ public class LibrarianManager {
 	
 	// private Constructor
 	
-	private LibrarianManager() {
+	private LibrarianManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allLibrarians = new HashMap<String, Librarian>();
+		this.loadLibrarians();
 	}
 	
 	// Instance
 	
-	public static LibrarianManager getInstance() {
+	public static LibrarianManager getInstance() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (INSTANCE == null) {
 			INSTANCE = new LibrarianManager();
 		}
@@ -55,28 +57,21 @@ public class LibrarianManager {
 
 	// Methods
 
-	public void loadLibrarians() throws NumberFormatException, IOException{
+
+	public void loadLibrarians() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		File librarianFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(librarianFile));
 		String line;
 		while((line = reader.readLine()) != null) {
+			Librarian librarian = new Librarian();
 			String [] splitLine = line.split("\\|");
-			int wage = Integer.parseInt(splitLine[8]);
-			String password = splitLine[6];
-			String username = splitLine[7];
-			String name = splitLine[5];
-			String id = splitLine[2];
-			String jmbg = splitLine[3];
-			String adress = splitLine[0];
-			Gender gender = Gender.valueOf(splitLine[1]);
-			String lastName = splitLine[4];
-			boolean deleted = Boolean.parseBoolean(splitLine[9]);
+			ToolKit.objectFromArray(splitLine, librarian);
+			this.allLibrarians.put(librarian.getIdentification(), librarian);
 			
-			Librarian librarian = new Librarian(id, name, lastName, jmbg, adress, gender, wage, username, password, deleted);
-			this.allLibrarians.put(id, librarian);
 		}
 		reader.close();
 	}
+	
 	
 	public void saveLibrarians() throws IOException {
 		File librarianFile = new File(FILEPATH);

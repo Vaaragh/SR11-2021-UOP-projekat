@@ -21,14 +21,15 @@ public class GenreManager {
 	
 	// private Constructor
 	
-	private GenreManager() {
+	private GenreManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allGenres = new HashMap<String, Genre>();
+		this.loadGenres();
 
 	}
 	
 	// Instance
 	
-	public static GenreManager getInstance() {
+	public static GenreManager getInstance() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (INSTANCE == null) {
 			INSTANCE = new GenreManager();
 		}
@@ -55,22 +56,6 @@ public class GenreManager {
 
 	// Methods
 
-	public void loadGenresDEPRECATED() throws NumberFormatException, IOException{
-		File genreFile = new File(FILEPATH);
-		BufferedReader reader = new BufferedReader(new FileReader(genreFile));
-		String line;
-		while((line = reader.readLine()) != null) {
-			String [] splitLine = line.split("\\|");
-				String id = splitLine[1];
-				String tag = splitLine[2];
-				String genreDescription = splitLine[0];
-				boolean deleted = Boolean.parseBoolean(splitLine[3]);
-				
-				Genre genre = new Genre(id, tag, genreDescription, deleted);
-				this.allGenres.put(id, genre);
-			}
-			reader.close();
-		}
 	
 	public void loadGenres() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		File genreFile = new File(FILEPATH);

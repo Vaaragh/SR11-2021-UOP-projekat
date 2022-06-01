@@ -21,13 +21,14 @@ public class AdminManager {
 	
 	// private Constructor
 	
-	private AdminManager() {
+	private AdminManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allAdmins = new HashMap<String, Admin>();
+		this.loadAdmins();
 	}
 	
 	// Instance
 	
-	public static AdminManager getInstance() {
+	public static AdminManager getInstance() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (INSTANCE == null) {
 			INSTANCE = new AdminManager();
 		}
@@ -53,29 +54,22 @@ public class AdminManager {
 	}
 	
 	// Methods
-
-	public void loadAdmins() throws NumberFormatException, IOException{
+	
+	public void loadAdmins() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		File adminFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(adminFile));
 		String line;
 		while((line = reader.readLine()) != null) {
+			Admin admin = new Admin();
 			String [] splitLine = line.split("\\|");
-			int wage = Integer.parseInt(splitLine[8]);
-			String password = splitLine[6];
-			String username = splitLine[7];
-			String name = splitLine[5];
-			String id = splitLine[2];
-			String jmbg = splitLine[3];
-			String adress = splitLine[0];
-			Gender gender = Gender.valueOf(splitLine[1]);
-			String lastName = splitLine[4];
-			boolean deleted = Boolean.parseBoolean(splitLine[9]);
+			ToolKit.objectFromArray(splitLine, admin);
+			this.allAdmins.put(admin.getIdentification(), admin);
 			
-			Admin admin = new Admin(id, name, lastName, jmbg, adress, gender, wage, username, password,deleted);
-			this.allAdmins.put(id, admin);
 		}
 		reader.close();
 	}
+	
+	
 	
 	public void saveAdmins() throws IOException {
 		File adminFile = new File(FILEPATH);

@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import Enums.Language;
 import Enums.Binding;
+import models.Admin;
 import models.Book;
 import models.BookCopy;
 import tools.ToolKit;
@@ -20,19 +21,18 @@ public class BookCopyManager {
 	private static BookCopyManager INSTANCE;
 	private HashMap<String,BookCopy> allBookCopies;
 	private static String FILEPATH = "text/bookCopy.txt";
-	private BookManager booMan;
 	
 	// private Constructor
 	
-	private BookCopyManager() {
+	private BookCopyManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allBookCopies = new HashMap<String, BookCopy>();
-		this.booMan = BookManager.getInstance();
+		this.loadBookCopies();
 
 	}
 	
 	// Instance
 	
-	public static BookCopyManager getInstance() {
+	public static BookCopyManager getInstance() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (INSTANCE == null) {
 			INSTANCE = new BookCopyManager();
 		}
@@ -58,29 +58,21 @@ public class BookCopyManager {
 	}
 
 	// Methods
-
-	public void loadBookCopies() throws NumberFormatException, IOException{
+	
+	public void loadBookCopies() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		File bookCopyFile = new File(FILEPATH);
 		BufferedReader reader = new BufferedReader(new FileReader(bookCopyFile));
 		String line;
 		while((line = reader.readLine()) != null) {
+			BookCopy bookCopy = new BookCopy();
 			String [] splitLine = line.split("\\|");
-			Binding binding = Binding.valueOf(splitLine[0]);
-			Book book = booMan.findBook(splitLine[1]);
-			String id = splitLine[2];
-			int numPages = Integer.parseInt(splitLine[3]);
-			int printDate = Integer.parseInt(splitLine[4]);
-			Language language = Language.valueOf(splitLine[5]);
-			String title = splitLine[6];
-			boolean available = Boolean.parseBoolean(splitLine[7]);
-			boolean deleted = Boolean.parseBoolean(splitLine[8]);
-				
-				
-			BookCopy bookCopy = new BookCopy(id, title, book, numPages, printDate, binding, language, available, deleted);
-			this.allBookCopies.put(id, bookCopy);
-			}
-			reader.close();
+			ToolKit.objectFromArray(splitLine, bookCopy);
+			this.allBookCopies.put(bookCopy.getIdentification(), bookCopy);
+			
 		}
+		reader.close();
+	}
+	
 	
 	public void saveBookCopies() throws IOException {
 		File bookCopyFile = new File(FILEPATH);
