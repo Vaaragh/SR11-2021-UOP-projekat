@@ -14,4 +14,12 @@ public class Admin extends Employee {
 			String username, String password, boolean isDeleted) {
 		super(id, name, lastName, jmbg, adress, gender, wage, username, password, isDeleted);
 	}
+	
+	
+	public boolean alreadyExists(Admin admin) {
+		
+		
+		return false;
+	}
+
 }

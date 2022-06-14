@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,6 +31,7 @@ import managers.MembershipManager;
 import managers.RentalManager;
 import models.BookCopy;
 import models.Employee;
+import models.Member;
 
 public class ToolKit {
 	
@@ -111,28 +113,29 @@ public class ToolKit {
 	
 	// Generate the line for writing to file
 	public static String generateFileLine(Object obj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		String fileFormat = "";
+		StringBuilder stb = new StringBuilder();
 		List<Field> fields = ToolKit.getAllFields(obj.getClass());
 		HashMap<Field, Method> allFields = ToolKit.getGetterHash(obj.getClass(), fields);
 		for (Field f: fields) {
 			Object value = allFields.get(f).invoke(obj);
 			if (f.getType().getTypeName().startsWith("models")) {
 				String id = getIdMethod(value.getClass()).invoke(value).toString(); // gets the getId method for specific object (no duck type?)
-				fileFormat += id + "|";
+				stb.append(id + "|");
 			} else if (value instanceof HashMap){
-				String allelements = "";
+				StringBuilder allelements = new StringBuilder();
 				Set<?> set = ((HashMap<?, ?>)value).keySet();
 				for (Object s1: set) {
-					allelements += s1 + ";";
+					allelements.append(s1 + ";");
 				}
-				fileFormat += allelements + "|";
+				stb.append(allelements + "|");
 			} else {
-				fileFormat += value + "|";
+				stb.append(value + "|");
 			}
 		}
-		fileFormat += "\n";
-		return fileFormat;
+		stb.append("\n");
+		return stb.toString();
 	}
+	
 		
 	// Generate object from String split array values	
 	public static Object objectFromArray(String[] array, Object object) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
@@ -184,7 +187,14 @@ public class ToolKit {
 	
 	// Test Block
 	
-	
+	public static void checkDate(Member member) {
+		LocalDate  date = member.getLastPayment();
+		int yearNum = date.getYear();
+		int monthNum = date.getMonthValue();
+		int dayNum = date.getDayOfMonth();
+		System.out.printf("%d %d %d",yearNum, monthNum, dayNum);
+		
+	}
 	
 	// DEPRECATED
 	// generate fileLine for writing into text for specific object

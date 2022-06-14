@@ -8,7 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.UUID;
+
 import Enums.Binding;
 import Enums.Gender;
 import Enums.Language;
@@ -63,17 +64,19 @@ public class Main {
 		HashMap<String, Rental> rentals = new HashMap<String, Rental>();
 		HashMap<String, Library> libraries = new HashMap<String, Library>();
 		
-		
+		String id = UUID.randomUUID().toString();
 		// Objects
-		Library library = new Library("libraryId", "libraryName", "libraryAdress", "libraryPhone", LocalTime.of(8, 0, 0), LocalTime.of(16, 0, 0),false);
+		Library library = new Library(id, "libraryName", "libraryAdress", "libraryPhone", LocalTime.of(8, 0, 0), LocalTime.of(16, 0, 0),false);
 		Admin admin = new Admin("adminId", "adminName", "adminLasstName", "adminJmbg", "adminAdress", Gender.FEMALE, 200, "adminUsername", "adminPassword", false);
+		Admin admin2 = new Admin("adminId", "adminName", "adminLasstName", "adminJmbg", "adminAdress", Gender.FEMALE, 200, "adminUsername", "adminPassword", false);
+
 		Librarian librarian = new Librarian("librarianId", "librarianName", "librarianLastName", "librarianJmbg", "librarianAdress", Gender.OTHER, 100, "librarianUsername", "librarianPassword", false);
 		Genre genre = new Genre("genreId", "genreTag", "genreDescription", false);
 		Book book = new Book("bookId", "bookOgTitle", "bookAuthor", "bookDescription", genre, Language.ENGLISH, 1992, false);
 		BookCopy bookCopy = new BookCopy("copyId","copyTitle", book,150,1999,Binding.HARDCOVER,Language.FRENCH, true, false);
 		BookCopy bookCopy1 = new BookCopy("copyId2","copyTitle", book,150,1999,Binding.HARDCOVER,Language.FRENCH, true, false);
 		Membership membership = new Membership("MembershipType", 200, "MembershipId",false);
-		Member member = new Member("memberId","memberName","memberLastName", "memberJmbg", "memberAdress", Gender.FEMALE, "memberMembershipNum", LocalDate.now(), 3, membership, false);
+		Member member = new Member("memberId","memberName","memberLastName", "memberJmbg", "memberAdress", Gender.FEMALE, "memberMembershipNum", LocalDate.parse("2021-05-03"), 3, membership, false);
 		Rental rental = new Rental(LocalDate.now(), LocalDate.now().plusDays(14), librarian, member, bookCopies,"rentalId", false);
 		
 		renMan.loadRentals();
@@ -92,6 +95,10 @@ public class Main {
 		adMan.saveAdmins();
 		adMan.loadAdmins();
 		System.out.println(adMan.getAllAdmins());
+		adMan.createAdmin("newAdress|newLastName|newName|MALE|newID|true|newJMBG|newPassword|newUsername|150".split("\\|"));
+//		adMan.updateAdmin("newAdress|newLastName|newName|MALE|adminId|true|newJMBG|newPassword|newUsername|150".split("\\|"),"adminId");
+//		System.out.println(adMan.getActiveAdmins());
+//		System.out.println(adMan.getInactiveAdmins());
 		
 		librarians.put(librarian.getIdentification(), librarian);
 		liMan.setAllLibrarians(librarians);
@@ -166,6 +173,15 @@ public class Main {
 		for (Field f: hashGet.keySet()) {
 			System.out.println(f.getName() + "----"+ hashGet.get(f).getName());
 		}	
+		ToolKit.checkDate(member);
+		
+		System.out.println("  ");
+		
+		if (admin.equals(admin2)) {
+			System.out.println("da");
+		} else {
+			System.out.println("ne");
+		}
 		
 		
 		//Authorisation check idea
