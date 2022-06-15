@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+
+import models.Admin;
 import models.Librarian;
 import tools.ToolKit;
 
@@ -167,10 +169,16 @@ public class LibrarianManager {
 	
 	// Content collision checker
 
-	public boolean alreadyExists(Librarian librarian) {
+	public boolean alreadyExists(Librarian librarian) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		for (Librarian librarianE: this.allLibrarians.values()) {
 			if (librarianE.getJmbg().equals(librarian.getJmbg()) ||
 				librarianE.getUserName().equals(librarian.getUserName())) {
+				return true;
+			}
+		}
+		for (Admin adminE: AdminManager.getInstance().getAllAdmins().values()) {
+			if (adminE.getJmbg().equals(librarian.getJmbg()) ||
+				adminE.getUserName().equals(librarian.getUserName())) {
 				return true;
 			}
 		}
