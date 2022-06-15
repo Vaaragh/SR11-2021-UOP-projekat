@@ -7,15 +7,14 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import Enums.Binding;
@@ -31,12 +30,21 @@ import managers.MembershipManager;
 import managers.RentalManager;
 import models.BookCopy;
 import models.Employee;
-import models.Member;
 
 public class ToolKit {
+
+	// ---- SUPPORTING TOOLS ---- //
 	
+	public static String generateId() {
+		return UUID.randomUUID().toString();
+	}
 	
-	// ---- SUPPORTIN TOOLS FOR R/W ---- //
+	// evaluate time passage
+	public static boolean evaluateTime(LocalDate date, int increment) {
+		return date.plusMonths(increment).isAfter(LocalDate.now());
+	}
+	
+	// ---- SUPPORTING TOOLS FOR R/W ---- //
 	
 	// Get a list of all methods and filter them to get all getters
 	public static List<Method> getGetters(Class<? extends Object> clss){
@@ -185,16 +193,10 @@ public class ToolKit {
 		return val;
 	}
 	
+	
+	
 	// Test Block
 	
-	public static void checkDate(Member member) {
-		LocalDate  date = member.getLastPayment();
-		int yearNum = date.getYear();
-		int monthNum = date.getMonthValue();
-		int dayNum = date.getDayOfMonth();
-		System.out.printf("%d %d %d",yearNum, monthNum, dayNum);
-		
-	}
 	
 	// DEPRECATED
 	// generate fileLine for writing into text for specific object
