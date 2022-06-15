@@ -29,16 +29,17 @@ public class Main {
 	public static void main(String[] args) throws IOException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		
 		
+		
 		// Files
-		String ADMIN_FILE = "text/admin.txt";
-		String LIBRARIAN_FILE = "text/librarian.txt";
-		String GENRE_FILE = "text/genre.txt";
-		String BOOK_FILE = "text/book.txt";
-		String BOOK_COPY_FILE = "text/bookCopy.txt";
-		String MEMBERSHIP_FILE = "text/membership.txt";
-		String MEMBER_FILE = "text/member.txt";
-		String RENTAL_FILE = "text/rental.txt";
-		String LIBRARY_FILE = "text/library.txt";
+//		String ADMIN_FILE = "text/admin.txt";
+//		String LIBRARIAN_FILE = "text/librarian.txt";
+//		String GENRE_FILE = "text/genre.txt";
+//		String BOOK_FILE = "text/book.txt";
+//		String BOOK_COPY_FILE = "text/bookCopy.txt";
+//		String MEMBERSHIP_FILE = "text/membership.txt";
+//		String MEMBER_FILE = "text/member.txt";
+//		String RENTAL_FILE = "text/rental.txt";
+//		String LIBRARY_FILE = "text/library.txt";
 		
 		
 		//Managers
@@ -68,7 +69,7 @@ public class Main {
 		// Objects
 		Library library = new Library(id, "libraryName", "libraryAdress", "libraryPhone", LocalTime.of(8, 0, 0), LocalTime.of(16, 0, 0),false);
 		Admin admin = new Admin("adminId", "adminName", "adminLasstName", "adminJmbg", "adminAdress", Gender.FEMALE, 200, "adminUsername", "adminPassword", false);
-		Admin admin2 = new Admin("adminId", "adminName", "adminLasstName", "adminJmbg", "adminAdress", Gender.FEMALE, 200, "adminUsername", "adminPassword", false);
+//		Admin admin2 = new Admin("adminId", "adminName", "adminLasstName", "adminJmbg", "adminAdress", Gender.FEMALE, 200, "adminUsername", "adminPassword", false);
 
 		Librarian librarian = new Librarian("librarianId", "librarianName", "librarianLastName", "librarianJmbg", "librarianAdress", Gender.OTHER, 100, "librarianUsername", "librarianPassword", false);
 		Genre genre = new Genre("genreId", "genreTag", "genreDescription", false);
@@ -76,11 +77,8 @@ public class Main {
 		BookCopy bookCopy = new BookCopy("copyId","copyTitle", book,150,1999,Binding.HARDCOVER,Language.FRENCH, true, false);
 		BookCopy bookCopy1 = new BookCopy("copyId2","copyTitle", book,150,1999,Binding.HARDCOVER,Language.FRENCH, true, false);
 		Membership membership = new Membership("MembershipType", 200, "MembershipId",false);
-		Member member = new Member("memberId","memberName","memberLastName", "memberJmbg", "memberAdress", Gender.FEMALE, "memberMembershipNum", LocalDate.parse("2021-05-03"), 3, membership, false);
+		Member member = new Member("memberId","memberName","memberLastName", "memberJmbg", "memberAdress", Gender.FEMALE, "memberMembershipNum", LocalDate.parse("2021-05-03"), 3, membership, false, true);
 		Rental rental = new Rental(LocalDate.now(), LocalDate.now().plusDays(14), librarian, member, bookCopies,"rentalId", false);
-		
-		renMan.loadRentals();
-		System.out.println(renMan.getAllRentals());
 		
 		
 		// Linking Temporary to Managers
@@ -158,6 +156,7 @@ public class Main {
 		allObjects.add(membership);
 		allObjects.add(library);
 
+//		System.out.println(ToolKit.evaluateTime(LocalDate.of(2022, 1, 15), 6));
 		
 		// Object Testing
 		Object test = rental;
@@ -172,23 +171,7 @@ public class Main {
 		System.out.println("------------");
 		for (Field f: hashGet.keySet()) {
 			System.out.println(f.getName() + "----"+ hashGet.get(f).getName());
-		}	
-		ToolKit.checkDate(member);
-		
-		System.out.println("  ");
-		
-		if (admin.equals(admin2)) {
-			System.out.println("da");
-		} else {
-			System.out.println("ne");
-		}
-		
-		
-		//Authorisation check idea
-//		String stri = "A123";
-//		System.out.println(stri.charAt(0));
-		
-		
+		}		
 		
 		// IllegalAccessException Generator
 //		String s = ToolKit.generateFileLine(mem);

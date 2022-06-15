@@ -46,13 +46,7 @@ public abstract class Employee extends Person {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public char authorityCheck() {
-		return this.identification.charAt(0);
-	}
-	
-	
-	
-	
+
+
 	
 }

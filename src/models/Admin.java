@@ -15,11 +15,5 @@ public class Admin extends Employee {
 		super(id, name, lastName, jmbg, adress, gender, wage, username, password, isDeleted);
 	}
 	
-	
-	public boolean alreadyExists(Admin admin) {
-		
-		
-		return false;
-	}
 
 }

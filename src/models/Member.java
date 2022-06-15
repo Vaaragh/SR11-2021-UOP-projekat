@@ -10,6 +10,7 @@ public class Member extends Person {
 	protected LocalDate lastPayment;	
 	protected int membershipLength;	
 	protected Membership membershipType;
+	protected boolean isActive;
 
 	// Constructors
 	
@@ -18,12 +19,13 @@ public class Member extends Person {
 		
 	}
 	
-	public Member(String id, String firstName, String surName, String jmbg, String adress, Gender gender, String membershipNumber, LocalDate lastPayment, int membershipLength, Membership membershipType, boolean isDeleted) {
+	public Member(String id, String firstName, String surName, String jmbg, String adress, Gender gender, String membershipNumber, LocalDate lastPayment, int membershipLength, Membership membershipType, boolean isDeleted, boolean isActive) {
 		super(id, firstName, surName, jmbg, adress, gender, isDeleted);
 		this.membershipNumber = membershipNumber;
 		this.lastPayment = lastPayment;
 		this.membershipLength = membershipLength;
 		this.membershipType = membershipType;
+		this.isActive = isActive;
 	}
 	
 	// Getters and Setters
@@ -51,10 +53,16 @@ public class Member extends Person {
 	}
 	public void setMembershipType(Membership membershipType) {
 		this.membershipType = membershipType;
+	}	
+	public boolean isActive() {
+		return isActive;
+	}
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 	// Custom toString
-	
+
 	@Override
 	public String toString() {
 		return this.getClass() + "[membershipPrice=" + membershipType.price + ", id=" + identification + ", firstName=" + firstName + "]";
