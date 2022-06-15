@@ -24,8 +24,6 @@ public class LibraryManager {
 	
 	private LibraryManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allLibraries = new HashMap<String, Library>();
-		this.loadLibraries();
-
 	}
 	
 	// Instance
@@ -34,6 +32,7 @@ public class LibraryManager {
 		if (INSTANCE == null) {
 			INSTANCE = new LibraryManager();
 		}
+		INSTANCE.loadLibraries();
 		return INSTANCE;
 	}
 	
@@ -100,5 +99,82 @@ public class LibraryManager {
 	public Library findLibrary(String id){
 		return this.allLibraries.get(id);
 	}
+	// CRUD Operations
+	
+	public boolean createLibrary(String [] infoArray) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		Library library = new Library();
+		ToolKit.objectFromArray(infoArray, library);
+		if (!this.allLibraries.keySet().contains(library.getIdentification())) {
+			if (!this.alreadyExists(library)) {
+				this.allLibraries.put(library.getIdentification(), library);
+				this.reloadLists();
+				return true;
+			}
+		}
+		return false;	
+	}
+	
+	public boolean updateLibrary(String [] infoArray, String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.allLibraries.keySet().contains(id)) {
+			Library tempLibrary = new Library();
+			ToolKit.objectFromArray(infoArray, tempLibrary);
+			if (!this.alreadyExists(tempLibrary)) {
+				Library library = this.findLibrary(id);
+				ToolKit.objectFromArray(infoArray, library);
+				this.reloadLists();
+				return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	public boolean deleteLibrary(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.libraryStatusList(true).keySet().contains(id)) {
+			this.findLibrary(id).setDeleted(true);
+			this.reloadLists();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean reverseDeleteLibrary(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.libraryStatusList(false).keySet().contains(id)) {
+			this.findLibrary(id).setDeleted(false);
+			this.reloadLists();
+			return true;
+		}
+		return false;
+	}
+	
+	// List reloader and status checker
+	
+	public HashMap<String,Library> libraryStatusList(Boolean state){
+		HashMap<String,Library> statusList = new HashMap<String,Library>();
+		for (String libraryId: this.allLibraries.keySet()) {
+			if (this.allLibraries.get(libraryId).isDeleted() == state) {
+				if (!statusList.keySet().contains(libraryId)) {
+					statusList.put(libraryId,this.allLibraries.get(libraryId));
+				}
+			}
+		}
+		return statusList;
+	}
+	
+	public void reloadLists() throws IOException {
+		this.saveLibraries();
+	}
+	
+	// Content collision checker	
+
+	public boolean alreadyExists(Library library) {
+		for (Library libraryE: this.allLibraries.values()) {
+			if (libraryE.getName().equals(library.getName()) ||
+				libraryE.getPhone().equals(library.getPhone())) {
+				return true;
+			}
+		}
+		return false;
+	}	
 }
 

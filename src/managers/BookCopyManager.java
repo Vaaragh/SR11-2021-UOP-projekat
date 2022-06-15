@@ -8,10 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import Enums.Language;
-import Enums.Binding;
-import models.Admin;
-import models.Book;
+
 import models.BookCopy;
 import tools.ToolKit;
 
@@ -26,8 +23,6 @@ public class BookCopyManager {
 	
 	private BookCopyManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allBookCopies = new HashMap<String, BookCopy>();
-		this.loadBookCopies();
-
 	}
 	
 	// Instance
@@ -36,6 +31,7 @@ public class BookCopyManager {
 		if (INSTANCE == null) {
 			INSTANCE = new BookCopyManager();
 		}
+		INSTANCE.loadBookCopies();
 		return INSTANCE;
 	}
 	
@@ -103,10 +99,89 @@ public class BookCopyManager {
 		return this.allBookCopies.get(id);
 	}
 	
+	// CRUD Operations
+
+	public boolean createBookCopy(String [] infoArray) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		BookCopy bookCopy = new BookCopy();
+		ToolKit.objectFromArray(infoArray, bookCopy);
+		if (!this.allBookCopies.keySet().contains(bookCopy.getIdentification())) {
+			if (!this.alreadyExists(bookCopy)) {
+				this.allBookCopies.put(bookCopy.getIdentification(), bookCopy);
+				this.reloadLists();
+				return true;
+			}
+		}
+		return false;	
+	}
 	
+	public boolean updateBookCopy(String [] infoArray, String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.allBookCopies.keySet().contains(id)) {
+			BookCopy tempBookCopy = new BookCopy();
+			ToolKit.objectFromArray(infoArray, tempBookCopy);
+			if (!this.alreadyExists(tempBookCopy)) {
+				BookCopy bookCopy = this.findBookCopy(id);
+				ToolKit.objectFromArray(infoArray, bookCopy);
+				this.reloadLists();
+				return true;
+			}
+			
+		}
+		return false;
+	}
 	
+	public boolean deleteBookCopy(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.bookCopyStatusList(true).keySet().contains(id)) {
+			if (this.findBookCopy(id).isAvailable()) {
+				this.findBookCopy(id).setDeleted(true);
+				this.reloadLists();
+				return true;
+			}
+		}
+		return false;
+	}
 	
+	public boolean reverseDeleteBookCopy(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.bookCopyStatusList(false).keySet().contains(id)) {
+			this.findBookCopy(id).setDeleted(false);
+			this.reloadLists();
+			return true;
+		}
+		return false;
+	}
 	
+	// List reloader and status checker
 	
+	public HashMap<String,BookCopy> bookCopyStatusList(Boolean state){
+		HashMap<String,BookCopy> statusList = new HashMap<String,BookCopy>();
+		for (String bookCopyId: this.allBookCopies.keySet()) {
+			if (this.allBookCopies.get(bookCopyId).isDeleted() == state) {
+				if (!statusList.keySet().contains(bookCopyId)) {
+					statusList.put(bookCopyId,this.allBookCopies.get(bookCopyId));
+				}
+			}
+		}
+		return statusList;
+	}
 	
+	public void reloadLists() throws IOException {
+		this.saveBookCopies();
+	}
+	
+	// Content collision checker	
+
+	public boolean alreadyExists(BookCopy bookCopy) {
+		for (BookCopy bookCopyE: this.allBookCopies.values()) {
+			if (bookCopyE.getTitle().equals(bookCopy.getTitle())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// Availability Setters
+	
+	public void setAvailability(String id, boolean available) throws IOException {
+		this.findBookCopy(id).setAvailable(available);
+		this.reloadLists();
+	}
 }

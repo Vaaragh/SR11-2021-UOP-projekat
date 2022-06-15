@@ -8,9 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-
-import Enums.Gender;
-import models.Admin;
 import models.Librarian;
 import tools.ToolKit;
 
@@ -24,7 +21,6 @@ public class LibrarianManager {
 	
 	private LibrarianManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allLibrarians = new HashMap<String, Librarian>();
-		this.loadLibrarians();
 	}
 	
 	// Instance
@@ -33,6 +29,7 @@ public class LibrarianManager {
 		if (INSTANCE == null) {
 			INSTANCE = new LibrarianManager();
 		}
+		INSTANCE.loadLibrarians();
 		return INSTANCE;
 	}
 	
@@ -102,7 +99,82 @@ public class LibrarianManager {
 		return this.allLibrarians.get(id);
 	}
 
-
+	// CRUD Operations
 	
+	public boolean createLibrarian(String [] infoArray) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		Librarian librarian = new Librarian();
+		ToolKit.objectFromArray(infoArray, librarian);
+		if (!this.allLibrarians.keySet().contains(librarian.getIdentification())) {
+			if (!this.alreadyExists(librarian)) {
+				this.allLibrarians.put(librarian.getIdentification(), librarian);
+				this.reloadLists();
+				return true;
+			}
+		}
+		return false;	
+	}
+	
+	public boolean updateLibrarian(String [] infoArray, String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.allLibrarians.keySet().contains(id)) {
+			Librarian tempLibrarian = new Librarian();
+			ToolKit.objectFromArray(infoArray, tempLibrarian);
+			if (!this.alreadyExists(tempLibrarian)) {
+				Librarian librarian = this.findLibrarian(id);
+				ToolKit.objectFromArray(infoArray, librarian);
+				this.reloadLists();
+				return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	public boolean deleteLibrarian(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.librarianStatusList(true).keySet().contains(id)) {
+			this.findLibrarian(id).setDeleted(true);
+			this.reloadLists();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean reverseDeleteLibrarian(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.librarianStatusList(false).keySet().contains(id)) {
+			this.findLibrarian(id).setDeleted(false);
+			this.reloadLists();
+			return true;
+		}
+		return false;
+	}
+	
+	// List reloader and status checker
+	
+	public HashMap<String,Librarian> librarianStatusList(Boolean state){
+		HashMap<String,Librarian> statusList = new HashMap<String,Librarian>();
+		for (String librarianId: this.allLibrarians.keySet()) {
+			if (this.allLibrarians.get(librarianId).isDeleted() == state) {
+				if (!statusList.keySet().contains(librarianId)) {
+					statusList.put(librarianId,this.allLibrarians.get(librarianId));
+				}
+			}
+		}
+		return statusList;
+	}
+	
+	public void reloadLists() throws IOException {
+		this.saveLibrarians();
+	}
+	
+	// Content collision checker
+
+	public boolean alreadyExists(Librarian librarian) {
+		for (Librarian librarianE: this.allLibrarians.values()) {
+			if (librarianE.getJmbg().equals(librarian.getJmbg()) ||
+				librarianE.getUserName().equals(librarian.getUserName())) {
+				return true;
+			}
+		}
+		return false;
+	}	
 }
 

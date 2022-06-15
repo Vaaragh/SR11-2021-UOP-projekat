@@ -8,11 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import Enums.Gender;
 import models.Admin;
 import tools.ToolKit;
 
@@ -20,19 +15,12 @@ public class AdminManager {
 	
 	private static AdminManager INSTANCE;
 	private HashMap<String,Admin> allAdmins;
-	private HashMap<String,Admin> activeAdmins;
-	private HashMap<String,Admin> inactiveAdmins;
 	private static String FILEPATH = "text/admin.txt";
 	
 	// private Constructor
 	
 	private AdminManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allAdmins = new HashMap<String, Admin>();
-		this.activeAdmins = new HashMap<String, Admin>();
-		this.inactiveAdmins = new HashMap<String, Admin>();
-		this.loadAdmins();
-		this.activeAdmins = this.adminStatusList(true);
-		this.inactiveAdmins =  this.adminStatusList(false);
 	}
 	
 	// Instance
@@ -40,11 +28,8 @@ public class AdminManager {
 	public static AdminManager getInstance() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (INSTANCE == null) {
 			INSTANCE = new AdminManager();
-			return INSTANCE;
 		}
 		INSTANCE.loadAdmins();
-		INSTANCE.activeAdmins =  INSTANCE.adminStatusList(true);
-		INSTANCE.inactiveAdmins =  INSTANCE.adminStatusList(false);
 		return INSTANCE;
 	}
 	
@@ -65,22 +50,7 @@ public class AdminManager {
 	public static void setFILEPATH(String fILEPATH) {
 		FILEPATH = fILEPATH;
 	}
-	
-	public HashMap<String, Admin> getActiveAdmins() {
-		return activeAdmins;
-	}
-	
-	public void setActiveAdmins(HashMap<String, Admin> activeAdmins) {
-		this.activeAdmins = activeAdmins;
-	}
-	
-	public HashMap<String, Admin> getInactiveAdmins() {
-		return inactiveAdmins;
-	}
-	
-	public void setInactiveAdmins(HashMap<String, Admin> inactiveAdmins) {
-		this.inactiveAdmins = inactiveAdmins;
-	}
+
 	
 	// Methods
 	
@@ -158,7 +128,7 @@ public class AdminManager {
 	}
 	
 	public boolean deleteAdmin(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.activeAdmins.keySet().contains(id)) {
+		if (this.adminStatusList(true).keySet().contains(id)) {
 			this.findAdmin(id).setDeleted(true);
 			this.reloadLists();
 			return true;
@@ -167,7 +137,7 @@ public class AdminManager {
 	}
 	
 	public boolean reverseDeleteAdmin(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.inactiveAdmins.keySet().contains(id)) {
+		if (this.adminStatusList(false).keySet().contains(id)) {
 			this.findAdmin(id).setDeleted(false);
 			this.reloadLists();
 			return true;
@@ -189,26 +159,19 @@ public class AdminManager {
 		return statusList;
 	}
 	
-	public void reloadLists() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void reloadLists() throws IOException {
 		this.saveAdmins();
-		this.loadAdmins();
-		this.activeAdmins = this.adminStatusList(true);
-		this.inactiveAdmins = this.adminStatusList(false);
 	}
 	
-	// Content collision checker
-	
+	// Content collision checker	
+
 	public boolean alreadyExists(Admin admin) {
 		for (Admin adminE: this.allAdmins.values()) {
 			if (adminE.getJmbg().equals(admin.getJmbg()) ||
 				adminE.getUserName().equals(admin.getUserName())) {
-				
+				return true;
 			}
 		}
-		return true;
-	}
-	
-	
-
-	
+		return false;
+	}	
 }

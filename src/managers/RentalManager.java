@@ -7,13 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDate;
 import java.util.HashMap;
 
-import models.Admin;
 import models.BookCopy;
-import models.Employee;
-import models.Member;
 import models.Rental;
 import tools.ToolKit;
 
@@ -28,7 +24,6 @@ public class RentalManager {
 	
 	private RentalManager() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.allRentals = new HashMap<String, Rental>();
-		this.loadRentals();
 	}
 	
 	// Instance
@@ -37,6 +32,7 @@ public class RentalManager {
 		if (INSTANCE == null) {
 			INSTANCE = new RentalManager();
 		}
+		INSTANCE.loadRentals();
 		return INSTANCE;
 	}
 	
@@ -103,8 +99,77 @@ public class RentalManager {
 	public Rental findRental(String id){
 		return this.allRentals.get(id);
 	}
-
-
 	
+	// CRUD Operations
+	
+	public boolean createRental(String [] infoArray) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		Rental rental = new Rental();
+		ToolKit.objectFromArray(infoArray, rental);
+		for (BookCopy bookCopy: rental.getBookList().values()) {
+			String bookCopyId = bookCopy.getIdentification();
+			BookCopyManager.getInstance().setAvailability(bookCopyId, false);
+		}
+		if (!this.allRentals.keySet().contains(rental.getIdentification())) {
+			this.allRentals.put(rental.getIdentification(), rental);
+			this.reloadLists();
+			return true;
+		}
+		return false;	
+	}
+	
+	public boolean updateRental(String [] infoArray, String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.allRentals.keySet().contains(id)) {			
+			Rental rental = this.findRental(id);
+			for (BookCopy bookCopy: rental.getBookList().values()) {
+				String bookCopyId = bookCopy.getIdentification();
+				BookCopyManager.getInstance().setAvailability(bookCopyId, true);
+			}
+			ToolKit.objectFromArray(infoArray, rental);
+			for (BookCopy bookCopy: rental.getBookList().values()) {
+				String bookCopyId = bookCopy.getIdentification();
+				BookCopyManager.getInstance().setAvailability(bookCopyId, false);
+			}			
+			this.reloadLists();
+			return true;
+			
+			
+		}
+		return false;
+	}
+	
+	public boolean deleteRental(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.rentalStatusList(true).keySet().contains(id)) {
+			this.findRental(id).setDeleted(true);
+			this.reloadLists();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean reverseDeleteRental(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.rentalStatusList(false).keySet().contains(id)) {
+			this.findRental(id).setDeleted(false);
+			this.reloadLists();
+			return true;
+		}
+		return false;
+	}
+	
+	// List reloader and status checker
+	
+	public HashMap<String,Rental> rentalStatusList(Boolean state){
+		HashMap<String,Rental> statusList = new HashMap<String,Rental>();
+		for (String rentalId: this.allRentals.keySet()) {
+			if (this.allRentals.get(rentalId).isDeleted() == state) {
+				if (!statusList.keySet().contains(rentalId)) {
+					statusList.put(rentalId,this.allRentals.get(rentalId));
+				}
+			}
+		}
+		return statusList;
+	}
+	
+	public void reloadLists() throws IOException {
+		this.saveRentals();
+	}
 }
-

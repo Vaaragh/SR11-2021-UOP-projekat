@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-import models.Admin;
+import models.Member;
 import models.Membership;
 import tools.ToolKit;
 
@@ -23,8 +23,6 @@ public class MembershipManager {
 	
 	private MembershipManager() throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		this.allMemberships = new HashMap<String, Membership>();
-		this.loadMemberships();
-
 	}
 	
 	// Instance
@@ -33,6 +31,7 @@ public class MembershipManager {
 		if (INSTANCE == null) {
 			INSTANCE = new MembershipManager();
 		}
+		INSTANCE.loadMemberships();
 		return INSTANCE;
 	}
 	
@@ -98,4 +97,86 @@ public class MembershipManager {
 	public Membership findMembership(String id){
 		return this.allMemberships.get(id);
 	}
+	
+	// CRUD Operations
+	
+	public boolean createMembership(String [] infoArray) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		Membership membership = new Membership();
+		ToolKit.objectFromArray(infoArray, membership);
+		if (!this.allMemberships.keySet().contains(membership.getIdentification())) {
+			if (!this.alreadyExists(membership)) {
+				this.allMemberships.put(membership.getIdentification(), membership);
+				this.reloadLists();
+				return true;
+			}
+		}
+		return false;	
+	}
+	
+	public boolean updateMembership(String [] infoArray, String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.allMemberships.keySet().contains(id)) {
+			Membership tempMembership = new Membership();
+			ToolKit.objectFromArray(infoArray, tempMembership);
+			if (!this.alreadyExists(tempMembership)) {
+				Membership membership = this.findMembership(id);
+				ToolKit.objectFromArray(infoArray, membership);
+				this.reloadLists();
+				return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	public boolean deleteMembership(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.membershipStatusList(true).keySet().contains(id)) {
+			for (Member member: MemberManager.getInstance().memberStatusList(true).values()) {
+				if (member.getMembershipType().getIdentification().equals(id)) {
+					return false;
+				}
+			}
+			this.findMembership(id).setDeleted(true);
+			this.reloadLists();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean reverseDeleteMembership(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		if (this.membershipStatusList(false).keySet().contains(id)) {
+			this.findMembership(id).setDeleted(false);
+			this.reloadLists();
+			return true;
+		}
+		return false;
+	}
+	
+	// List reloader and status checker
+	
+	public HashMap<String,Membership> membershipStatusList(Boolean state){
+		HashMap<String,Membership> statusList = new HashMap<String,Membership>();
+		for (String membershipId: this.allMemberships.keySet()) {
+			if (this.allMemberships.get(membershipId).isDeleted() == state) {
+				if (!statusList.keySet().contains(membershipId)) {
+					statusList.put(membershipId,this.allMemberships.get(membershipId));
+				}
+			}
+		}
+		return statusList;
+	}
+	
+	public void reloadLists() throws IOException {
+		this.saveMemberships();
+	}
+	
+	// Content collision checker	
+
+	public boolean alreadyExists(Membership membership) {
+		for (Membership membershipE: this.allMemberships.values()) {
+			if (membershipE.getName().equals(membership.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}	
 }
