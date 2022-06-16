@@ -1,1 +1,1 @@
-memberAdress|FEMALE|memberId|memberJmbg|memberLastName|2022-05-18|3|memberMembershipNum|MembershipId|memberName|false|
+memberAdress|memberLastName|memberName|FEMALE|memberId|true|false|memberJmbg|2021-05-03|3|memberMembershipNum|MembershipId|

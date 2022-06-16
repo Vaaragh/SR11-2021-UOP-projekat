@@ -1,6 +1,6 @@
 package models;
 
-import Enums.Gender;
+import enums.Gender;
 
 public abstract class Person {
 	

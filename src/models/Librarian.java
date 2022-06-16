@@ -1,6 +1,6 @@
 package models;
 
-import Enums.Gender;
+import enums.Gender;
 
 public class Librarian extends Employee {
 

@@ -1,1 +1,1 @@
-libraryAdress|libraryId|libraryName|08:00|16:00|libraryPhone|false|
+libraryAdress|fc64b011-3511-4ae0-8411-3c0f3fd7c697|false|libraryName|08:00|16:00|libraryPhone|

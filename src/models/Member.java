@@ -2,7 +2,7 @@ package models;
 
 import java.time.LocalDate;
 
-import Enums.Gender;
+import enums.Gender;
 
 public class Member extends Person {
 	

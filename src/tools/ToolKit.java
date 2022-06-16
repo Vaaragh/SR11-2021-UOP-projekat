@@ -17,9 +17,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import Enums.Binding;
-import Enums.Gender;
-import Enums.Language;
+import enums.Binding;
+import enums.Gender;
+import enums.Language;
 import managers.AdminManager;
 import managers.BookCopyManager;
 import managers.BookManager;
@@ -162,9 +162,9 @@ public class ToolKit {
 		switch (name) {
 		case "boolean": return Boolean.parseBoolean(val);
 		case "int" : return Integer.parseInt(val);
-		case "Enums.Gender" : return Gender.valueOf(val);
-		case "Enums.Language" : return Language.valueOf(val);
-		case "Enums.Binding" : return Binding.valueOf(val);
+		case "enums.Gender" : return Gender.valueOf(val);
+		case "enums.Language" : return Language.valueOf(val);
+		case "enums.Binding" : return Binding.valueOf(val);
 		case "java.time.LocalTime" : return LocalTime.parse(val);
 		case "java.time.LocalDate" : return LocalDate.parse(val);
 		case "models.Genre" : return GenreManager.getInstance().findGenre(val);

@@ -1,1 +1,1 @@
-librarianAdress|OTHER|librarianId|librarianJmbg|librarianLastName|librarianName|librarianPassword|librarianUsername|100|false|
+librarianAdress|librarianLastName|librarianName|OTHER|librarianId|false|librarianJmbg|libp|libu|100|

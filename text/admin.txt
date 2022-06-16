@@ -1,1 +1,2 @@
-adminAdress|FEMALE|adminId|adminJmbg|adminLasstName|adminName|adminPassword|adminUsername|200|false|
+newAdress|newLastName|newName|MALE|newID|false|newJMBG|newPassword|newUsername|150|
+adminAdress|adminLasstName|adminName|FEMALE|adminId|false|adminJmbg|adp|adu|200|

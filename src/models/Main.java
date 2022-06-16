@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import Enums.Binding;
-import Enums.Gender;
-import Enums.Language;
 import controller.LoginController;
+import controller.RegisterController;
+import enums.Binding;
+import enums.Gender;
+import enums.Language;
 import managers.AdminManager;
 import managers.BookCopyManager;
 import managers.BookManager;
@@ -25,6 +26,7 @@ import managers.MembershipManager;
 import managers.RentalManager;
 import tools.ToolKit;
 import view.LoginView;
+import view.RegisterView;
 
 public class Main {
 
@@ -149,9 +151,13 @@ public class Main {
 		
 		// MAIN WINDOW		
 		
-		LoginView lv = new LoginView("Login");
-		LoginController lc = new LoginController(lv);
-		lc.initController();
+		RegisterView rv = new RegisterView("Register");
+		RegisterController rc = new RegisterController(rv);
+		rc.initController();
+		
+//		LoginView lv = new LoginView("Login");
+//		LoginController lc = new LoginController(lv);
+//		lc.initController();
 		
 		
 		// TEST BLOCK

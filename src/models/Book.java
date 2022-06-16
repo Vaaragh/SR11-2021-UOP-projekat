@@ -1,6 +1,6 @@
 package models;
 
-import Enums.Language;
+import enums.Language;
 
 public class Book {
 	

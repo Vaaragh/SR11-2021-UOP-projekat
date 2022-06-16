@@ -1,7 +1,7 @@
 package models;
 
-import Enums.Binding;
-import Enums.Language;
+import enums.Binding;
+import enums.Language;
 
 public class BookCopy {
 	
