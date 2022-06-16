@@ -15,12 +15,16 @@ import net.miginfocom.swing.MigLayout;
 public class LoginView {
 	
 	private JFrame frame;
+
+	private JPanel panel;
+	
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
+	
 	private JTextField usernameTextField;
 	private JPasswordField passwordTextField;
+	
 	private JButton loginBtn;
-	private JPanel panel;
 	
 	public LoginView(String title) {
 		this.frame = new JFrame(title);
@@ -32,7 +36,7 @@ public class LoginView {
 		
 		this.panel = new JPanel(new MigLayout());
 		
-		this.usernameLabel = new JLabel("  Username");
+		this.usernameLabel = new JLabel("Username");
 		this.passwordLabel = new JLabel("Password");
 		
 		this.usernameTextField = new JTextField();
@@ -44,9 +48,9 @@ public class LoginView {
 
 		panel.add(usernameLabel);
 		panel.add(usernameTextField, "width 50%, wrap");
-		panel.add(passwordLabel, "gap unrelated");
+		panel.add(passwordLabel);
 		panel.add(passwordTextField, "width 50%, wrap");
-		panel.add(loginBtn, "center");		
+		panel.add(loginBtn);		
 	}
 
 	public JFrame getFrame() {
