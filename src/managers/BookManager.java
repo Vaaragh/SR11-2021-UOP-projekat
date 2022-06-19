@@ -7,7 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+
 import models.Book;
 import models.BookCopy;
 import tools.ToolKit;
@@ -129,8 +131,8 @@ public class BookManager {
 	}
 	
 	public boolean deleteBook(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.bookStatusList(true).keySet().contains(id)) {
-			for (BookCopy bookCopy: BookCopyManager.getInstance().bookCopyStatusList(true).values()) {
+		if (this.bookStatusList(false).contains(this.allBooks.get(id))) {
+			for (BookCopy bookCopy: BookCopyManager.getInstance().bookCopyStatusList(true)) {
 				if (bookCopy.getBook().getIdentification().equals(id)) {
 					return false;
 				}
@@ -143,7 +145,7 @@ public class BookManager {
 	}
 	
 	public boolean reverseDeleteBook(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.bookStatusList(false).keySet().contains(id)) {
+		if (this.bookStatusList(true).contains(this.allBooks.get(id))) {
 			this.findBook(id).setDeleted(false);
 			this.reloadLists();
 			return true;
@@ -153,12 +155,12 @@ public class BookManager {
 	
 	// List reloader and status checker
 	
-	public HashMap<String,Book> bookStatusList(Boolean state){
-		HashMap<String,Book> statusList = new HashMap<String,Book>();
+	public ArrayList<Book> bookStatusList(Boolean state){
+		ArrayList<Book> statusList = new ArrayList<Book>();
 		for (String bookId: this.allBooks.keySet()) {
 			if (this.allBooks.get(bookId).isDeleted() == state) {
-				if (!statusList.keySet().contains(bookId)) {
-					statusList.put(bookId,this.allBooks.get(bookId));
+				if (!statusList.contains(this.allBooks.get(bookId))) {
+					statusList.add(this.allBooks.get(bookId));
 				}
 			}
 		}
@@ -173,6 +175,9 @@ public class BookManager {
 
 	public boolean alreadyExists(Book book) {
 		for (Book bookE: this.allBooks.values()) {
+			if (bookE.getIdentification().equals(book.getIdentification())) {
+				continue;
+			}
 			if (bookE.getDescription().equals(book.getDescription()) ||
 				bookE.getOriginalTitle().equals(book.getOriginalTitle())) {
 				return true;

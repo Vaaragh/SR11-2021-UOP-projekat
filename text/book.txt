@@ -1,1 +1,3 @@
+asd|asd|genreId|b95adffe-d3ce-476b-8ca4-09af5d4244a3|true|ENGLISH|asd|123|
+new|new|6e788b02-5631-49a6-9852-214300ea2514|6f8576be-9e21-4607-bba9-59de369c5bae|false|GERMAN|New|123|
 bookAuthor|bookDescription|genreId|bookId|false|ENGLISH|bookOgTitle|1992|

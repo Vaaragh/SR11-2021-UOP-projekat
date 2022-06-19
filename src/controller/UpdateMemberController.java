@@ -10,20 +10,24 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import dialogWindows.ManageAdminDialog;
+import dialogWindows.ManageMemberDialog;
 import enums.RegexP;
-import managers.AdminManager;
+import managers.MemberManager;
+import managers.MembershipManager;
+import models.Member;
 
-public class CreateAdminController {
+public class UpdateMemberController {
 
 
-	private AdminManager adminModel;
-	private ManageAdminDialog view;
+	private MemberManager memberModel;
+	private ManageMemberDialog view;
+	private Member member;
 
 	
-	public CreateAdminController(ManageAdminDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public UpdateMemberController(ManageMemberDialog view, Member member) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
-		this.adminModel = AdminManager.getInstance();
+		this.memberModel = MemberManager.getInstance();
+		this.member = member;
 		initRegistrationChecker();
 		initCancelBtn();
 	}
@@ -46,7 +50,6 @@ public class CreateAdminController {
 	
 	public void initRegistrationChecker() {
 		this.view.getSubmitBtn().addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -58,11 +61,21 @@ public class CreateAdminController {
 				String jmbg = view.getJmbgTextField().getText().trim();
 				String address = view.getAdressTextField().getText().trim();
 				String gender = view.getGenderComboBox().getSelectedItem().toString().trim();
-				String wage = view.getWageTextField().getText().trim();
-				String userName = view.getUsernameTextField().getText().trim();
-				String password = new String(view.getPasswordTextField().getPassword()).trim();
+				String membershipNumber = view.getMembershipNumberTextField().getText().trim();
+				String lastPayement = view.getLastPayementTextField().getText().trim();
+				String membershipLength = view.getMembershipLengthTextField().getText().trim();
+				String membershipType = "";
+				try {
+					String type = MembershipManager.getInstance().membershipStatusList(false).get(view.getMembershipTypeBox().getSelectedIndex()).getIdentification();
+					membershipType = type;
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+						| IOException e2) {
+					e2.printStackTrace();
+				}
+				String active = String.valueOf(view.getActiveCheckBox().isSelected());
+
 				
-				emptyCheckList.addAll(Arrays.asList(address, lastName, firstName, gender, id, "false", jmbg, password, userName, wage));
+				emptyCheckList.addAll(Arrays.asList(address, lastName, firstName, gender, id, active, "false", jmbg, lastPayement, membershipLength, membershipNumber, membershipType));
 				
 				if (emptyCheckList.contains("")) {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
@@ -78,10 +91,7 @@ public class CreateAdminController {
 						!namePattern.matcher(firstName).find() ||
 						!namePattern.matcher(lastName).find() ||
 						!jmbgPattern.matcher(jmbg).find() ||
-						!textPattern.matcher(address).find() ||
-						!wagePattern.matcher(wage).find() ||
-						!textPattern.matcher(userName).find() ||
-						!textPattern.matcher(password).find()) {
+						!textPattern.matcher(address).find()) {
 						
 						JOptionPane.showMessageDialog(null,"One or more type mismatches", "Error", JOptionPane.WARNING_MESSAGE);
 					} else {
@@ -90,7 +100,7 @@ public class CreateAdminController {
 							sb.append(s + "|");
 						}
 						try {
-							if (adminModel.createAdmin(sb.toString().split("\\|"))) {
+							if (memberModel.updateMember(sb.toString().split("\\|"),member.getIdentification())) {
 								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
 								view.dispose();

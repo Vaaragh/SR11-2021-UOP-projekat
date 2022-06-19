@@ -1,2 +1,3 @@
 newAdress|newLastName|newName|MALE|newID|false|newJMBG|newPassword|newUsername|150|
-adminAdress|adminLasstName|adminName|FEMALE|adminId|false|adminJmbg|adp|adu|200|
+adminAdress|adminLasstName|adminName|OTHER|adminId|false|adminJmbg|adp|adu|200|
+Aduba|Lsas|Las|MALE|9108b4ff-5118-431d-a602-e92a30fe0f1b|false|8172637485928|kjabfkba|implo|1619|

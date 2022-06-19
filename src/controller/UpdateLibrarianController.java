@@ -10,20 +10,24 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import dialogWindows.ManageAdminDialog;
+import dialogWindows.ManageLibrarianDialog;
 import enums.RegexP;
-import managers.AdminManager;
+import managers.LibrarianManager;
+import models.Librarian;
 
-public class CreateAdminController {
+public class UpdateLibrarianController {
 
 
-	private AdminManager adminModel;
-	private ManageAdminDialog view;
+
+	private LibrarianManager librarianModel;
+	private ManageLibrarianDialog view;
+	private Librarian librarian;
 
 	
-	public CreateAdminController(ManageAdminDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public UpdateLibrarianController(ManageLibrarianDialog view, Librarian librarian) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
-		this.adminModel = AdminManager.getInstance();
+		this.librarianModel = LibrarianManager.getInstance();
+		this.librarian = librarian;
 		initRegistrationChecker();
 		initCancelBtn();
 	}
@@ -46,7 +50,6 @@ public class CreateAdminController {
 	
 	public void initRegistrationChecker() {
 		this.view.getSubmitBtn().addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -90,7 +93,7 @@ public class CreateAdminController {
 							sb.append(s + "|");
 						}
 						try {
-							if (adminModel.createAdmin(sb.toString().split("\\|"))) {
+							if (librarianModel.updateLibrarian(sb.toString().split("\\|"),librarian.getIdentification())) {
 								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
 								view.dispose();
@@ -111,4 +114,5 @@ public class CreateAdminController {
 			
 		});
 	}
+
 }

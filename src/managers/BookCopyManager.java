@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.BookCopy;
@@ -130,7 +131,7 @@ public class BookCopyManager {
 	}
 	
 	public boolean deleteBookCopy(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.bookCopyStatusList(true).keySet().contains(id)) {
+		if (this.bookCopyStatusList(false).contains(this.allBookCopies.get(id))) {
 			if (this.findBookCopy(id).isAvailable()) {
 				this.findBookCopy(id).setDeleted(true);
 				this.reloadLists();
@@ -141,7 +142,7 @@ public class BookCopyManager {
 	}
 	
 	public boolean reverseDeleteBookCopy(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.bookCopyStatusList(false).keySet().contains(id)) {
+		if (this.bookCopyStatusList(true).contains(this.allBookCopies.get(id))) {
 			this.findBookCopy(id).setDeleted(false);
 			this.reloadLists();
 			return true;
@@ -151,12 +152,12 @@ public class BookCopyManager {
 	
 	// List reloader and status checker
 	
-	public HashMap<String,BookCopy> bookCopyStatusList(Boolean state){
-		HashMap<String,BookCopy> statusList = new HashMap<String,BookCopy>();
+	public ArrayList<BookCopy> bookCopyStatusList(Boolean state){
+		ArrayList<BookCopy> statusList = new ArrayList<BookCopy>();
 		for (String bookCopyId: this.allBookCopies.keySet()) {
 			if (this.allBookCopies.get(bookCopyId).isDeleted() == state) {
-				if (!statusList.keySet().contains(bookCopyId)) {
-					statusList.put(bookCopyId,this.allBookCopies.get(bookCopyId));
+				if (!statusList.contains(this.allBookCopies.get(bookCopyId))) {
+					statusList.add(this.allBookCopies.get(bookCopyId));
 				}
 			}
 		}
@@ -171,6 +172,9 @@ public class BookCopyManager {
 
 	public boolean alreadyExists(BookCopy bookCopy) {
 		for (BookCopy bookCopyE: this.allBookCopies.values()) {
+			if (bookCopyE.getIdentification().equals(bookCopy.getIdentification())) {
+				continue;
+			}
 			if (bookCopyE.getTitle().equals(bookCopy.getTitle())) {
 				return true;
 			}

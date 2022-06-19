@@ -49,7 +49,6 @@ public class UpdateAdminController {
 	
 	public void initRegistrationChecker() {
 		this.view.getSubmitBtn().addActionListener(new ActionListener() {
-		Admin admin = this.admin;
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				

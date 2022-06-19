@@ -170,6 +170,9 @@ public class AdminManager {
 
 	public boolean alreadyExists(Admin admin) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		for (Admin adminE: this.allAdmins.values()) {
+			if (adminE.getIdentification().equals(admin.getIdentification())) {
+				continue;
+			}				
 			if (adminE.getJmbg().equals(admin.getJmbg()) ||
 				adminE.getUserName().equals(admin.getUserName())) {
 				return true;
@@ -183,4 +186,5 @@ public class AdminManager {
 		}
 		return false;
 	}	
+	
 }

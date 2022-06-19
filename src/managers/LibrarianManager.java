@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.Admin;
@@ -132,7 +133,7 @@ public class LibrarianManager {
 	}
 	
 	public boolean deleteLibrarian(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.librarianStatusList(true).keySet().contains(id)) {
+		if (this.librarianStatusList(false).contains(this.allLibrarians.get(id))) {
 			this.findLibrarian(id).setDeleted(true);
 			this.reloadLists();
 			return true;
@@ -141,7 +142,7 @@ public class LibrarianManager {
 	}
 	
 	public boolean reverseDeleteLibrarian(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.librarianStatusList(false).keySet().contains(id)) {
+		if (this.librarianStatusList(true).contains(this.allLibrarians.get(id))) {
 			this.findLibrarian(id).setDeleted(false);
 			this.reloadLists();
 			return true;
@@ -151,12 +152,12 @@ public class LibrarianManager {
 	
 	// List reloader and status checker
 	
-	public HashMap<String,Librarian> librarianStatusList(Boolean state){
-		HashMap<String,Librarian> statusList = new HashMap<String,Librarian>();
+	public ArrayList<Librarian> librarianStatusList(Boolean state){
+		ArrayList<Librarian> statusList = new ArrayList<Librarian>();
 		for (String librarianId: this.allLibrarians.keySet()) {
 			if (this.allLibrarians.get(librarianId).isDeleted() == state) {
-				if (!statusList.keySet().contains(librarianId)) {
-					statusList.put(librarianId,this.allLibrarians.get(librarianId));
+				if (!statusList.contains(librarianId)) {
+					statusList.add(this.allLibrarians.get(librarianId));
 				}
 			}
 		}
@@ -171,6 +172,9 @@ public class LibrarianManager {
 
 	public boolean alreadyExists(Librarian librarian) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		for (Librarian librarianE: this.allLibrarians.values()) {
+			if (librarianE.getIdentification().equals(librarian.getIdentification())) {
+				continue;
+			}
 			if (librarianE.getJmbg().equals(librarian.getJmbg()) ||
 				librarianE.getUserName().equals(librarian.getUserName())) {
 				return true;

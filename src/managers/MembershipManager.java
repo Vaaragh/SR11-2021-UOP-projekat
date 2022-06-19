@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.Member;
@@ -129,8 +130,8 @@ public class MembershipManager {
 	}
 	
 	public boolean deleteMembership(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.membershipStatusList(true).keySet().contains(id)) {
-			for (Member member: MemberManager.getInstance().memberStatusList(true).values()) {
+		if (this.membershipStatusList(false).contains(this.allMemberships.get(id))) {
+			for (Member member: MemberManager.getInstance().memberStatusList(false)) {
 				if (member.getMembershipType().getIdentification().equals(id)) {
 					return false;
 				}
@@ -143,7 +144,7 @@ public class MembershipManager {
 	}
 	
 	public boolean reverseDeleteMembership(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.membershipStatusList(false).keySet().contains(id)) {
+		if (this.membershipStatusList(true).contains(this.allMemberships.get(id))) {
 			this.findMembership(id).setDeleted(false);
 			this.reloadLists();
 			return true;
@@ -153,12 +154,12 @@ public class MembershipManager {
 	
 	// List reloader and status checker
 	
-	public HashMap<String,Membership> membershipStatusList(Boolean state){
-		HashMap<String,Membership> statusList = new HashMap<String,Membership>();
+	public ArrayList<Membership> membershipStatusList(Boolean state){
+		ArrayList<Membership> statusList = new ArrayList<Membership>();
 		for (String membershipId: this.allMemberships.keySet()) {
 			if (this.allMemberships.get(membershipId).isDeleted() == state) {
-				if (!statusList.keySet().contains(membershipId)) {
-					statusList.put(membershipId,this.allMemberships.get(membershipId));
+				if (!statusList.contains(this.allMemberships.get(membershipId))) {
+					statusList.add(this.allMemberships.get(membershipId));
 				}
 			}
 		}
@@ -173,6 +174,9 @@ public class MembershipManager {
 
 	public boolean alreadyExists(Membership membership) {
 		for (Membership membershipE: this.allMemberships.values()) {
+			if (membershipE.getIdentification().equals(membership.getIdentification())) {
+				continue;
+			}
 			if (membershipE.getName().equals(membership.getName())) {
 				return true;
 			}

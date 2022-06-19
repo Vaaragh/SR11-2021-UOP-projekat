@@ -4,31 +4,31 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import models.Admin;
+import models.Librarian;
 
 @SuppressWarnings("serial")
-public class AdminTableModel  extends AbstractTableModel {
-	
+public class LibrarianTableModel extends AbstractTableModel {
+
 	private final String[] columnNames = {"Name", "Last Name", "JMBG", "Gender", "Wage"};
-	private ArrayList<Admin> adminMap;
+	private ArrayList<Librarian> librarianMap;
 	
 	
-	public AdminTableModel() {
+	public LibrarianTableModel() {
 		super();
-		this.adminMap = new ArrayList<Admin>();
+		this.librarianMap = new ArrayList<Librarian>();
 	}
 	
 	
-	public AdminTableModel(ArrayList<Admin> list) {
+	public LibrarianTableModel(ArrayList<Librarian> list) {
 		super();
-		this.adminMap = new ArrayList<Admin>();
-		this.adminMap.addAll(list);
+		this.librarianMap = new ArrayList<Librarian>();
+		this.librarianMap.addAll(list);
 	}
 
 
 	@Override
 	public int getRowCount() {
-		return this.adminMap.size();
+		return this.librarianMap.size();
 	}
 
 
@@ -53,19 +53,19 @@ public class AdminTableModel  extends AbstractTableModel {
 	
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		if (rowIndex >= this.adminMap.size()) return null;
-		Admin admin = adminMap.get(rowIndex);
+		if (rowIndex >= this.librarianMap.size()) return null;
+		Librarian librarian = librarianMap.get(rowIndex);
 		Object valueR = null;
 		switch (columnIndex) {
-		case 0: valueR = admin.getFirstName();
+		case 0: valueR = librarian.getFirstName();
 				break;
-		case 1: valueR = admin.getFamilyName();
+		case 1: valueR = librarian.getFamilyName();
 				break;
-		case 2: valueR = admin.getJmbg();
+		case 2: valueR = librarian.getJmbg();
 				break;
-		case 3: valueR = admin.getGender();
+		case 3: valueR = librarian.getGender();
 				break;
-		case 4: valueR = admin.getWage();
+		case 4: valueR = librarian.getWage();
 				break;
 		default : valueR = null;
 		}
@@ -77,8 +77,8 @@ public class AdminTableModel  extends AbstractTableModel {
 		return columnNames;
 	}
 	
-	public ArrayList<Admin> getAdmins(){
-		return adminMap;
+	public ArrayList<Librarian> getLibrarians(){
+		return librarianMap;
 	}
 	
 

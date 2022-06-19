@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.BookCopy;
@@ -105,10 +106,10 @@ public class RentalManager {
 	public boolean createRental(String [] infoArray) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		Rental rental = new Rental();
 		ToolKit.objectFromArray(infoArray, rental);
-		for (BookCopy bookCopy: rental.getBookList().values()) {
-			String bookCopyId = bookCopy.getIdentification();
-			BookCopyManager.getInstance().setAvailability(bookCopyId, false);
-		}
+//		for (BookCopy bookCopy: rental.getBookList().values()) {
+//			String bookCopyId = bookCopy.getIdentification();
+//			BookCopyManager.getInstance().setAvailability(bookCopyId, false);
+//		}
 		if (!this.allRentals.keySet().contains(rental.getIdentification())) {
 			this.allRentals.put(rental.getIdentification(), rental);
 			this.reloadLists();
@@ -138,7 +139,7 @@ public class RentalManager {
 	}
 	
 	public boolean deleteRental(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.rentalStatusList(true).keySet().contains(id)) {
+		if (this.rentalStatusList(false).contains(this.allRentals.get(id))) {
 			this.findRental(id).setDeleted(true);
 			this.reloadLists();
 			return true;
@@ -147,7 +148,7 @@ public class RentalManager {
 	}
 	
 	public boolean reverseDeleteRental(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.rentalStatusList(false).keySet().contains(id)) {
+		if (this.rentalStatusList(true).contains(this.allRentals.get(id))) {
 			this.findRental(id).setDeleted(false);
 			this.reloadLists();
 			return true;
@@ -157,12 +158,12 @@ public class RentalManager {
 	
 	// List reloader and status checker
 	
-	public HashMap<String,Rental> rentalStatusList(Boolean state){
-		HashMap<String,Rental> statusList = new HashMap<String,Rental>();
+	public ArrayList<Rental> rentalStatusList(Boolean state){
+		ArrayList<Rental> statusList = new ArrayList<Rental>();
 		for (String rentalId: this.allRentals.keySet()) {
 			if (this.allRentals.get(rentalId).isDeleted() == state) {
-				if (!statusList.keySet().contains(rentalId)) {
-					statusList.put(rentalId,this.allRentals.get(rentalId));
+				if (!statusList.contains(this.allRentals.get(rentalId))) {
+					statusList.add(this.allRentals.get(rentalId));
 				}
 			}
 		}

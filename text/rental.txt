@@ -1,1 +1,1 @@
-copyId;copyId2;|2022-06-30|librarianId|rentalId|false|memberId|2022-06-16|
+c72bdc42-f383-4ece-a954-5eb0cfb0e67b;|2022-01-01|9108b4ff-5118-431d-a602-e92a30fe0f1b|a9cad7d7-f873-410e-9faf-cd7a85e1cb2a|false|e3e5cfeb-7da2-47cc-bf36-7f83a3d4f775|2022-01-01|

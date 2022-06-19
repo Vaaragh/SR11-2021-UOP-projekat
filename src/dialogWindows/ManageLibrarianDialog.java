@@ -16,10 +16,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import enums.Gender;
-import models.Admin;
+import models.Librarian;
 import net.miginfocom.swing.MigLayout;
 
-public class ManageAdminDialog extends JDialog {
+public class ManageLibrarianDialog extends JDialog {
 	
 	
 	
@@ -49,31 +49,31 @@ public class ManageAdminDialog extends JDialog {
 	private JButton submitBtn, cancelBtn;
 	
 	
-	public ManageAdminDialog(JFrame parent, String title, boolean x, Admin admin, boolean check) {
-		super(parent, "Update Admin", x);
+	public ManageLibrarianDialog(JFrame parent, String title, boolean x, Librarian librarian, boolean check) {
+		super(parent, "Update Librarian", x);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(parent);
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.35));
-		this.defineFilledComponents(admin);
-		this.setUneditable(admin);
+		this.defineFilledComponents(librarian);
+		this.setUneditable(librarian);
 		
 	}
 	
-	public ManageAdminDialog(JFrame parent, String title, boolean x, Admin admin) {
-		super(parent, "Update Admin", x);
+	public ManageLibrarianDialog(JFrame parent, String title, boolean x, Librarian librarian) {
+		super(parent, "Update Librarian", x);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(parent);
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.35));
-		this.defineFilledComponents(admin);
+		this.defineFilledComponents(librarian);
 		
 	}
 	
-	public ManageAdminDialog(JFrame parent, String title, boolean x) {
-		super(parent, "Create Admin", x);
+	public ManageLibrarianDialog(JFrame parent, String title, boolean x) {
+		super(parent, "Create Librarian", x);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(parent);
 		this.panelTop = new JPanel(new MigLayout());
@@ -82,19 +82,19 @@ public class ManageAdminDialog extends JDialog {
 		this.defineEmptyComponents();
 	}
 	
-	private void defineFilledComponents(Admin admin) {
+	private void defineFilledComponents(Librarian librarian) {
 		this.defineLabelsAndButtons();
 		
-		this.idTextField = new JTextField(admin.getIdentification());
-		this.firstNameTextField = new JTextField(admin.getFirstName());
-		this.lastNameTextField = new JTextField(admin.getFamilyName()); 
-		this.jmbgTextField = new JTextField(admin.getJmbg());
-		this.adressTextField = new JTextField(admin.getAdress()); 
+		this.idTextField = new JTextField(librarian.getIdentification());
+		this.firstNameTextField = new JTextField(librarian.getFirstName());
+		this.lastNameTextField = new JTextField(librarian.getFamilyName()); 
+		this.jmbgTextField = new JTextField(librarian.getJmbg());
+		this.adressTextField = new JTextField(librarian.getAdress()); 
 		this.genderComboBox = new JComboBox<Gender>(Gender.values());
-		this.genderComboBox.setSelectedItem(admin.getGender());
-		this.wageTextField = new JTextField(String.valueOf(admin.getWage()));
-		this.usernameTextField = new JTextField(admin.getUserName());
-		this.passwordTextField = new JPasswordField(admin.getPassword());
+		this.genderComboBox.setSelectedItem(librarian.getGender());
+		this.wageTextField = new JTextField(String.valueOf(librarian.getWage()));
+		this.usernameTextField = new JTextField(librarian.getUserName());
+		this.passwordTextField = new JPasswordField(librarian.getPassword());
 		
 		this.fillPanel();
 		
@@ -167,7 +167,7 @@ public class ManageAdminDialog extends JDialog {
 		this.add(panelTop);
 	}
 	
-	public void setUneditable(Admin admin) {
+	public void setUneditable(Librarian librarian) {
 		this.idTextField.setEditable(false);
 		this.firstNameTextField.setEditable(false);
 		this.lastNameTextField.setEditable(false);
@@ -366,8 +366,9 @@ public class ManageAdminDialog extends JDialog {
 	public void setCancelBtn(JButton cancelBtn) {
 		this.cancelBtn = cancelBtn;
 	}
-	
-	
-	
 
+	
+	
+	
+	
 }

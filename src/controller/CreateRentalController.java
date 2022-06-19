@@ -6,24 +6,36 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
-import dialogWindows.ManageAdminDialog;
+import dialogWindows.ManageRentalDialog;
 import enums.RegexP;
+import managers.RentalManager;
+import models.Admin;
+import models.BookCopy;
+import models.Employee;
+import models.Librarian;
+import models.Member;
 import managers.AdminManager;
+import managers.BookCopyManager;
+import managers.BookManager;
+import managers.LibrarianManager;
+import managers.MemberManager;
 
-public class CreateAdminController {
+public class CreateRentalController  {
 
 
-	private AdminManager adminModel;
-	private ManageAdminDialog view;
+	private RentalManager rentalModel;
+	private ManageRentalDialog view;
 
 	
-	public CreateAdminController(ManageAdminDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public CreateRentalController(ManageRentalDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
-		this.adminModel = AdminManager.getInstance();
+		this.rentalModel = RentalManager.getInstance();
 		initRegistrationChecker();
 		initCancelBtn();
 	}
@@ -53,35 +65,40 @@ public class CreateAdminController {
 				ArrayList<String> emptyCheckList = new ArrayList<String>();
 				
 				String id = view.getIdTextField().getText().trim();
-				String firstName = view.getFirstNameTextField().getText().trim();
-				String lastName = view.getLastNameTextField().getText().trim();
-				String jmbg = view.getJmbgTextField().getText().trim();
-				String address = view.getAdressTextField().getText().trim();
-				String gender = view.getGenderComboBox().getSelectedItem().toString().trim();
-				String wage = view.getWageTextField().getText().trim();
-				String userName = view.getUsernameTextField().getText().trim();
-				String password = new String(view.getPasswordTextField().getPassword()).trim();
+				String rent = view.getRentDateField().getText();
+				String due = view.getDueDateField().getText();
 				
-				emptyCheckList.addAll(Arrays.asList(address, lastName, firstName, gender, id, "false", jmbg, password, userName, wage));
+				String emp = view.getEmployeeBox().getSelectedItem().toString();
+				
+			
+				String mem = view.getMemberBox().getSelectedItem().toString();
+				
+				int[] books = view.getBookBox().getSelectedIndices();
+				String bookList = "";
+				for (int bk: books) {
+					try {
+						bookList += BookCopyManager.getInstance().bookCopyStatusList(false).get(bk).getIdentification()+ ";";
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+							| IOException e1) {
+			
+						e1.printStackTrace();
+					}
+					
+				}
+				
+				
+				
+				
+				emptyCheckList.addAll(Arrays.asList(bookList, due, emp, id, "false", mem, rent));
 				
 				if (emptyCheckList.contains("")) {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
 				} else {
 					
 					Pattern idPattern = Pattern.compile(RegexP.ID.pattern);
-					Pattern namePattern = Pattern.compile(RegexP.NAME.pattern);
-					Pattern jmbgPattern = Pattern.compile(RegexP.JMBG.pattern);
-					Pattern textPattern = Pattern.compile(RegexP.TEXT.pattern);
-					Pattern wagePattern = Pattern.compile(RegexP.NUMBER.pattern);
-				
-					if (!idPattern.matcher(id).find() ||
-						!namePattern.matcher(firstName).find() ||
-						!namePattern.matcher(lastName).find() ||
-						!jmbgPattern.matcher(jmbg).find() ||
-						!textPattern.matcher(address).find() ||
-						!wagePattern.matcher(wage).find() ||
-						!textPattern.matcher(userName).find() ||
-						!textPattern.matcher(password).find()) {
+
+					
+					if (!idPattern.matcher(id).find()){
 						
 						JOptionPane.showMessageDialog(null,"One or more type mismatches", "Error", JOptionPane.WARNING_MESSAGE);
 					} else {
@@ -90,7 +107,7 @@ public class CreateAdminController {
 							sb.append(s + "|");
 						}
 						try {
-							if (adminModel.createAdmin(sb.toString().split("\\|"))) {
+							if (rentalModel.createRental(sb.toString().split("\\|"))) {
 								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
 								view.dispose();
@@ -112,3 +129,4 @@ public class CreateAdminController {
 		});
 	}
 }
+

@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.Book;
@@ -129,8 +130,8 @@ public class GenreManager {
 	}
 	
 	public boolean deleteGenre(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.genreStatusList(true).keySet().contains(id)) {
-			for (Book book: BookManager.getInstance().bookStatusList(true).values()) {
+		if (this.genreStatusList(false).contains(this.allGenres.get(id))) {
+			for (Book book: BookManager.getInstance().bookStatusList(true)) {
 				if (book.getGenre().getIdentification().equals(id)) {
 					return false;
 				}
@@ -143,7 +144,7 @@ public class GenreManager {
 	}
 	
 	public boolean reverseDeleteGenre(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.genreStatusList(false).keySet().contains(id)) {
+		if (this.genreStatusList(true).contains(this.allGenres.get(id))) {
 			this.findGenre(id).setDeleted(false);
 			this.reloadLists();
 			return true;
@@ -153,12 +154,12 @@ public class GenreManager {
 	
 	// List reloader and status checker
 	
-	public HashMap<String,Genre> genreStatusList(Boolean state){
-		HashMap<String,Genre> statusList = new HashMap<String,Genre>();
+	public ArrayList<Genre> genreStatusList(Boolean state){
+		ArrayList<Genre> statusList = new ArrayList<Genre>();
 		for (String genreId: this.allGenres.keySet()) {
 			if (this.allGenres.get(genreId).isDeleted() == state) {
-				if (!statusList.keySet().contains(genreId)) {
-					statusList.put(genreId,this.allGenres.get(genreId));
+				if (!statusList.contains(this.allGenres.get(genreId))) {
+					statusList.add(this.allGenres.get(genreId));
 				}
 			}
 		}
@@ -173,6 +174,9 @@ public class GenreManager {
 
 	public boolean alreadyExists(Genre genre) {
 		for (Genre genreE: this.allGenres.values()) {
+			if (genreE.getIdentification().equals(genre.getIdentification())) {
+				continue;
+			}
 			if (genreE.getGenreName().equals(genre.getGenreName()) ||
 				genreE.getGenreDescription().equals(genre.getGenreDescription())) {
 				return true;

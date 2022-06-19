@@ -10,20 +10,24 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import dialogWindows.ManageAdminDialog;
+import dialogWindows.ManageBookDialog;
 import enums.RegexP;
-import managers.AdminManager;
+import managers.BookManager;
+import managers.GenreManager;
+import models.Book;
 
-public class CreateAdminController {
+public class UpdateBookController {
 
 
-	private AdminManager adminModel;
-	private ManageAdminDialog view;
+	private BookManager bookModel;
+	private ManageBookDialog view;
+	private Book book;
 
 	
-	public CreateAdminController(ManageAdminDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public UpdateBookController(ManageBookDialog view, Book book) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
-		this.adminModel = AdminManager.getInstance();
+		this.bookModel = BookManager.getInstance();
+		this.book = book;
 		initRegistrationChecker();
 		initCancelBtn();
 	}
@@ -53,35 +57,38 @@ public class CreateAdminController {
 				ArrayList<String> emptyCheckList = new ArrayList<String>();
 				
 				String id = view.getIdTextField().getText().trim();
-				String firstName = view.getFirstNameTextField().getText().trim();
-				String lastName = view.getLastNameTextField().getText().trim();
-				String jmbg = view.getJmbgTextField().getText().trim();
-				String address = view.getAdressTextField().getText().trim();
-				String gender = view.getGenderComboBox().getSelectedItem().toString().trim();
-				String wage = view.getWageTextField().getText().trim();
-				String userName = view.getUsernameTextField().getText().trim();
-				String password = new String(view.getPasswordTextField().getPassword()).trim();
+				String title = view.getTitleTextField().getText().trim();
+				String author = view.getAuthorTextField().getText().trim();
+				String description = view.getDescriptionTextArea().getText().trim();
+				String genre = "";
+				String type;
+				try {
+					type = GenreManager.getInstance().genreStatusList(false).get(view.getGenreTypeBox().getSelectedIndex()).getIdentification();
+					genre = type;
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+						| IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				String language = view.getLanguageComboBox().getSelectedItem().toString().trim();
+				String publish = view.getPublishDateTextField().getText().trim();
 				
-				emptyCheckList.addAll(Arrays.asList(address, lastName, firstName, gender, id, "false", jmbg, password, userName, wage));
+				
+				
+				
+				
+				
+				emptyCheckList.addAll(Arrays.asList(author, description, genre, id, "false", language, title, publish));
 				
 				if (emptyCheckList.contains("")) {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
 				} else {
 					
 					Pattern idPattern = Pattern.compile(RegexP.ID.pattern);
-					Pattern namePattern = Pattern.compile(RegexP.NAME.pattern);
-					Pattern jmbgPattern = Pattern.compile(RegexP.JMBG.pattern);
-					Pattern textPattern = Pattern.compile(RegexP.TEXT.pattern);
+
 					Pattern wagePattern = Pattern.compile(RegexP.NUMBER.pattern);
 				
-					if (!idPattern.matcher(id).find() ||
-						!namePattern.matcher(firstName).find() ||
-						!namePattern.matcher(lastName).find() ||
-						!jmbgPattern.matcher(jmbg).find() ||
-						!textPattern.matcher(address).find() ||
-						!wagePattern.matcher(wage).find() ||
-						!textPattern.matcher(userName).find() ||
-						!textPattern.matcher(password).find()) {
+					if (!idPattern.matcher(id).find()){
 						
 						JOptionPane.showMessageDialog(null,"One or more type mismatches", "Error", JOptionPane.WARNING_MESSAGE);
 					} else {
@@ -90,7 +97,7 @@ public class CreateAdminController {
 							sb.append(s + "|");
 						}
 						try {
-							if (adminModel.createAdmin(sb.toString().split("\\|"))) {
+							if (bookModel.updateBook(sb.toString().split("\\|"), book.getIdentification())) {
 								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
 								view.dispose();

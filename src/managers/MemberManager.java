@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.Member;
@@ -130,7 +131,7 @@ public class MemberManager {
 	}
 	
 	public boolean deleteMember(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.memberStatusList(true).keySet().contains(id)) {
+		if (this.memberStatusList(false).contains(this.allMembers.get(id))) {
 			this.findMember(id).setDeleted(true);
 			this.findMember(id).setActive(false);
 			this.reloadLists();
@@ -140,7 +141,7 @@ public class MemberManager {
 	}
 	
 	public boolean reverseDeleteMember(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.memberStatusList(false).keySet().contains(id)) {
+		if (this.memberStatusList(true).contains(this.allMembers.get(id))) {
 			this.findMember(id).setDeleted(false);
 			this.reloadLists();
 			return true;
@@ -150,12 +151,12 @@ public class MemberManager {
 	
 	// List reloader and status checker
 	
-	public HashMap<String,Member> memberStatusList(Boolean state){
-		HashMap<String,Member> statusList = new HashMap<String,Member>();
+	public ArrayList<Member> memberStatusList(Boolean state){
+		ArrayList<Member> statusList = new ArrayList<Member>();
 		for (String memberId: this.allMembers.keySet()) {
 			if (this.allMembers.get(memberId).isDeleted() == state) {
-				if (!statusList.keySet().contains(memberId)) {
-					statusList.put(memberId,this.allMembers.get(memberId));
+				if (!statusList.contains(this.findMember(memberId))) {
+					statusList.add(this.allMembers.get(memberId));
 				}
 			}
 		}
@@ -170,6 +171,9 @@ public class MemberManager {
 
 	public boolean alreadyExists(Member member) {
 		for (Member memberE: this.allMembers.values()) {
+			if (memberE.getIdentification().equals(member.getIdentification())) {
+				continue;
+			}
 			if (memberE.getJmbg().equals(member.getJmbg()) ||
 				memberE.getMembershipNumber().equals(member.getMembershipNumber())) {
 				return true;
@@ -180,13 +184,13 @@ public class MemberManager {
 	
 	// Membership activity loader and adjuster
 	
-	public HashMap<String,Member> membershipStatusList(boolean state){
-		HashMap<String,Member> activeMembers = this.memberStatusList(true);
-		HashMap<String,Member> statusList = new HashMap<String,Member>();
-		for (Member member: activeMembers.values()) {
+	public ArrayList<Member> membershipStatusList(boolean state){
+		ArrayList<Member> activeMembers = this.memberStatusList(true);
+		ArrayList<Member> statusList = new ArrayList<Member>();
+		for (Member member: activeMembers) {
 			if (member.isActive()) {
-				if (!statusList.keySet().contains(member.getIdentification())) {
-					statusList.put(member.getIdentification(), member);
+				if (!statusList.contains(member)) {
+					statusList.add(member);
 				}
 			}
 		}
@@ -194,8 +198,8 @@ public class MemberManager {
 	}
 	
 	public void adjustMembershipActivity() {
-		HashMap<String,Member> activeMembers = this.memberStatusList(true);
-		for (Member member: activeMembers.values()) {
+		ArrayList<Member> activeMembers = this.memberStatusList(false);
+		for (Member member: activeMembers) {
 			member.setActive(ToolKit.evaluateTime(member.getLastPayment(), member.getMembershipLength()));
 			
 		}

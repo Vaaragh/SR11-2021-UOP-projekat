@@ -72,7 +72,7 @@ public class LoginController {
 			}
 		}
 		if (employee == null) {
-			for (Librarian librarian : this.librarianModel.librarianStatusList(false).values()) {
+			for (Librarian librarian : this.librarianModel.librarianStatusList(false)) {
 				if (librarian.getUserName().equals(userName) && librarian.getPassword().equals(password)) {
 					employee = librarian;
 				}

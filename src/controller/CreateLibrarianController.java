@@ -10,20 +10,21 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import dialogWindows.ManageAdminDialog;
+import dialogWindows.ManageLibrarianDialog;
 import enums.RegexP;
-import managers.AdminManager;
+import managers.LibrarianManager;
 
-public class CreateAdminController {
+public class CreateLibrarianController {
 
 
-	private AdminManager adminModel;
-	private ManageAdminDialog view;
+
+	private LibrarianManager librarianModel;
+	private ManageLibrarianDialog view;
 
 	
-	public CreateAdminController(ManageAdminDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public CreateLibrarianController(ManageLibrarianDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
-		this.adminModel = AdminManager.getInstance();
+		this.librarianModel = LibrarianManager.getInstance();
 		initRegistrationChecker();
 		initCancelBtn();
 	}
@@ -90,7 +91,7 @@ public class CreateAdminController {
 							sb.append(s + "|");
 						}
 						try {
-							if (adminModel.createAdmin(sb.toString().split("\\|"))) {
+							if (librarianModel.createLibrarian(sb.toString().split("\\|"))) {
 								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
 								view.dispose();
@@ -111,4 +112,5 @@ public class CreateAdminController {
 			
 		});
 	}
+
 }

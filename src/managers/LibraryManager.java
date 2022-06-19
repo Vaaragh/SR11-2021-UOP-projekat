@@ -169,6 +169,9 @@ public class LibraryManager {
 
 	public boolean alreadyExists(Library library) {
 		for (Library libraryE: this.allLibraries.values()) {
+			if (libraryE.getIdentification().equals(library.getIdentification())) {
+				continue;
+			}
 			if (libraryE.getName().equals(library.getName()) ||
 				libraryE.getPhone().equals(library.getPhone())) {
 				return true;

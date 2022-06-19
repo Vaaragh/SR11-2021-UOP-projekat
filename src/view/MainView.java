@@ -18,6 +18,13 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 import tableModels.AdminTableModel;
+import tableModels.BookCopyTableModel;
+import tableModels.BookTableModel;
+import tableModels.GenreTableModel;
+import tableModels.LibrarianTableModel;
+import tableModels.MemberTableModel;
+import tableModels.MembershipTableModel;
+import tableModels.RentalTableModel;
 
 public class MainView extends JFrame {
 
@@ -36,6 +43,14 @@ public class MainView extends JFrame {
 	private JPanel rentalPanel = new JPanel(new MigLayout("align 50%"));	
 	
 	private AdminTableModel adminTableModel;
+	private LibrarianTableModel librarianTableModel;
+	private MembershipTableModel membershipTableModel;
+	private MemberTableModel memberTableModel;
+	private GenreTableModel genreTableModel;
+	private BookTableModel bookTableModel;
+	private BookCopyTableModel bookCopyTableModel;
+	private RentalTableModel rentalTableModel;
+	
 	
 	private JTable adminTable;
 	private JTable librarianTable;
@@ -145,15 +160,15 @@ public class MainView extends JFrame {
 		
 		fillLibraryPanel();
 		
-//		fillTablesPanel(adminPanel, adminTable, adminScrollPanel);
-//		fillTablesPanel(librarianPanel, librarianTable, librarianScrollPanel);
-//		fillTablesPanel(membershipPanel, membershipTable, membershipScrollPanel);
-//		fillTablesPanel(memberPanel, memberTable, memberScrollPanel);
-//		fillTablesPanel(genrePanel, genreTable, genreScrollPanel);
-//		fillTablesPanel(bookPanel, bookTable, bookScrollPanel);
-//		fillTablesPanel(bookCopyPanel, bookCopyTable, bookCopyScrollPanel);
-//		fillTablesPanel(rentalPanel, rentalTable, rentalScrollPanel);
 		createAdminTable();
+		createLibrarianTable();
+		createMembershipTable();
+		createMemberTable();
+		createGenreTable();
+		createBookTable();
+		createBookCopyTable();
+		createRentalTable();
+		
 		
 		fillButtonPanel(adminPanel,adminContentPanel, Arrays.asList(addAdmin, deleteAdmin, updateAdmin, viewAdmin), "Manage Admins");
 		fillButtonPanel(librarianPanel, librarianContentPanel, Arrays.asList(addLibrarian, deleteLibrarian, updateLibrarian, viewLibrarian), "Manage Librarians");
@@ -166,11 +181,6 @@ public class MainView extends JFrame {
 	
 	}
 	
-	private void createAdminTable() {
-		adminTable = new JTable();
-		adminScrollPanel = new JScrollPane(adminTable);
-		adminPanel.add(adminScrollPanel, "wrap");
-	}	
 	private void fillButtonPanel(JPanel parent,JPanel panel, List<JButton> buttons, String title) {
 		parent.add(panel);
 		
@@ -178,13 +188,6 @@ public class MainView extends JFrame {
 		for (JButton button: buttons) {
 			panel.add(button);
 		}
-	}
-	
-	private void fillTablesPanel(JPanel parent, JTable table, JScrollPane scrollPanel) {
-		table = new JTable();
-		scrollPanel = new JScrollPane(table);
-		parent.add(scrollPanel, "wrap");
-		
 	}
 	
 	private void fillLibraryPanel() {
@@ -205,6 +208,47 @@ public class MainView extends JFrame {
 		libraryContentPanel.add(updateLibrary);
 		
 	}
+	
+	private void createAdminTable() {
+		adminTable = new JTable();
+		adminScrollPanel = new JScrollPane(adminTable);
+		adminPanel.add(adminScrollPanel, "wrap");
+	}	
+	private void createLibrarianTable() {
+		librarianTable = new JTable();
+		librarianScrollPanel = new JScrollPane(librarianTable);
+		librarianPanel.add(librarianScrollPanel, "wrap");
+	}	
+	private void createMembershipTable() {
+		membershipTable = new JTable();
+		membershipScrollPanel = new JScrollPane(membershipTable);
+		membershipPanel.add(membershipScrollPanel, "wrap");
+	}	
+	private void createMemberTable() {
+		memberTable = new JTable();
+		memberScrollPanel = new JScrollPane(memberTable);
+		memberPanel.add(memberScrollPanel, "wrap");
+	}	
+	private void createGenreTable() {
+		genreTable = new JTable();
+		genreScrollPanel = new JScrollPane(genreTable);
+		genrePanel.add(genreScrollPanel, "wrap");
+	}	
+	private void createBookTable() {
+		bookTable = new JTable();
+		bookScrollPanel = new JScrollPane(bookTable);
+		bookPanel.add(bookScrollPanel, "wrap");
+	}	
+	private void createBookCopyTable() {
+		bookCopyTable = new JTable();
+		bookCopyScrollPanel = new JScrollPane(bookCopyTable);
+		bookCopyPanel.add(bookCopyScrollPanel, "wrap");
+	}	
+	private void createRentalTable() {
+		rentalTable = new JTable();
+		rentalScrollPanel = new JScrollPane(rentalTable);
+		rentalPanel.add(rentalScrollPanel, "wrap");
+	}	
 
 	public JTabbedPane getTabsPanel() {
 		return tabsPanel;
@@ -846,11 +890,77 @@ public class MainView extends JFrame {
 	public void setAdminTableModel(AdminTableModel adminTableModel) {
 		this.adminTableModel = adminTableModel;
 	}
+
+	public LibrarianTableModel getLibrarianTableModel() {
+		return librarianTableModel;
+	}
+
+	public void setLibrarianTableModel(LibrarianTableModel librarianTableModel) {
+		this.librarianTableModel = librarianTableModel;
+	}
+
+	public MembershipTableModel getMembershipTableModel() {
+		return membershipTableModel;
+	}
+
+	public void setMembershipTableModel(MembershipTableModel membershipTableModel) {
+		this.membershipTableModel = membershipTableModel;
+	}
+
+	public MemberTableModel getMembertableModel() {
+		return memberTableModel;
+	}
+
+	public void setMembertableModel(MemberTableModel membertableModel) {
+		this.memberTableModel = membertableModel;
+	}
+
+	public MemberTableModel getMemberTableModel() {
+		return memberTableModel;
+	}
+
+	public void setMemberTableModel(MemberTableModel memberTableModel) {
+		this.memberTableModel = memberTableModel;
+	}
+
+	public GenreTableModel getGenreTableModel() {
+		return genreTableModel;
+	}
+
+	public void setGenreTableModel(GenreTableModel genreTableModel) {
+		this.genreTableModel = genreTableModel;
+	}
+
+	public BookTableModel getBookTableModel() {
+		return bookTableModel;
+	}
+
+	public void setBookTableModel(BookTableModel bookTableModel) {
+		this.bookTableModel = bookTableModel;
+	}
+
+	public BookCopyTableModel getBookCopyTableModel() {
+		return bookCopyTableModel;
+	}
+
+	public void setBookCopyTableModel(BookCopyTableModel bookCopyTableModel) {
+		this.bookCopyTableModel = bookCopyTableModel;
+	}
+
+	public RentalTableModel getRentalTableModel() {
+		return rentalTableModel;
+	}
+
+	public void setRentalTableModel(RentalTableModel rentalTableModel) {
+		this.rentalTableModel = rentalTableModel;
+	}
 	
 	
 	
 	////////
 	
+	
+ 
 	
 	
 	

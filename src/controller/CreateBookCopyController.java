@@ -10,20 +10,22 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import dialogWindows.ManageAdminDialog;
+import dialogWindows.ManageBookCopyDialog;
 import enums.RegexP;
-import managers.AdminManager;
+import managers.BookCopyManager;
+import managers.BookManager;
 
-public class CreateAdminController {
+
+public class CreateBookCopyController {
 
 
-	private AdminManager adminModel;
-	private ManageAdminDialog view;
+	private BookCopyManager bookCopyModel;
+	private ManageBookCopyDialog view;
 
 	
-	public CreateAdminController(ManageAdminDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public CreateBookCopyController(ManageBookCopyDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
-		this.adminModel = AdminManager.getInstance();
+		this.bookCopyModel = BookCopyManager.getInstance();
 		initRegistrationChecker();
 		initCancelBtn();
 	}
@@ -53,35 +55,36 @@ public class CreateAdminController {
 				ArrayList<String> emptyCheckList = new ArrayList<String>();
 				
 				String id = view.getIdTextField().getText().trim();
-				String firstName = view.getFirstNameTextField().getText().trim();
-				String lastName = view.getLastNameTextField().getText().trim();
-				String jmbg = view.getJmbgTextField().getText().trim();
-				String address = view.getAdressTextField().getText().trim();
-				String gender = view.getGenderComboBox().getSelectedItem().toString().trim();
-				String wage = view.getWageTextField().getText().trim();
-				String userName = view.getUsernameTextField().getText().trim();
-				String password = new String(view.getPasswordTextField().getPassword()).trim();
+				String title = view.getTitleTextField().getText().trim();
+				String book = "";
+				String temp;
+				try {
+					temp = BookManager.getInstance().bookStatusList(false).get(view.getBookBox().getSelectedIndex()).getIdentification();
+					book = temp;
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+						| IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				String pages = view.getPagesTextField().getText().trim();
+				String year = view.getPrintTextField().getText().trim();
+				String binding = view.getBindingBox().getSelectedItem().toString();
+				String language = view.getLanguageBox().getSelectedItem().toString();
+				String available = String.valueOf(view.getAvailabelBox().isSelected());
 				
-				emptyCheckList.addAll(Arrays.asList(address, lastName, firstName, gender, id, "false", jmbg, password, userName, wage));
+				
+				
+				
+				emptyCheckList.addAll(Arrays.asList(binding, book, id, available, "false", pages, year, language, title));
 				
 				if (emptyCheckList.contains("")) {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
 				} else {
 					
 					Pattern idPattern = Pattern.compile(RegexP.ID.pattern);
-					Pattern namePattern = Pattern.compile(RegexP.NAME.pattern);
-					Pattern jmbgPattern = Pattern.compile(RegexP.JMBG.pattern);
-					Pattern textPattern = Pattern.compile(RegexP.TEXT.pattern);
-					Pattern wagePattern = Pattern.compile(RegexP.NUMBER.pattern);
-				
-					if (!idPattern.matcher(id).find() ||
-						!namePattern.matcher(firstName).find() ||
-						!namePattern.matcher(lastName).find() ||
-						!jmbgPattern.matcher(jmbg).find() ||
-						!textPattern.matcher(address).find() ||
-						!wagePattern.matcher(wage).find() ||
-						!textPattern.matcher(userName).find() ||
-						!textPattern.matcher(password).find()) {
+
+					
+					if (!idPattern.matcher(id).find()){
 						
 						JOptionPane.showMessageDialog(null,"One or more type mismatches", "Error", JOptionPane.WARNING_MESSAGE);
 					} else {
@@ -90,7 +93,7 @@ public class CreateAdminController {
 							sb.append(s + "|");
 						}
 						try {
-							if (adminModel.createAdmin(sb.toString().split("\\|"))) {
+							if (bookCopyModel.createBookCopy(sb.toString().split("\\|"))) {
 								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
 								view.dispose();
