@@ -66,7 +66,7 @@ public class LoginController {
 	
 	public Employee checkAuthority(String userName, String password) {
 		Employee employee = null;
-		for (Admin admin: this.adminModel.adminStatusList(false).values()) {
+		for (Admin admin: this.adminModel.adminStatusList(false)) {
 			if (admin.getUserName().equals(userName) && admin.getPassword().equals(password)) {
 				employee = admin;
 			}

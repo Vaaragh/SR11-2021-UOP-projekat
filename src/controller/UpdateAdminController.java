@@ -10,30 +10,46 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
+import dialogWindows.ManageAdminDialog;
 import enums.RegexP;
 import managers.AdminManager;
-import view.LoginView;
-import view.RegisterView;
+import models.Admin;
 
-public class RegisterController {
-	
+public class UpdateAdminController {
+
+
 	private AdminManager adminModel;
-	private RegisterView view;
+	private ManageAdminDialog view;
+	private Admin admin;
 
 	
-	public RegisterController(RegisterView view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public UpdateAdminController(ManageAdminDialog view, Admin admin) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
 		this.adminModel = AdminManager.getInstance();
+		this.admin = admin;
 		initRegistrationChecker();
+		initCancelBtn();
 	}
 	
 	public void initController() {
-		this.view.getFrame().setVisible(true);
+		this.view.setVisible(true);
+	}
+	
+	private void initCancelBtn() {
+		this.view.getCancelBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				view.dispose();
+				view.setVisible(false);
+			}
+		
+		});
 	}
 	
 	public void initRegistrationChecker() {
-		this.view.getRegisterBtn().addActionListener(new ActionListener() {
-
+		this.view.getSubmitBtn().addActionListener(new ActionListener() {
+		Admin admin = this.admin;
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -77,13 +93,12 @@ public class RegisterController {
 							sb.append(s + "|");
 						}
 						try {
-							if (adminModel.createAdmin(sb.toString().split("\\|"))) {
-								JOptionPane.showMessageDialog(null,"Welcome "+ userName + ", Our new Lord Admin", "Success!", JOptionPane.INFORMATION_MESSAGE);
-								view.getFrame().dispose();
-								view.getFrame().setVisible(false);
-								LoginView lv = new LoginView("Login");
-								LoginController lc = new LoginController(lv);
-								lc.initController();
+							if (adminModel.updateAdmin(sb.toString().split("\\|"),admin.getIdentification())) {
+								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+
+								view.dispose();
+								view.setVisible(false);
+								return;
 
 							} else {
 								JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);

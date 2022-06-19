@@ -10,29 +10,44 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
+import dialogWindows.ManageAdminDialog;
 import enums.RegexP;
 import managers.AdminManager;
 import view.LoginView;
 import view.RegisterView;
 
-public class RegisterController {
-	
+public class CreateAdminController {
+
+
 	private AdminManager adminModel;
-	private RegisterView view;
+	private ManageAdminDialog view;
 
 	
-	public RegisterController(RegisterView view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public CreateAdminController(ManageAdminDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
 		this.adminModel = AdminManager.getInstance();
 		initRegistrationChecker();
+		initCancelBtn();
 	}
 	
 	public void initController() {
-		this.view.getFrame().setVisible(true);
+		this.view.setVisible(true);
+	}
+	
+	private void initCancelBtn() {
+		this.view.getCancelBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				view.dispose();
+				view.setVisible(false);
+			}
+		
+		});
 	}
 	
 	public void initRegistrationChecker() {
-		this.view.getRegisterBtn().addActionListener(new ActionListener() {
+		this.view.getSubmitBtn().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -78,12 +93,11 @@ public class RegisterController {
 						}
 						try {
 							if (adminModel.createAdmin(sb.toString().split("\\|"))) {
-								JOptionPane.showMessageDialog(null,"Welcome "+ userName + ", Our new Lord Admin", "Success!", JOptionPane.INFORMATION_MESSAGE);
-								view.getFrame().dispose();
-								view.getFrame().setVisible(false);
-								LoginView lv = new LoginView("Login");
-								LoginController lc = new LoginController(lv);
-								lc.initController();
+								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+
+								view.dispose();
+								view.setVisible(false);
+								return;
 
 							} else {
 								JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);

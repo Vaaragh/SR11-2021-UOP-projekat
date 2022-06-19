@@ -79,6 +79,7 @@ public class ToolKit {
 		return result;	
 	}
 	
+	
 	// Get getID method for nested objects
 	public static Method getIdMethod(Class<? extends Object> clss) throws NoSuchMethodException, SecurityException{
 		Method method = clss.getMethod("getIdentification", (Class<?>[])null);

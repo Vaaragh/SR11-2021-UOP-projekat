@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.Admin;
@@ -130,7 +131,7 @@ public class AdminManager {
 	}
 	
 	public boolean deleteAdmin(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.adminStatusList(true).keySet().contains(id)) {
+		if (this.adminStatusList(false).contains(this.allAdmins.get(id))) {
 			this.findAdmin(id).setDeleted(true);
 			this.reloadLists();
 			return true;
@@ -139,7 +140,7 @@ public class AdminManager {
 	}
 	
 	public boolean reverseDeleteAdmin(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		if (this.adminStatusList(false).keySet().contains(id)) {
+		if (this.adminStatusList(true).contains(this.allAdmins.get(id))) {
 			this.findAdmin(id).setDeleted(false);
 			this.reloadLists();
 			return true;
@@ -149,12 +150,12 @@ public class AdminManager {
 	
 	// List reloader and status checker
 	
-	public HashMap<String,Admin> adminStatusList(Boolean state){
-		HashMap<String,Admin> statusList = new HashMap<String,Admin>();
+	public ArrayList<Admin> adminStatusList(Boolean state){
+		ArrayList<Admin> statusList = new ArrayList<Admin>();
 		for (String adminId: this.allAdmins.keySet()) {
 			if (this.allAdmins.get(adminId).isDeleted() == state) {
-				if (!statusList.keySet().contains(adminId)) {
-					statusList.put(adminId,this.allAdmins.get(adminId));
+				if (!statusList.contains(this.allAdmins.get(adminId))) {
+					statusList.add(this.allAdmins.get(adminId));
 				}
 			}
 		}
