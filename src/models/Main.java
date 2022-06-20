@@ -4,18 +4,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import controller.LoginController;
-import controller.MainViewController;
+import controller.RegisterController;
 import managers.AdminManager;
-import managers.BookCopyManager;
-import managers.BookManager;
-import managers.GenreManager;
-import managers.LibrarianManager;
-import managers.LibraryManager;
-import managers.MemberManager;
-import managers.MembershipManager;
-import managers.RentalManager;
 import view.LoginView;
-import view.MainView;
+import view.RegisterView;
 
 public class Main {
 
@@ -36,15 +28,15 @@ public class Main {
 		
 		
 		//Managers
-		AdminManager adMan = AdminManager.getInstance();
-		LibrarianManager liMan = LibrarianManager.getInstance();
-		GenreManager genMan = GenreManager.getInstance();
-		BookManager booMan = BookManager.getInstance();
-		BookCopyManager booCoMan = BookCopyManager.getInstance();
-		MembershipManager memShiMan = MembershipManager.getInstance();
-		MemberManager memMan = MemberManager.getInstance();
-		RentalManager renMan = RentalManager.getInstance();
-		LibraryManager libMan = LibraryManager.getInstance();
+//		AdminManager adMan = AdminManager.getInstance();
+//		LibrarianManager liMan = LibrarianManager.getInstance();
+//		GenreManager genMan = GenreManager.getInstance();
+//		BookManager booMan = BookManager.getInstance();
+//		BookCopyManager booCoMan = BookCopyManager.getInstance();
+//		MembershipManager memShiMan = MembershipManager.getInstance();
+//		MemberManager memMan = MemberManager.getInstance();
+//		RentalManager renMan = RentalManager.getInstance();
+//		LibraryManager libMan = LibraryManager.getInstance();
 		
 		
 		// Temporary HashMaps
@@ -134,23 +126,25 @@ public class Main {
 //		renMan.saveRentals();
 //		renMan.loadRentals();
 //		System.out.println(renMan.getAllRentals());
-		
+		AdminManager.getInstance().loadAdmins();
+		if (AdminManager.getInstance().getAllAdmins().size()==0) {
+			RegisterView rv = new RegisterView("Register");
+			RegisterController rc = new RegisterController(rv);
+			rc.initController();
+		} else {
+			LoginView lv = new LoginView("Login");
+			LoginController lc = new LoginController(lv);
+			lc.initController();
+			
+		}
 		
 		
 		
 		// MAIN WINDOW		
-		
-//		RegisterView rv = new RegisterView("Register");
-//		RegisterController rc = new RegisterController(rv);
-//		rc.initController();
-		
-		LoginView lv = new LoginView("Login");
-		LoginController lc = new LoginController(lv);
-		lc.initController();
-		
-		 MainView mw = new MainView();
-		 MainViewController mc = new MainViewController(mw);
-		 mc.initController();
+			
+//		 MainView mw = new MainView();
+//		 MainViewController mc = new MainViewController(mw);
+//		 mc.initController();
 		
 		// TEST BLOCK
 		

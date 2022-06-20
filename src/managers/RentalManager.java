@@ -106,10 +106,10 @@ public class RentalManager {
 	public boolean createRental(String [] infoArray) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		Rental rental = new Rental();
 		ToolKit.objectFromArray(infoArray, rental);
-//		for (BookCopy bookCopy: rental.getBookList().values()) {
-//			String bookCopyId = bookCopy.getIdentification();
-//			BookCopyManager.getInstance().setAvailability(bookCopyId, false);
-//		}
+		for (BookCopy bookCopy: rental.getBookList().values()) {
+			String bookCopyId = bookCopy.getIdentification();
+			BookCopyManager.getInstance().setAvailability(bookCopyId, false);
+		}
 		if (!this.allRentals.keySet().contains(rental.getIdentification())) {
 			this.allRentals.put(rental.getIdentification(), rental);
 			this.reloadLists();

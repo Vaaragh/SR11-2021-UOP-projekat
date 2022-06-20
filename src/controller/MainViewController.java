@@ -1,7 +1,12 @@
 package controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -13,17 +18,20 @@ import dialogWindows.ManageLibrarianDialog;
 import dialogWindows.ManageMemberDialog;
 import dialogWindows.ManageMembershipDialog;
 import dialogWindows.ManageRentalDialog;
+import enums.RegexP;
 import managers.AdminManager;
 import managers.BookCopyManager;
 import managers.BookManager;
 import managers.GenreManager;
 import managers.LibrarianManager;
+import managers.LibraryManager;
 import managers.MemberManager;
 import managers.MembershipManager;
 import managers.RentalManager;
 import models.Admin;
 import models.Book;
 import models.BookCopy;
+import models.Employee;
 import models.Genre;
 import models.Librarian;
 import models.Member;
@@ -44,12 +52,19 @@ import view.MainView;
 public class MainViewController {
 
 	private MainView view;
+	private Employee employee;
 	
-	public MainViewController(MainView view) {
+	public MainViewController(MainView view, Employee employee) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
+		this.employee = employee;
+		if (employee instanceof Admin) {
+			this.initAdminController();
+		}else {
+			this.initLibrarianController();
+		}
 	}
 	
-	public void initController() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public void initAdminController() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view.setVisible(true);
 		this.initAdminTable();
 		this.initAdminButtons();
@@ -74,6 +89,16 @@ public class MainViewController {
 		
 		this.initRentalTable();
 		this.initRentalButtons();
+		this.initLibraryUpdate();	
+
+	}
+	
+	public void initLibrarianController() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		this.view.setVisible(true);
+		
+	
+		this.initMemberTable();
+		this.initMemberButtons();
 	
 	}
 	
@@ -778,6 +803,75 @@ public class MainViewController {
 	}
 	
 	
+	
+	
+	//////////////
+	
+	
+	
+	
+	
+	public void initLibraryUpdate() throws IllegalAccessException, InvocationTargetException, IOException {
+		view.getLibNameField().setEditable(true);
+		view.getLibAddressField().setEditable(true);
+		view.getLibPhoneField().setEditable(true);
+		view.getLibOpensField().setEditable(true);
+		view.getLibClosesField().setEditable(true);
+		this.view.getUpdateLibrary().setEnabled(true);
+		this.view.getUpdateLibrary().addActionListener(new ActionListener() {
+			LibraryManager libraryModel = LibraryManager.getInstance();
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				ArrayList<String> emptyCheckList = new ArrayList<String>();
+				
+				
+				String id = libraryModel.retFirst().getIdentification();
+				String name = view.getLibNameField().getText().trim();
+				String address = view.getLibAddressField().getText().trim();
+				String phone = view.getLibPhoneField().getText().trim();
+				String opens = view.getLibOpensField().getText().trim();
+				String closes = view.getLibClosesField().getText().trim();
+				
+				
+				
+				emptyCheckList.addAll(Arrays.asList(address, id, "false", name, opens, closes, phone));
+				
+				if (emptyCheckList.contains("")) {
+					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
+				} else {
+					
+					Pattern idPattern = Pattern.compile(RegexP.ID.pattern);
+
+					
+					if (!idPattern.matcher(id).find()){
+						
+						JOptionPane.showMessageDialog(null,"One or more type mismatches", "Error", JOptionPane.WARNING_MESSAGE);
+					} else {
+						StringBuilder sb = new StringBuilder();
+						for (String s: emptyCheckList) {
+							sb.append(s + "|");
+						}
+						try {
+							if (libraryModel.updateLibrary(sb.toString().split("\\|"), libraryModel.retFirst().getIdentification())) {
+								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+								view.fillLibraryPanel();
+								return;
+
+							} else {
+								JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+
+							}
+						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+								| IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+				}
+			}
+			
+		});
+	}
 
 	
 	

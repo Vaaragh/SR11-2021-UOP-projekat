@@ -13,6 +13,7 @@ import models.Admin;
 import models.Employee;
 import models.Librarian;
 import view.LoginView;
+import view.MainView;
 
 public class LoginController {
 	
@@ -48,12 +49,15 @@ public class LoginController {
 					Employee staff = cl.checkAuthority(usernameF, passwordF);
 					if (staff == null) {
 						JOptionPane.showMessageDialog(null,"No matching employees", "Error", JOptionPane.WARNING_MESSAGE);						
-					} else if (staff instanceof Admin) {
-						System.out.println("Admin login " + staff);
-						view.getFrame().dispose();
-						view.getFrame().setVisible(false);
 					} else {
-						System.out.println("Librarian login "+ staff);
+						MainView mw;
+						try {
+							mw = new MainView();
+							MainViewController mc = new MainViewController(mw, staff);
+						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+								| IOException e2) {
+							e2.printStackTrace();
+						}
 						view.getFrame().dispose();
 						view.getFrame().setVisible(false);
 					}

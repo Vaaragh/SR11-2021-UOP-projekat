@@ -68,7 +68,7 @@ public class UpdateRentalController {
 				String bookList = "";
 				for (int bk: books) {
 					try {
-						bookList += BookCopyManager.getInstance().bookCopyStatusList(false).get(bk)+ ";";
+						bookList += BookCopyManager.getInstance().bookCopyStatusList(false).get(bk).getIdentification()+ ";";
 					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 							| IOException e1) {
 			
@@ -97,6 +97,7 @@ public class UpdateRentalController {
 						for (String s: emptyCheckList) {
 							sb.append(s + "|");
 						}
+						
 						try {
 							if (rentalModel.updateRental(sb.toString().split("\\|"), rental.getIdentification())) {
 								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);

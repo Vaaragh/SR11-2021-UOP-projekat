@@ -1,3 +1,4 @@
+adress|Rajko|Rajko|MALE|e87debf5-5a56-4931-83fe-2e9dd8515400|false|8927483647182|PASSWORD|USERNAME|10000|
 newAdress|newLastName|newName|MALE|newID|false|newJMBG|newPassword|newUsername|150|
 adminAdress|adminLasstName|adminName|OTHER|adminId|false|adminJmbg|adp|adu|200|
 Aduba|Lsas|Las|MALE|9108b4ff-5118-431d-a602-e92a30fe0f1b|false|8172637485928|kjabfkba|implo|1619|

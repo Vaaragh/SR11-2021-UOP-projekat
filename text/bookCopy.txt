@@ -1,3 +1,4 @@
-HARDCOVER|bookId|copyId|true|false|150|1999|FRENCH|copyTitle|
+HARDCOVER|bookId|copyId|false|false|150|1999|FRENCH|copyTitle|
+HARDCOVER|6f8576be-9e21-4607-bba9-59de369c5bae|f29a9f20-2854-433a-a55c-5a0c51d11814|false|false|123|1234|ENGLISH|NewKnjiga|
 HARDCOVER|bookId|copyId2|true|false|150|1999|FRENCH|copyTitle|
-PAPERBACK|bookId|c72bdc42-f383-4ece-a954-5eb0cfb0e67b|true|false|123|123|SPANISH|sss2|
+PAPERBACK|bookId|c72bdc42-f383-4ece-a954-5eb0cfb0e67b|false|false|123|123|SPANISH|sss2|

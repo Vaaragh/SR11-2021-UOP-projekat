@@ -3,6 +3,8 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import managers.LibraryManager;
+import models.Library;
 import net.miginfocom.swing.MigLayout;
 import tableModels.AdminTableModel;
 import tableModels.BookCopyTableModel;
@@ -129,13 +133,13 @@ public class MainView extends JFrame {
 	private JLabel libPhoneNumber = new JLabel("Phone");
 	private JLabel libOpens = new JLabel("Opens");
 	private JLabel libCloses = new JLabel("Closes");
-	private JTextField libNameField = new JTextField();
-	private JTextField libAddressField = new JTextField();
-	private JTextField libPhoneField = new JTextField();
-	private JTextField libOpensField = new JTextField();
-	private JTextField libClosesField = new JTextField();
+	public JTextField libNameField = new JTextField();
+	public JTextField libAddressField = new JTextField();
+	public JTextField libPhoneField = new JTextField();
+	public JTextField libOpensField = new JTextField();
+	public JTextField libClosesField = new JTextField();
 	
-	public MainView() {
+	public MainView() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		setTitle("Library");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -144,7 +148,7 @@ public class MainView extends JFrame {
 		
 	}
 	
-	public void createTabs() {
+	public void createTabs() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		tabsPanel = new JTabbedPane();
 		getContentPane().add(tabsPanel, BorderLayout.CENTER);
 		
@@ -190,7 +194,7 @@ public class MainView extends JFrame {
 		}
 	}
 	
-	private void fillLibraryPanel() {
+	public void fillLibraryPanel() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		libraryPanel.add(libraryContentPanel);
 		libraryContentPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Library Info"));
 
@@ -206,6 +210,22 @@ public class MainView extends JFrame {
 		libraryContentPanel.add(libClosesField, "width 200, wrap");
 		
 		libraryContentPanel.add(updateLibrary);
+		updateLibrary.setEnabled(false);
+		
+		Library library = LibraryManager.getInstance().retFirst();
+		
+		libNameField.setText(library.getName());
+		libAddressField.setText(library.getAdress());
+		libPhoneField.setText(library.getPhone());
+		libOpensField.setText(String.valueOf(library.getOpenFrom()));
+		libClosesField.setText(String.valueOf(library.getOpenUntill()));
+		
+		libNameField.setEditable(false);
+		libAddressField.setEditable(false);
+		libPhoneField.setEditable(false);
+		libOpensField.setEditable(false);
+		libClosesField.setEditable(false);
+		
 		
 	}
 	

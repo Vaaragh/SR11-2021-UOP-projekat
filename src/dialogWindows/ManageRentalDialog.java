@@ -126,11 +126,7 @@ private void defineFilledComponents(Rental rental) throws IllegalAccessException
 		counter += 1;
 	}
 
-
-
-	
-	
-	this.idTextField = new JTextField(UUID.randomUUID().toString());
+	this.idTextField = new JTextField(rental.getIdentification());
 	this.rentDateField = new JTextField(rental.getRentalDate().toString());
 	this.dueDateField = new JTextField(rental.getDueDate().toString());
 	this.employeeBox = new JComboBox(employee);
@@ -139,7 +135,6 @@ private void defineFilledComponents(Rental rental) throws IllegalAccessException
 	memberBox.setSelectedItem(rental.getMember().getIdentification());
 	this.bookBox = new JList(books);
 	bookBox.setSelectedIndices(indices);
-
 
 	this.fillPanel();
 	

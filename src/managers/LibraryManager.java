@@ -179,5 +179,13 @@ public class LibraryManager {
 		}
 		return false;
 	}	
+	
+	public Library retFirst() {
+		Library library = null;
+		for (String key: this.getAllLibraries().keySet()) {
+			library =  this.findLibrary(key);
+		}
+		return library;
+	}
 }
 

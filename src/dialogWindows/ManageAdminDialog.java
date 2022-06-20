@@ -86,6 +86,7 @@ public class ManageAdminDialog extends JDialog {
 		this.defineLabelsAndButtons();
 		
 		this.idTextField = new JTextField(admin.getIdentification());
+		idTextField.setEditable(false);
 		this.firstNameTextField = new JTextField(admin.getFirstName());
 		this.lastNameTextField = new JTextField(admin.getFamilyName()); 
 		this.jmbgTextField = new JTextField(admin.getJmbg());
