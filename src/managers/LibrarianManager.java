@@ -156,7 +156,7 @@ public class LibrarianManager {
 		ArrayList<Librarian> statusList = new ArrayList<Librarian>();
 		for (String librarianId: this.allLibrarians.keySet()) {
 			if (this.allLibrarians.get(librarianId).isDeleted() == state) {
-				if (!statusList.contains(librarianId)) {
+				if (!statusList.contains(this.allLibrarians.get(librarianId))) {
 					statusList.add(this.allLibrarians.get(librarianId));
 				}
 			}

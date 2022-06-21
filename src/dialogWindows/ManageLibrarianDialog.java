@@ -19,12 +19,10 @@ import enums.Gender;
 import models.Librarian;
 import net.miginfocom.swing.MigLayout;
 
+@SuppressWarnings("serial")
 public class ManageLibrarianDialog extends JDialog {
 	
-	
-	
 	private JPanel panelTop;
-	private JPanel panelBottom;
 	
 	private JLabel idLabel;
 	private JLabel firstNameLabel;
@@ -197,14 +195,6 @@ public class ManageLibrarianDialog extends JDialog {
 
 	public void setPanelTop(JPanel panelTop) {
 		this.panelTop = panelTop;
-	}
-
-	public JPanel getPanelBottom() {
-		return panelBottom;
-	}
-
-	public void setPanelBottom(JPanel panelBottom) {
-		this.panelBottom = panelBottom;
 	}
 
 	public JLabel getIdLabel() {

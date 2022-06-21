@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import models.Genre;
 
+@SuppressWarnings("serial")
 public class GenreTableModel extends AbstractTableModel {
 
 	private final String[] columnNames = {"Name", "ID"};

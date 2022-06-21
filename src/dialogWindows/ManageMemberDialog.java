@@ -1,6 +1,5 @@
 package dialogWindows;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -31,7 +30,6 @@ public class ManageMemberDialog extends JDialog {
 	
 	
 	private JPanel panelTop;
-	private JPanel panelBottom;
 	
 	private JLabel idLabel;
 	private JLabel firstNameLabel;
@@ -244,14 +242,6 @@ public class ManageMemberDialog extends JDialog {
 
 	public void setPanelTop(JPanel panelTop) {
 		this.panelTop = panelTop;
-	}
-
-	public JPanel getPanelBottom() {
-		return panelBottom;
-	}
-
-	public void setPanelBottom(JPanel panelBottom) {
-		this.panelBottom = panelBottom;
 	}
 
 	public JLabel getIdLabel() {

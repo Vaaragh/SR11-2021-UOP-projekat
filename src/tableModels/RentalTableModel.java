@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import models.Rental;
 
+@SuppressWarnings("serial")
 public class RentalTableModel  extends AbstractTableModel {
 
 	private final String[] columnNames = {"Member", "Rent Date", "Due Date", "Employee"};

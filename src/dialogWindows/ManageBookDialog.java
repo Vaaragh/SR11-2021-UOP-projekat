@@ -27,10 +27,7 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class ManageBookDialog extends JDialog {
 	
-	
-	
 	private JPanel panelTop;
-	private JPanel panelBottom;
 	
 	private JLabel idLabel;
 	private JLabel titleLabel;
@@ -212,15 +209,7 @@ public class ManageBookDialog extends JDialog {
 	public void setPanelTop(JPanel panelTop) {
 		this.panelTop = panelTop;
 	}
-
-	public JPanel getPanelBottom() {
-		return panelBottom;
-	}
-
-	public void setPanelBottom(JPanel panelBottom) {
-		this.panelBottom = panelBottom;
-	}
-
+	
 	public JLabel getIdLabel() {
 		return idLabel;
 	}

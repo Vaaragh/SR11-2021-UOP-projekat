@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import models.Book;
 
+@SuppressWarnings("serial")
 public class BookTableModel extends AbstractTableModel {
 
 	private final String[] columnNames = {"Name", "Author", "Genre", "Language"};
