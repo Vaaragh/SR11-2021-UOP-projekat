@@ -99,7 +99,7 @@ public class CreateAdminController {
 					} else {
 					
 						try {
-							if (adminModel.createAdmin(sb.toString().split("\\|"))) {
+							if (adminModel.createAdmin(infoArray)) {
 								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 	
 								view.dispose();

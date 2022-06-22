@@ -94,6 +94,7 @@ public class ManageAdminDialog extends JDialog {
 		this.wageTextField = new JTextField(String.valueOf(admin.getWage()));
 		this.usernameTextField = new JTextField(admin.getUserName());
 		this.passwordTextField = new JPasswordField(admin.getPassword());
+		passwordTextField.setEditable(false);
 		
 		this.fillPanel();
 		
@@ -357,6 +358,8 @@ public class ManageAdminDialog extends JDialog {
 	public void setCancelBtn(JButton cancelBtn) {
 		this.cancelBtn = cancelBtn;
 	}
+	
+	
 	
 	
 	
