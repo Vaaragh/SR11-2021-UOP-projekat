@@ -6,25 +6,14 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 import dialogWindows.ManageRentalDialog;
 import enums.RegexP;
-import managers.RentalManager;
-import models.Admin;
-import models.BookCopy;
-import models.Employee;
-import models.Librarian;
-import models.Member;
-import managers.AdminManager;
 import managers.BookCopyManager;
-import managers.BookManager;
-import managers.LibrarianManager;
-import managers.MemberManager;
+import managers.RentalManager;
 
 public class CreateRentalController  {
 
@@ -65,21 +54,19 @@ public class CreateRentalController  {
 				ArrayList<String> emptyCheckList = new ArrayList<String>();
 				
 				String id = view.getIdTextField().getText().trim();
-				String rent = view.getRentDateField().getText();
-				String due = view.getDueDateField().getText();
+				String rentDate = view.getRentDateField().getText();
+				String dueDate = view.getDueDateField().getText();
 				
-				String emp = view.getEmployeeBox().getSelectedItem().toString();
-				
+				String employee = view.getEmployeeKeys().get(view.getEmployeeBox().getSelectedIndex());
 			
-				String mem = view.getMemberBox().getSelectedItem().toString();
+				String member = view.getMemberKeys().get(view.getMemberBox().getSelectedIndex());
 				
 				int[] books = view.getBookBox().getSelectedIndices();
 				String bookList = "";
 				for (int bk: books) {
 					try {
-						bookList += BookCopyManager.getInstance().bookCopyStatusList(false).get(bk).getIdentification()+ ";";
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-							| IOException e1) {
+						bookList += view.getBookKeys().get(bk) + ";";
+					} catch (IllegalArgumentException e1) {
 			
 						e1.printStackTrace();
 					}
@@ -88,8 +75,7 @@ public class CreateRentalController  {
 				
 				
 				
-				
-				emptyCheckList.addAll(Arrays.asList(bookList, due, emp, id, "false", mem, rent));
+				emptyCheckList.addAll(Arrays.asList(bookList, dueDate, employee, id, "false", member, rentDate));
 				
 				if (emptyCheckList.contains("")) {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				

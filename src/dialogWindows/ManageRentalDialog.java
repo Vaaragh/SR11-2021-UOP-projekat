@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.swing.DefaultComboBoxModel;
@@ -51,18 +52,32 @@ public class ManageRentalDialog extends JDialog{
 	@SuppressWarnings("rawtypes")
 	private JList bookBox;
 	
-	
-	
-	
-	
-	
 	private JButton submitBtn, cancelBtn;
+
+	
+	private ArrayList<String> bookKeys = new ArrayList<String>();
+	private ArrayList<BookCopy> bookObjects = new ArrayList<BookCopy>();
+	private ArrayList<String> rentalBookKeys = new ArrayList<String>();
+	
+	private ArrayList<String> memberKeys = new ArrayList<String>();
+	private ArrayList<Member> memberObjects = new ArrayList<Member>();
+	private String memberId;
+	
+	private ArrayList<String> employeeKeys = new ArrayList<String>();
+	private ArrayList<Employee> employeeObjects = new ArrayList<Employee>();
+	private String employeeId;
 	
 	
 	public ManageRentalDialog(JFrame parent, String title, boolean x, Rental rental, boolean check) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		super(parent, "Update Rental", x);
+		this.memberId = rental.getMember().getIdentification();
+		this.employeeId = rental.getEmployee().getIdentification();
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(parent);
+		findBookCopies(rental);
+		fillBookListsView(rental);
+		fillEmployeeLists();
+		fillMemberLists();
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.45));
@@ -73,8 +88,15 @@ public class ManageRentalDialog extends JDialog{
 	
 	public ManageRentalDialog(JFrame parent, String title, boolean x, Rental rental) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		super(parent, "Update Rental", x);
+		this.memberId = rental.getMember().getIdentification();
+		this.employeeId = rental.getEmployee().getIdentification();
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(parent);
+		findBookCopies(rental);
+		BookCopyManager.getInstance().freeUpBooks(rental);
+		fillBookLists();
+		fillEmployeeLists();
+		fillMemberLists();
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.45));
@@ -86,54 +108,77 @@ public class ManageRentalDialog extends JDialog{
 		super(parent, "Create Rental", x);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(parent);
+		fillBookLists();
+		fillEmployeeLists();
+		fillMemberLists();
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.45));
 		this.defineEmptyComponents();
 	}
 	
+	
+	
+	
+	
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void defineFilledComponents(Rental rental) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.defineLabelsAndButtons();
 		
 	
-	
-		DefaultComboBoxModel employee = new DefaultComboBoxModel();
-		for (Admin admin: AdminManager.getInstance().adminStatusList(false)) {
-			employee.addElement(admin.getIdentification());
+		// Employee JComboBox Constructor
+		DefaultComboBoxModel employees = new DefaultComboBoxModel();
+		for (Employee employee: this.employeeObjects) {
+			employees.addElement(employee.getFirstName());
 		}
-		for (Librarian librarian : LibrarianManager.getInstance().librarianStatusList(false)) {
-			employee.addElement(librarian.getIdentification());
+		int employeeIndex = 0;
+		for (int i=0; i<this.employeeObjects.size(); i++) {
+			if (this.employeeId.equals(this.employeeKeys.get(i))) {
+				employeeIndex = i;
+			}
+		}
+		System.out.println(employeeIndex);
+		
+		
+		// Memeber JComboBox Constructor
+		DefaultComboBoxModel members = new DefaultComboBoxModel();
+		for (Member member: this.memberObjects) {
+			members.addElement(member.getFirstName());
+		}
+		int memberIndex = 0;
+		for (int i=0; i<this.memberObjects.size(); i++) {
+			if (this.memberId.equals(this.memberObjects.get(i).getIdentification())) {
+				memberIndex = i;
+			}
 		}
 		
-		DefaultComboBoxModel members = new DefaultComboBoxModel();
-		for (Member member: MemberManager.getInstance().memberStatusList(false)) {
-			members.addElement(member.getIdentification());
-		}
-		int[] indices = new int[rental.getBookList().keySet().size()];
+		
+		
+		// BookCopy JList Constructor
 		DefaultListModel<String> books = new DefaultListModel();
-		int counter = 0;
-		int posCounter = 0;
-		for (BookCopy book: BookCopyManager.getInstance().bookCopyStatusList(false)) {
-			books.addElement(book.getIdentification());
-			for (BookCopy bk : rental.getBookList().values()) {
-				if (book.getIdentification().equals(bk.getIdentification())) {
-					indices[posCounter] = counter;
-					posCounter += 1;
-				}
-			}
-			counter += 1;
+		for (BookCopy book: this.bookObjects) {
+			books.addElement(book.getTitle());
 		}
+		int[] bookIndices = new int[this.rentalBookKeys.size()];
+		int counter = 0;
+		for (int i=0; i< this.bookKeys.size();i++) {
+			if (this.rentalBookKeys.contains(this.bookKeys.get(i))) {
+				bookIndices[counter] = i;
+				counter += 1;
+			}
+		}
+		
 	
 		this.idTextField = new JTextField(rental.getIdentification());
 		this.rentDateField = new JTextField(rental.getRentalDate().toString());
 		this.dueDateField = new JTextField(rental.getDueDate().toString());
-		this.employeeBox = new JComboBox(employee);
-		employeeBox.setSelectedItem(rental.getEmployee().getIdentification());
+		this.employeeBox = new JComboBox(employees);
+		employeeBox.setSelectedIndex(employeeIndex);
 		this.memberBox = new JComboBox(members);
-		memberBox.setSelectedItem(rental.getMember().getIdentification());
+		memberBox.setSelectedIndex(memberIndex);
 		this.bookBox = new JList(books);
-		bookBox.setSelectedIndices(indices);
+		bookBox.setSelectedIndices(bookIndices);
 	
 		this.fillPanel();
 		
@@ -143,30 +188,35 @@ public class ManageRentalDialog extends JDialog{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void defineEmptyComponents() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.defineLabelsAndButtons();
-		DefaultComboBoxModel employee = new DefaultComboBoxModel();
-		for (Admin admin: AdminManager.getInstance().adminStatusList(false)) {
-			employee.addElement(admin.getIdentification());
-		}
-		for (Librarian librarian : LibrarianManager.getInstance().librarianStatusList(false)) {
-			employee.addElement(librarian.getIdentification());
+
+		// Employee JComboBox Constructor
+		DefaultComboBoxModel employees = new DefaultComboBoxModel();
+		for (Employee employee: this.employeeObjects) {
+			employees.addElement(employee.getFirstName());
 		}
 		
+		
+		
+		// Memeber JComboBox Constructor
 		DefaultComboBoxModel members = new DefaultComboBoxModel();
-		for (Member member: MemberManager.getInstance().memberStatusList(false)) {
-			members.addElement(member.getIdentification());
+		for (Member member: this.memberObjects) {
+			members.addElement(member.getFirstName());
 		}
-	
+		
+		
+		
+		// BookCopy JList Constructor
 		DefaultListModel<String> books = new DefaultListModel();
-	
-		for (BookCopy book: BookCopyManager.getInstance().bookCopyStatusList(false)) {
-			books.addElement(book.getIdentification());
+		for (BookCopy book: this.bookObjects) {
+			books.addElement(book.getTitle());
 		}
+		
 		
 		
 		this.idTextField = new JTextField(UUID.randomUUID().toString());
 		this.rentDateField = new JTextField();
 		this.dueDateField = new JTextField();
-		this.employeeBox = new JComboBox(employee);
+		this.employeeBox = new JComboBox(employees);
 		this.memberBox = new JComboBox(members);
 		this.bookBox = new JList(books);	
 	
@@ -237,6 +287,47 @@ public class ManageRentalDialog extends JDialog{
 		});
 		
 		
+	}
+	
+	//ArrayList fillers
+	
+	private void fillBookListsView(Rental rental) {
+		for (BookCopy bookCopy: rental.getBookList().values()) {
+			this.bookKeys.add(bookCopy.getIdentification());
+			this.bookObjects.add(bookCopy);
+		}
+	}
+	
+	private void fillBookLists() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		for (BookCopy bookCopy: BookCopyManager.getInstance().availableList()) {
+			this.bookKeys.add(bookCopy.getIdentification());
+			this.bookObjects.add(bookCopy);
+		}
+	}
+	
+	private void fillMemberLists() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		for (Member member: MemberManager.getInstance().membershipStatusList(true)) {
+			this.memberKeys.add(member.getIdentification());
+			this.memberObjects.add(member);
+		}
+	}
+	
+	private void fillEmployeeLists() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		for (Admin admin: AdminManager.getInstance().adminStatusList(false)) {
+			this.employeeKeys.add(admin.getIdentification());
+			this.employeeObjects.add(admin);
+		}
+		for (Librarian librarian: LibrarianManager.getInstance().librarianStatusList(false)) {
+			this.employeeKeys.add(librarian.getIdentification());
+			this.employeeObjects.add(librarian);
+		}
+	}
+	
+	
+	//Object Id fillers
+	
+	private void findBookCopies(Rental rental) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		this.rentalBookKeys.addAll(rental.getBookList().keySet());		
 	}
 	
 	public JPanel getPanelTop() {
@@ -362,6 +453,80 @@ public class ManageRentalDialog extends JDialog{
 	public void setCancelBtn(JButton cancelBtn) {
 		this.cancelBtn = cancelBtn;
 	}
+
+	public ArrayList<String> getBookKeys() {
+		return bookKeys;
+	}
+
+	public void setBookKeys(ArrayList<String> bookKeys) {
+		this.bookKeys = bookKeys;
+	}
+
+	public ArrayList<BookCopy> getBookObjects() {
+		return bookObjects;
+	}
+
+	public void setBookObjects(ArrayList<BookCopy> bookObjects) {
+		this.bookObjects = bookObjects;
+	}
+
+	public ArrayList<String> getRentalBookKeys() {
+		return rentalBookKeys;
+	}
+
+	public void setRentalBookKeys(ArrayList<String> rentalBookKeys) {
+		this.rentalBookKeys = rentalBookKeys;
+	}
+
+	public ArrayList<String> getMemberKeys() {
+		return memberKeys;
+	}
+
+	public void setMemberKeys(ArrayList<String> memberKeys) {
+		this.memberKeys = memberKeys;
+	}
+
+	public ArrayList<Member> getMemberObjects() {
+		return memberObjects;
+	}
+
+	public void setMemberObjects(ArrayList<Member> memberObjects) {
+		this.memberObjects = memberObjects;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public ArrayList<String> getEmployeeKeys() {
+		return employeeKeys;
+	}
+
+	public void setEmployeeKeys(ArrayList<String> employeeKeys) {
+		this.employeeKeys = employeeKeys;
+	}
+
+	public ArrayList<Employee> getEmployeeObjects() {
+		return employeeObjects;
+	}
+
+	public void setEmployeeObjects(ArrayList<Employee> employeeObjects) {
+		this.employeeObjects = employeeObjects;
+	}
+
+	public String getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+	
+	
 
 
 }

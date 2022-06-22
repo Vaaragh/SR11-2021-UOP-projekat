@@ -174,6 +174,16 @@ public class BookCopyManager {
 		this.saveBookCopies();
 	}
 	
+	public ArrayList<BookCopy> availableList(){
+		ArrayList<BookCopy> available = new ArrayList<BookCopy>();
+		for (BookCopy bookCopy: this.bookCopyStatusList(false)) {
+			if (bookCopy.isAvailable()) {
+				available.add(bookCopy);
+			}
+		}
+		return available;
+	}
+	
 	// Content collision checker	
 
 	public boolean alreadyExists(BookCopy bookCopy) {
@@ -193,5 +203,17 @@ public class BookCopyManager {
 	public void setAvailability(String id, boolean available) throws IOException {
 		this.findBookCopy(id).setAvailable(available);
 		this.reloadLists();
+	}
+	
+	public void freeUpBooks(Rental rental) throws IOException {
+		for (String id: rental.getBookList().keySet()) {
+			this.setAvailability(id, true);
+		}
+	}
+	
+	public void reserveBooks(Rental rental) throws IOException {
+		for (String id: rental.getBookList().keySet()) {
+			this.setAvailability(id, false);
+		}
 	}
 }

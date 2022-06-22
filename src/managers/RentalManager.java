@@ -173,4 +173,10 @@ public class RentalManager {
 	public void reloadLists() throws IOException {
 		this.saveRentals();
 	}
+	
+	public void freeUpBooks(Rental rental) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		for (BookCopy bookCopy: rental.getBookList().values()) {
+			BookCopyManager.getInstance().setAvailability(bookCopy.getIdentification(), true);
+		}
+	}
 }

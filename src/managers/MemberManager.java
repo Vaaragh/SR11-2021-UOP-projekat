@@ -191,10 +191,10 @@ public class MemberManager {
 	// Membership activity loader and adjuster
 	
 	public ArrayList<Member> membershipStatusList(boolean state){
-		ArrayList<Member> activeMembers = this.memberStatusList(true);
+		ArrayList<Member> activeMembers = this.memberStatusList(false);
 		ArrayList<Member> statusList = new ArrayList<Member>();
 		for (Member member: activeMembers) {
-			if (member.isActive()) {
+			if (member.isActive() == state) {
 				if (!statusList.contains(member)) {
 					statusList.add(member);
 				}
