@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.BookCopy;
+import models.Rental;
 import tools.ToolKit;
 
 
@@ -132,6 +133,11 @@ public class BookCopyManager {
 	
 	public boolean deleteBookCopy(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (this.bookCopyStatusList(false).contains(this.allBookCopies.get(id))) {
+			for (Rental rental: RentalManager.getInstance().rentalStatusList(false)) {
+				if (rental.getEmployee().getIdentification().equals(id)) {
+					return false;
+				}
+			}
 			if (this.findBookCopy(id).isAvailable()) {
 				this.findBookCopy(id).setDeleted(true);
 				this.reloadLists();

@@ -131,7 +131,7 @@ public class GenreManager {
 	
 	public boolean deleteGenre(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (this.genreStatusList(false).contains(this.allGenres.get(id))) {
-			for (Book book: BookManager.getInstance().bookStatusList(true)) {
+			for (Book book: BookManager.getInstance().bookStatusList(false)) {
 				if (book.getGenre().getIdentification().equals(id)) {
 					return false;
 				}

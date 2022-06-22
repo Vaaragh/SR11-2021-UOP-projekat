@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.Member;
+import models.Rental;
 import tools.ToolKit;
 
 public class MemberManager {
@@ -132,6 +133,11 @@ public class MemberManager {
 	
 	public boolean deleteMember(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (this.memberStatusList(false).contains(this.allMembers.get(id))) {
+			for (Rental rental: RentalManager.getInstance().rentalStatusList(false)) {
+				if (rental.getEmployee().getIdentification().equals(id)) {
+					return false;
+				}
+			}
 			this.findMember(id).setDeleted(true);
 			this.findMember(id).setActive(false);
 			this.reloadLists();

@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import models.Admin;
 import models.Librarian;
+import models.Rental;
 import tools.ToolKit;
 
 public class AdminManager {
@@ -132,6 +133,11 @@ public class AdminManager {
 	
 	public boolean deleteAdmin(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (this.adminStatusList(false).contains(this.allAdmins.get(id))) {
+			for (Rental rental: RentalManager.getInstance().rentalStatusList(false)) {
+				if (rental.getEmployee().getIdentification().equals(id)) {
+					return false;
+				}
+			}
 			this.findAdmin(id).setDeleted(true);
 			this.reloadLists();
 			return true;

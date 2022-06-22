@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import models.Admin;
 import models.Librarian;
+import models.Rental;
 import tools.ToolKit;
 
 public class LibrarianManager {
@@ -143,6 +144,11 @@ public class LibrarianManager {
 	
 	public boolean reverseDeleteLibrarian(String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (this.librarianStatusList(true).contains(this.allLibrarians.get(id))) {
+			for (Rental rental: RentalManager.getInstance().rentalStatusList(false)) {
+				if (rental.getEmployee().getIdentification().equals(id)) {
+					return false;
+				}
+			}
 			this.findLibrarian(id).setDeleted(false);
 			this.reloadLists();
 			return true;
