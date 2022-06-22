@@ -1,4 +1,3 @@
-adress|Rajko|Rajko|MALE|e87debf5-5a56-4931-83fe-2e9dd8515400|false|8927483647182|PASSWORD|USERNAME|10000|
-newAdress|newLastName|newName|MALE|newID|false|newJMBG|newPassword|newUsername|150|
-adminAdress|adminLasstName|adminName|OTHER|adminId|false|adminJmbg|adp|adu|200|
-Aduba|Lsas|Las|MALE|9108b4ff-5118-431d-a602-e92a30fe0f1b|false|8172637485928|kjabfkba|implo|1619|
+Address 12|Second|Admin Two|MALE|dc070ff4-2aa8-48fd-be9b-2a6118dfaeb1|false|9283049584736|adp2|adu2|1000|
+Stevana Stevana 13|Lastname|Admin One|OTHER|79a4a9d8-eeeb-47ad-a5cc-552cd3fb4fdb|false|1234567890123|adp|adu|1000|
+Address Bogus 2|Lastname|Admin Three|MALE|c7027839-1363-4720-9d51-f364009afee9|false|7648290192834|Something3|Something3|1000|

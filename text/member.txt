@@ -1,3 +1,0 @@
-asknd|Klo|Kklo|MALE|c3701432-6a5d-47e7-83c2-f575e66aace0|false|false|8293847591029|2021-04-02|12|123|MembershipId|
-Adress|Rajko|Rajko|MALE|e3e5cfeb-7da2-47cc-bf36-7f83a3d4f775|true|false|9283749581923|2021-11-11|12|00110011|338fedef-18b9-44cb-95fe-d492a853e0a5|
-memberAdress|memberLastName|memberName|FEMALE|memberId|false|true|memberJmbg|2021-05-03|3|memberMembershipNum|MembershipId|

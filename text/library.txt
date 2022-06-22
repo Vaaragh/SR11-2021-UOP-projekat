@@ -1,1 +1,1 @@
-libraryAdress|1726e2ef-139a-404e-baf7-3566319b9430|false|libraryName|08:00|16:00|libraryPhone|
+Library Address|1726e2ef-139a-404e-baf7-3566319b9430|false|Library Name|08:30|16:00|+381631256362|

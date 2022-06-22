@@ -45,6 +45,7 @@ import tableModels.LibrarianTableModel;
 import tableModels.MemberTableModel;
 import tableModels.MembershipTableModel;
 import tableModels.RentalTableModel;
+import tools.Validator;
 import view.MainView;
 
 
@@ -96,9 +97,23 @@ public class MainViewController {
 	public void initLibrarianController() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view.setVisible(true);
 		
+		this.initMembershipTable();
+		this.initMembershipButtons();
 	
 		this.initMemberTable();
 		this.initMemberButtons();
+		
+		this.initGenreTable();
+		this.initGenreButtons();
+		
+		this.initBookTable();
+		this.initBookButtons();
+		
+		this.initBookCopyTable();
+		this.initBookCopyButtons();
+		
+		this.initRentalTable();
+		this.initRentalButtons();
 	
 	}
 	
@@ -180,8 +195,11 @@ public class MainViewController {
 		}
 		Admin admin = AdminManager.getInstance().adminStatusList(false).get(this.view.getAdminTable().getSelectedRow());
 		System.out.println(admin);
-		AdminManager.getInstance().deleteAdmin(admin.getIdentification());
-		this.initAdminTable();
+		if (AdminManager.getInstance().deleteAdmin(admin.getIdentification())) {
+			this.initAdminTable();			
+		} else {
+			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	
@@ -266,9 +284,13 @@ public class MainViewController {
 			return;
 		}
 		Librarian librarian = LibrarianManager.getInstance().librarianStatusList(false).get(this.view.getLibrarianTable().getSelectedRow());
-		System.out.println(librarian);
-		LibrarianManager.getInstance().deleteLibrarian(librarian.getIdentification());
-		this.initLibrarianTable();
+		
+		if(LibrarianManager.getInstance().deleteLibrarian(librarian.getIdentification())) {
+			this.initLibrarianTable();			
+		}else {
+			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+
+		}
 	}
 	
 	
@@ -357,9 +379,11 @@ public class MainViewController {
 			return;
 		}
 		Membership membership = MembershipManager.getInstance().membershipStatusList(false).get(this.view.getMembershipTable().getSelectedRow());
-		System.out.println(membership);
-		MembershipManager.getInstance().deleteMembership(membership.getIdentification());
-		this.initMembershipTable();
+		if(MembershipManager.getInstance().deleteMembership(membership.getIdentification())) {
+			this.initMembershipTable();
+		}else {
+			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		}			
 	}
 	
 	
@@ -447,9 +471,12 @@ public class MainViewController {
 			return;
 		}
 		Member member = MemberManager.getInstance().memberStatusList(false).get(this.view.getMemberTable().getSelectedRow());
-		System.out.println(member);
-		MemberManager.getInstance().deleteMember(member.getIdentification());
-		this.initMemberTable();
+		if (MemberManager.getInstance().deleteMember(member.getIdentification())) {
+			this.initMemberTable();
+		}else {
+			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 	
 	
@@ -532,9 +559,12 @@ public class MainViewController {
 			return;
 		}
 		Genre genre = GenreManager.getInstance().genreStatusList(false).get(this.view.getGenreTable().getSelectedRow());
-		System.out.println(genre);
-		GenreManager.getInstance().deleteGenre(genre.getIdentification());
-		this.initGenreTable();
+		if(GenreManager.getInstance().deleteGenre(genre.getIdentification())) {
+			this.initGenreTable();
+		}else {
+			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 	
 
@@ -620,9 +650,11 @@ public class MainViewController {
 			return;
 		}
 		Book book = BookManager.getInstance().bookStatusList(false).get(this.view.getBookTable().getSelectedRow());
-		System.out.println(book);
-		BookManager.getInstance().deleteBook(book.getIdentification());
-		this.initBookTable();
+		if(BookManager.getInstance().deleteBook(book.getIdentification())) {
+			this.initBookTable();
+		}else {
+			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 
@@ -709,9 +741,12 @@ public class MainViewController {
 			return;
 		}
 		BookCopy bookCopy = BookCopyManager.getInstance().bookCopyStatusList(false).get(this.view.getBookCopyTable().getSelectedRow());
-		System.out.println(bookCopy);
-		BookCopyManager.getInstance().deleteBookCopy(bookCopy.getIdentification());
-		this.initBookCopyTable();
+		if(BookCopyManager.getInstance().deleteBookCopy(bookCopy.getIdentification())) {
+			this.initBookCopyTable();
+		}else {
+			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 	
 	
@@ -797,9 +832,11 @@ public class MainViewController {
 			return;
 		}
 		Rental rental = RentalManager.getInstance().rentalStatusList(false).get(this.view.getRentalTable().getSelectedRow());
-		System.out.println(rental);
-		RentalManager.getInstance().deleteRental(rental.getIdentification());
-		this.initRentalTable();
+		if(RentalManager.getInstance().deleteRental(rental.getIdentification())) {
+			this.initRentalTable();
+		}else {
+			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	
@@ -807,11 +844,20 @@ public class MainViewController {
 	
 	//////////////
 	
-	
-	
+	public int validateFields(String[] info) {
+		if (!Validator.isNameFormat(info[3])) return 0;
+		if (!Validator.isAddressFormat(info[0])) return 1;
+		if (!Validator.isPhoneFormat(info[6])) return 2;
+		if (!Validator.isTimeFormat(info[4])) return 3;
+		if (!Validator.isTimeFormat(info[5])) return 4;	
+		
+		return -1;
+	}
+
 	
 	
 	public void initLibraryUpdate() throws IllegalAccessException, InvocationTargetException, IOException {
+		
 		view.getLibNameField().setEditable(true);
 		view.getLibAddressField().setEditable(true);
 		view.getLibPhoneField().setEditable(true);
@@ -825,7 +871,6 @@ public class MainViewController {
 				
 				ArrayList<String> emptyCheckList = new ArrayList<String>();
 				
-				
 				String id = libraryModel.retFirst().getIdentification();
 				String name = view.getLibNameField().getText().trim();
 				String address = view.getLibAddressField().getText().trim();
@@ -833,27 +878,34 @@ public class MainViewController {
 				String opens = view.getLibOpensField().getText().trim();
 				String closes = view.getLibClosesField().getText().trim();
 				
-				
-				
 				emptyCheckList.addAll(Arrays.asList(address, id, "false", name, opens, closes, phone));
 				
 				if (emptyCheckList.contains("")) {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
 				} else {
 					
-					Pattern idPattern = Pattern.compile(RegexP.ID.pattern);
-
+					StringBuilder sb = new StringBuilder();
+					for (String s: emptyCheckList) {
+						sb.append(s + "|");
+					}
 					
-					if (!idPattern.matcher(id).find()){
-						
-						JOptionPane.showMessageDialog(null,"One or more type mismatches", "Error", JOptionPane.WARNING_MESSAGE);
-					} else {
-						StringBuilder sb = new StringBuilder();
-						for (String s: emptyCheckList) {
-							sb.append(s + "|");
-						}
+					String[] infoArray = sb.toString().split("\\|");
+					String[] errorName = {"Name", "Address", "Phone", "Open time", "Close time"};
+					
+					int errorIndex = validateFields(infoArray);
+					if (errorIndex != -1) {
+						JOptionPane.showMessageDialog(null,errorName[errorIndex] +" format Error", "Error", JOptionPane.WARNING_MESSAGE);
+
 						try {
-							if (libraryModel.updateLibrary(sb.toString().split("\\|"), libraryModel.retFirst().getIdentification())) {
+							view.fillLibraryPanel();
+						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+								| IOException e1) {
+							e1.printStackTrace();
+						}
+
+					} else {
+						try {
+							if (libraryModel.updateLibrary(infoArray, libraryModel.retFirst().getIdentification())) {
 								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 								view.fillLibraryPanel();
 								return;

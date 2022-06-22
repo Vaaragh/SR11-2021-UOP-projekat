@@ -1,2 +1,1 @@
-Adressa|Libara|Novica|MALE|fe8179cf-8dc0-47e7-859f-deeda9c478bc|false|8273640192839|pswd1|usnm|777|
-librarianAdress|librarianLastName|librarianName|OTHER|librarianId|false|librarianJmbg|libp|libu|100|
+Adress 8|Lastname|Librarian One|MALE|846cf7e5-15e5-454f-92d7-614183e2cbf7|false|09876543210987|libp|libu|500|

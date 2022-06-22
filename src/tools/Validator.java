@@ -24,12 +24,17 @@ public class Validator {
 	
 	//Phone
 	public static boolean isPhoneFormat(String string) {
-		return Pattern.matches("([+](381)[6]{1}[[0-9]{1}[0-9]{6}[0-9]{0,1})", string);
+		return Pattern.matches("([+](381)[6]{1}[0-9]{1}[0-9]{6}[0-9]{0,1})", string);
 	}
 	
 	//Description
 	public static boolean isTextFormat(String string) {
 		return Pattern.matches("([A-Za-z., &]*)", string);
+	}
+	
+	//Address
+	public static boolean isAddressFormat(String string) {
+		return Pattern.matches("[A-Za-z0-9'\\\\.\\\\-\\\\s\\\\,\\\\ ]*", string);
 	}
 	
 	//Name, Lastname, Title
@@ -44,12 +49,12 @@ public class Validator {
 	
 	//Print year, publish year
 	public static boolean isYearFormat(String string) {
-		return Pattern.matches("([1-9]{1}[0-9]{3})", string);
+		return Pattern.matches("([1-9]{1}[0-9]{0,3})", string);
 	}
 	
 	//Open, close
 	public static boolean isTimeFormat(String string) {
-		return Pattern.matches("(([0]{1}[0-9]{1}|[1]{1}[0-9]{1}|[2]{1}[0-3])[:][0-5]{1}[0-9]{1})", string);
+		return Pattern.matches("(([0]{1}[0-9]{1}|[1]{1}[0-9]{1}|[2]{1}[0-3]{1})[:][0-5]{1}[0-9]{1})", string);
 	}
 	
 	//Username, password
