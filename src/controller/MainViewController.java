@@ -172,6 +172,9 @@ public class MainViewController {
 		}
 		Admin admin = AdminManager.getInstance().adminStatusList(false).get(this.view.getAdminTable().getSelectedRow());
 		ManageAdminDialog manageDialog = new ManageAdminDialog(this.view, "", true, admin);
+		if (manageDialog.getIdTextField().getText().equals(employee.getIdentification())) {
+			manageDialog.getPasswordTextField().setEditable(true);
+		}
 		UpdateAdminController control = new UpdateAdminController(manageDialog,admin);
 		control.initController();
 		this.initAdminTable();
@@ -920,10 +923,26 @@ public class MainViewController {
 						}
 					}
 				}
-			}
-			
+			}		
 		});
 	}
+
+	public MainView getView() {
+		return view;
+	}
+
+	public void setView(MainView view) {
+		this.view = view;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
 
 	
 	
