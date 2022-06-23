@@ -66,5 +66,10 @@ public class Validator {
 	public static boolean isTempFormat(String string) {
 		return true;
 	}
+	
+	//First time member
+	public static boolean isLowNumFormat(String string) {
+		return Pattern.matches("([123])", string);
+	}
 
 }

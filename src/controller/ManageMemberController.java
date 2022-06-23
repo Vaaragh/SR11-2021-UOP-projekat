@@ -118,7 +118,7 @@ public class ManageMemberController {
 						try {
 							if(updateOperation) {
 							
-								if (memberModel.updateMember(sb.toString().split("\\|"),member.getIdentification())) {
+								if (memberModel.updateMember(infoArray,member.getIdentification())) {
 									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 	
 									view.dispose();
@@ -129,15 +129,20 @@ public class ManageMemberController {
 									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
 								}
 							} else {
-								if (memberModel.createMember(sb.toString().split("\\|"))) {
-									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+								if (Integer.parseInt(infoArray[9])>3) {
+									JOptionPane.showMessageDialog(null,"Maximum membership length is 3 months on registration", "Error", JOptionPane.WARNING_MESSAGE);
 
-									view.dispose();
-									view.setVisible(false);
-									return;
-
-								} else {
-									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+								}else {
+									if (memberModel.createMember(infoArray)) {
+										JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+	
+										view.dispose();
+										view.setVisible(false);
+										return;
+	
+									} else {
+										JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+									}
 								}
 							}
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException

@@ -141,7 +141,7 @@ public class ManageMemberDialog extends JDialog {
 		this.jmbgTextField = new JTextField();
 		this.adressTextField = new JTextField(); 
 		this.genderComboBox = new JComboBox<Gender>(Gender.values()); 
-		this.membershipNumberTextField = new JTextField();
+		this.membershipNumberTextField = new JTextField(UUID.randomUUID().toString());
 		this.lastPayementTextField = new JTextField();
 		this.membershipLengthTextField = new JTextField();
 		this.membershipTypeBox = new JComboBox<Membership>(membershipNames);
@@ -241,6 +241,8 @@ public class ManageMemberDialog extends JDialog {
 		this.idTextField.setEditable(false);
 		this.jmbgTextField.setEditable(false);
 		this.membershipNumberTextField.setEditable(false);
+		this.lastPayementTextField.setEditable(false);
+		this.membershipLengthTextField.setEditable(false);
 	}
 
 	public JPanel getPanelTop() {

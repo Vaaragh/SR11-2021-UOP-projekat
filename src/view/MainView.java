@@ -19,6 +19,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import managers.LibraryManager;
+import models.Admin;
+import models.Employee;
 import models.Library;
 import net.miginfocom.swing.MigLayout;
 import tableModels.AdminTableModel;
@@ -139,28 +141,63 @@ public class MainView extends JFrame {
 	public JTextField libOpensField = new JTextField();
 	public JTextField libClosesField = new JTextField();
 	
-	public MainView() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public MainView(Employee employee) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		setTitle("Library");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.20), (int)(screenSize.getHeight()*0.20),(int)(screenSize.getWidth()*0.6), (int)(screenSize.getHeight()*0.6));		
-		createTabs();	
+		if (employee instanceof Admin) {
+			createAdminTabs();	
+		} else {
+			createLibrarianTabs();
+		}
+		
 		
 	}
 	
-	public void createTabs() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public void createLibrarianTabs() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		tabsPanel = new JTabbedPane();
 		getContentPane().add(tabsPanel, BorderLayout.CENTER);
 		
-		tabsPanel.addTab("Admins", null, adminPanel, "Show all books");
-		tabsPanel.addTab("Librarians", null, librarianPanel, "Show all staff");
-		tabsPanel.addTab("Memberships", null, membershipPanel, "Show all rentals");
 		tabsPanel.addTab("Members", null, memberPanel, "Show all books copy");
 		tabsPanel.addTab("Genres", null, genrePanel, "Show all genres");
 		tabsPanel.addTab("Books", null, bookPanel, "Show all memberships");
 		tabsPanel.addTab("Book Copies", null, bookCopyPanel, "Show all memberships");
 		tabsPanel.addTab("Rentals", null, rentalPanel, "Show library info");
 		tabsPanel.addTab("Library",null, libraryPanel, "Show all users");
+		
+		fillLibraryPanel();
+		disableLibraryEdit();
+		
+		createMemberTable();
+		createGenreTable();
+		createBookTable();
+		createBookCopyTable();
+		createRentalTable();
+		
+		
+		fillButtonPanel(memberPanel, memberContentPanel, Arrays.asList(addMember, deleteMember, updateMember, viewMember, extendMembership), "Manage Members");
+		fillButtonPanel(genrePanel, genreContentPanel, Arrays.asList(addGenre, deleteGenre, updateGenre, viewGenre), "Manage Genres");
+		fillButtonPanel(bookPanel, bookContentPanel, Arrays.asList(addBook, deleteBook, updateBook, viewBook), "Manage Books");
+		fillButtonPanel(bookCopyPanel, bookCopyContentPanel, Arrays.asList(addBookCopy, deleteBookCopy, updateBookCopy, viewBookCopy), "Manage Book Copies");
+		fillButtonPanel(rentalPanel, rentalContentPanel, Arrays.asList(addRental, deleteRental, updateRental, viewRental), "Manage Rentals");
+	
+	}
+	
+	public void createAdminTabs() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		tabsPanel = new JTabbedPane();
+		getContentPane().add(tabsPanel, BorderLayout.CENTER);
+		
+		tabsPanel.addTab("Admins", null, adminPanel, "Show all admins");
+		tabsPanel.addTab("Librarians", null, librarianPanel, "Show all librarians");
+		tabsPanel.addTab("Memberships", null, membershipPanel, "Show all memberships");
+		tabsPanel.addTab("Members", null, memberPanel, "Show all members");
+		tabsPanel.addTab("Genres", null, genrePanel, "Show all genres");
+		tabsPanel.addTab("Books", null, bookPanel, "Show all books");
+		tabsPanel.addTab("Book Copies", null, bookCopyPanel, "Show all book copies");
+		tabsPanel.addTab("Rentals", null, rentalPanel, "Show library rentals");
+		tabsPanel.addTab("Library",null, libraryPanel, "Show Library info");
+		tabsPanel.getComponent(3).setVisible(false);
 		
 		fillLibraryPanel();
 		
@@ -210,7 +247,6 @@ public class MainView extends JFrame {
 		libraryContentPanel.add(libClosesField, "width 200, wrap");
 		
 		libraryContentPanel.add(updateLibrary);
-		updateLibrary.setEnabled(false);
 		
 		Library library = LibraryManager.getInstance().retFirst();
 		
@@ -218,15 +254,15 @@ public class MainView extends JFrame {
 		libAddressField.setText(library.getAdress());
 		libPhoneField.setText(library.getPhone());
 		libOpensField.setText(String.valueOf(library.getOpenFrom()));
-		libClosesField.setText(String.valueOf(library.getOpenUntill()));
-		
+		libClosesField.setText(String.valueOf(library.getOpenUntill()));	
+	}
+	
+	private void disableLibraryEdit() {
 		libNameField.setEditable(false);
 		libAddressField.setEditable(false);
 		libPhoneField.setEditable(false);
 		libOpensField.setEditable(false);
-		libClosesField.setEditable(false);
-		
-		
+		libClosesField.setEditable(false);		
 	}
 	
 	private void createAdminTable() {

@@ -388,6 +388,10 @@ public class MainViewController {
 	}
 	
 	public void initMemberButtons() {
+		this.view.getExtendMembership().addActionListener(e -> {
+			this.extendMembership();
+		});
+		
 		this.view.getViewMember().addActionListener(e -> {
 			try {
 				this.viewMember();
@@ -419,6 +423,14 @@ public class MainViewController {
 		this.view.getExtendMembership().addActionListener(e -> {
 			System.out.println("Nesto");
 		});
+	}
+	
+	public void extendMembership() {
+		if (this.view.getMemberTable().getSelectedRow() == -1) {
+			JOptionPane.showMessageDialog(null,"Must select row to extend membership", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		System.out.println("gg, you extendeded it");
 	}
 	
 	public void viewMember() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {

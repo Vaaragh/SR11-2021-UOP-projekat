@@ -2,12 +2,10 @@ package models;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.UUID;
 
 import controller.LoginController;
 import controller.RegisterController;
 import managers.AdminManager;
-import tools.Validator;
 import view.LoginView;
 import view.RegisterView;
 
@@ -15,25 +13,30 @@ public class Main {
 
 	public static void main(String[] args) throws IOException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		
-//		// Program init
-//		AdminManager.getInstance().loadAdmins();
-//		if (AdminManager.getInstance().getAllAdmins().size()==0) {
-//			RegisterView rv = new RegisterView("Register");
-//			RegisterController rc = new RegisterController(rv);
-//			rc.initController();
-//		} else {
-//			LoginView lv = new LoginView("Login");
-//			LoginController lc = new LoginController(lv);
-//			lc.initController();
-//			
-//		}
-		
-		
+		// Program init
+		AdminManager.getInstance().loadAdmins();
+		if (AdminManager.getInstance().getAllAdmins().size()==0) {
+			RegisterView rv = new RegisterView("Register");
+			RegisterController rc = new RegisterController(rv);
+			rc.initController();
+		} else {
+			LoginView lv = new LoginView("Login");
+			LoginController lc = new LoginController(lv);
+			lc.initController();
+		}
+//		
+//		
 //		// TEST BLOCK
-		System.out.println(Validator.isDateFormat("2020-02-20"));
-		System.out.println(Validator.isUUIDFormat(UUID.randomUUID().toString()));
-		
-		
+//		System.out.println(Validator.isDateFormat("2020-02-20"));
+//		System.out.println(Validator.isUUIDFormat(UUID.randomUUID().toString()));
+//		System.out.println(Validator.isJmbgFormat("1234567890123"));
+//		System.out.println(Validator.isNameFormat("Jean Luc"));
+//		System.out.println(Validator.isNickFormat("JeanLuc23"));
+//		System.out.println(Validator.isNumberFormat("1234"));
+//		System.out.println(Validator.isPhoneFormat("+381641258240"));
+//		System.out.println(Validator.isTimeFormat("00:01"));
+//		System.out.println(Validator.isYearFormat("2000"));
+//		System.out.println(Validator.isJmbgFormat("1234567890123"));
 		
 //		// Files
 //		String ADMIN_FILE = "text/admin.txt";
