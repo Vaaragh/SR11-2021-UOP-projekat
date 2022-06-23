@@ -54,8 +54,8 @@ public class ManageAdminDialog extends JDialog {
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.35));
-		this.defineFilledComponents(admin);
-		this.setUneditable(admin);
+		defineFilledComponents(admin);
+		setUneditable(admin);
 		
 	}
 	
@@ -66,7 +66,9 @@ public class ManageAdminDialog extends JDialog {
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.35));
-		this.defineFilledComponents(admin);
+		defineFilledComponents(admin);
+		setUpdateConstants();
+		
 		
 	}
 	
@@ -77,7 +79,7 @@ public class ManageAdminDialog extends JDialog {
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.35));
-		this.defineEmptyComponents();
+		defineEmptyComponents();
 	}
 	
 	private void defineFilledComponents(Admin admin) {
@@ -185,12 +187,15 @@ public class ManageAdminDialog extends JDialog {
 				dispose();
 				setVisible(false);
 			}
-		
-		});
-		
-		
+		});		
 	}
 
+	public void setUpdateConstants() {
+		this.idTextField.setEditable(false);
+		this.jmbgTextField.setEditable(false);
+	}
+	
+	
 	public JPanel getPanelTop() {
 		return panelTop;
 	}

@@ -67,6 +67,7 @@ public class ManageLibrarianDialog extends JDialog {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.35));
 		this.defineFilledComponents(librarian);
+		setUpdateConstants();
 		
 	}
 	
@@ -187,6 +188,11 @@ public class ManageLibrarianDialog extends JDialog {
 		});
 		
 		
+	}
+	
+	public void setUpdateConstants() {
+		this.idTextField.setEditable(false);
+		this.jmbgTextField.setEditable(false);	
 	}
 
 	public JPanel getPanelTop() {

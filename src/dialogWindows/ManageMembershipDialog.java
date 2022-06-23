@@ -53,6 +53,7 @@ public class ManageMembershipDialog extends JDialog {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.35));
 		this.defineFilledComponents(membership);
+		this.idTextField.setEditable(false);
 		
 	}
 	

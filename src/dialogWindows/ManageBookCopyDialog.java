@@ -65,8 +65,8 @@ public class ManageBookCopyDialog extends JDialog{
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.45));
-		this.defineFilledComponents(bookCopy);
-		this.setUneditable(bookCopy);
+		defineFilledComponents(bookCopy);
+		setUneditable(bookCopy);
 		
 	}
 	
@@ -77,7 +77,8 @@ public class ManageBookCopyDialog extends JDialog{
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.45));
-		this.defineFilledComponents(bookCopy);
+		defineFilledComponents(bookCopy);
+		setUpdateConstants();
 		
 	}
 	
@@ -88,7 +89,7 @@ public class ManageBookCopyDialog extends JDialog{
 		this.panelTop = new JPanel(new MigLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.45));
-		this.defineEmptyComponents();
+		defineEmptyComponents();
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -202,12 +203,13 @@ public class ManageBookCopyDialog extends JDialog{
 	public void setUneditable(BookCopy bookCopy) {
 		this.idTextField.setEditable(false);
 		this.titleTextField.setEditable(false);
-		this.idTextField.setEditable(false);
 		this.bookBox.setEnabled(false);
 		this.pagesTextField.setEditable(false);
 		this.printTextField.setEditable(false);
 		this.bindingBox.setEnabled(false);
 		this.languageBox.setEnabled(false);
+		this.availabelBox.setEnabled(false);
+
 		
 		
 		this.submitBtn.setEnabled(false);
@@ -223,7 +225,15 @@ public class ManageBookCopyDialog extends JDialog{
 		
 		
 	}
-
+	
+	
+	// No Logic behind letting any of the fields to be edited, but oh well
+	public void setUpdateConstants() {
+		this.idTextField.setEditable(false);
+		this.availabelBox.setEnabled(false);
+	}
+	
+	
 	public JPanel getPanelTop() {
 		return panelTop;
 	}

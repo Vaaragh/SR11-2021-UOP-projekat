@@ -29,7 +29,7 @@ public class Validator {
 	
 	//Description
 	public static boolean isTextFormat(String string) {
-		return Pattern.matches("([A-Za-z., &]*)", string);
+		return Pattern.matches("([A-Za-z0-9., &]*)", string);
 	}
 	
 	//Address

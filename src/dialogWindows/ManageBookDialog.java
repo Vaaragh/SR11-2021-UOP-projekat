@@ -70,6 +70,7 @@ public class ManageBookDialog extends JDialog {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.40));
 		this.defineFilledComponents(book);
+		setUpdateConstants();
 		
 	}
 	
@@ -200,6 +201,11 @@ public class ManageBookDialog extends JDialog {
 		});
 		
 		
+	}
+	
+	// Same Logic as with the book copies...
+	public void setUpdateConstants() {
+		this.idTextField.setEditable(false);
 	}
 
 	public JPanel getPanelTop() {

@@ -101,6 +101,7 @@ public class ManageRentalDialog extends JDialog{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)(screenSize.getWidth()*0.35), (int)(screenSize.getHeight()*0.30),(int)(screenSize.getWidth()*0.25), (int)(screenSize.getHeight()*0.45));
 		this.defineFilledComponents(rental);
+		setUpdateConstants();
 		
 	}
 	
@@ -287,6 +288,12 @@ public class ManageRentalDialog extends JDialog{
 		});
 		
 		
+	}
+	
+	public void setUpdateConstants() {
+		this.idTextField.setEditable(false);
+		this.rentDateField.setEditable(false);
+		this.memberBox.setEnabled(false);
 	}
 	
 	//ArrayList fillers
