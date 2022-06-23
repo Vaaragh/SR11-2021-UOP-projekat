@@ -11,18 +11,31 @@ import javax.swing.JOptionPane;
 
 import dialogWindows.ManageAdminDialog;
 import managers.AdminManager;
+import models.Admin;
 import tools.Validator;
 
-public class CreateAdminController {
+public class ManageAdminController {
 
 
 	private AdminManager adminModel;
 	private ManageAdminDialog view;
+	private Admin admin;
+	private boolean updateOperation;
 
 	
-	public CreateAdminController(ManageAdminDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public ManageAdminController(ManageAdminDialog view, Admin admin) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
 		this.adminModel = AdminManager.getInstance();
+		this.admin = admin;
+		this.updateOperation = true;
+		initRegistrationChecker();
+		initCancelBtn();
+	}
+	
+	public ManageAdminController(ManageAdminDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		this.view = view;
+		this.adminModel = AdminManager.getInstance();
+		this.updateOperation = false;
 		initRegistrationChecker();
 		initCancelBtn();
 	}
@@ -43,10 +56,6 @@ public class CreateAdminController {
 		});
 	}
 	
-//	String[] errorName = {"ID", "Name", "Last name", "JMBG", "Address", "Wage", "Username", "Password"};
-//address, lastName, firstName, gender, id, "false", jmbg, password, userName, wage));
-
-	
 	public int validateFields(String[] info) {
 		if(!Validator.isUUIDFormat(info[4])) return 0;
 		if(!Validator.isNameFormat(info[2])) return 1;
@@ -57,13 +66,12 @@ public class CreateAdminController {
 		if(!Validator.isNickFormat(info[8])) return 6;
 		if(!Validator.isNickFormat(info[7])) return 7;
 
-		
 		return -1;
 	}
 	
 	public void initRegistrationChecker() {
 		this.view.getSubmitBtn().addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -84,7 +92,7 @@ public class CreateAdminController {
 				if (emptyCheckList.contains("")) {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
 				} else {
-					
+
 					StringBuilder sb = new StringBuilder();
 					for (String s: emptyCheckList) {
 						sb.append(s + "|");
@@ -99,22 +107,35 @@ public class CreateAdminController {
 					} else {
 					
 						try {
-							if (adminModel.createAdmin(infoArray)) {
-								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
-	
-								view.dispose();
-								view.setVisible(false);
-								return;
-	
+							if(updateOperation) {
+								if (adminModel.updateAdmin(infoArray, admin.getIdentification())) {
+									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+		
+									view.dispose();
+									view.setVisible(false);
+									return;
+		
+								} else {
+									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+		
+								}
 							} else {
-								JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
-	
+								if (adminModel.createAdmin(infoArray)) {
+									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+		
+									view.dispose();
+									view.setVisible(false);
+									return;
+		
+								} else {
+									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+		
+								}
 							}
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 								| IOException e1) {
 							e1.printStackTrace();
 						}
-					
 					}
 				}
 			}

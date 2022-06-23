@@ -42,7 +42,6 @@ public class LoginController {
 			public void actionPerformed(ActionEvent e) {
 				String usernameF = view.getUsernameTextField().getText();
 				String passwordF = new String(view.getPasswordTextField().getPassword());
-				System.out.println(usernameF + " " + passwordF);
 				if (usernameF.equals("") || passwordF.equals("")) {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);
 				} else {
@@ -52,7 +51,8 @@ public class LoginController {
 					} else {
 						MainView mw;
 						try {
-							mw = new MainView();
+							mw = new MainView(staff);
+							@SuppressWarnings("unused")
 							MainViewController mc = new MainViewController(mw, staff);
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 								| IOException e2) {

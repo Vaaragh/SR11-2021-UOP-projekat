@@ -6,28 +6,38 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
 import dialogWindows.ManageBookDialog;
-import enums.RegexP;
 import managers.BookManager;
 import managers.GenreManager;
 import models.Book;
+import tools.Validator;
 
-public class UpdateBookController {
+public class ManageBookController {
 
 
 	private BookManager bookModel;
 	private ManageBookDialog view;
 	private Book book;
+	private boolean updateOperation;
+
 
 	
-	public UpdateBookController(ManageBookDialog view, Book book) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public ManageBookController(ManageBookDialog view, Book book) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
 		this.bookModel = BookManager.getInstance();
 		this.book = book;
+		this.updateOperation = true;
+		initRegistrationChecker();
+		initCancelBtn();
+	}
+	
+	public ManageBookController(ManageBookDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		this.view = view;
+		this.bookModel = BookManager.getInstance();
+		this.updateOperation = false;
 		initRegistrationChecker();
 		initCancelBtn();
 	}
@@ -46,6 +56,16 @@ public class UpdateBookController {
 			}
 		
 		});
+	}
+	
+	public int validateFields(String[] info) {
+		if(!Validator.isNameFormat(info[0])) return 0;
+		if(!Validator.isTextFormat(info[1])) return 1;
+		if(!Validator.isUUIDFormat(info[3])) return 2;
+		if(!Validator.isTextFormat(info[6])) return 3;
+		if(!Validator.isYearFormat(info[7])) return 4;
+		
+		return -1;
 	}
 	
 	public void initRegistrationChecker() {
@@ -67,16 +87,10 @@ public class UpdateBookController {
 					genre = type;
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 						| IOException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				String language = view.getLanguageComboBox().getSelectedItem().toString().trim();
 				String publish = view.getPublishDateTextField().getText().trim();
-				
-				
-				
-				
-				
 				
 				emptyCheckList.addAll(Arrays.asList(author, description, genre, id, "false", language, title, publish));
 				
@@ -84,29 +98,44 @@ public class UpdateBookController {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
 				} else {
 					
-					Pattern idPattern = Pattern.compile(RegexP.ID.pattern);
+					StringBuilder sb = new StringBuilder();
+					for (String s: emptyCheckList) {
+						sb.append(s + "|");
+					}
 
-					Pattern wagePattern = Pattern.compile(RegexP.NUMBER.pattern);
-				
-					if (!idPattern.matcher(id).find()){
-						
-						JOptionPane.showMessageDialog(null,"One or more type mismatches", "Error", JOptionPane.WARNING_MESSAGE);
+					String[] infoArray = sb.toString().split("\\|");
+					String[] errorName = {"Author", "Description", "ID", "Title", "Publish Year"};
+
+					int errorIndex = validateFields(infoArray);
+					if (errorIndex != -1) {
+						JOptionPane.showMessageDialog(null,errorName[errorIndex] +" format Error", "Error", JOptionPane.WARNING_MESSAGE);
 					} else {
-						StringBuilder sb = new StringBuilder();
-						for (String s: emptyCheckList) {
-							sb.append(s + "|");
-						}
-						try {
-							if (bookModel.updateBook(sb.toString().split("\\|"), book.getIdentification())) {
-								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+						
+						try { 
+							if(updateOperation) {
+								if (bookModel.updateBook(sb.toString().split("\\|"), book.getIdentification())) {
+									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+	
+									view.dispose();
+									view.setVisible(false);
+									return;
+	
+								} else {
+									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+	
+								}
+							}else {
+								if (bookModel.createBook(sb.toString().split("\\|"))) {
+									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
-								view.dispose();
-								view.setVisible(false);
-								return;
+									view.dispose();
+									view.setVisible(false);
+									return;
 
-							} else {
-								JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+								} else {
+									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
 
+								}
 							}
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 								| IOException e1) {

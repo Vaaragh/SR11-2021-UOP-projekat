@@ -6,28 +6,38 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
 import dialogWindows.ManageMembershipDialog;
-import enums.RegexP;
 import managers.MembershipManager;
 import models.Membership;
+import tools.Validator;
 
-public class UpdateMembershipController {
+public class ManageMembershipController {
 
 
 
 private MembershipManager membershipModel;
 private ManageMembershipDialog view;
 private Membership membership;
+private boolean updateOperation;
 
 
-public UpdateMembershipController(ManageMembershipDialog view, Membership membership) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+
+public ManageMembershipController(ManageMembershipDialog view, Membership membership) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 	this.view = view;
 	this.membershipModel = MembershipManager.getInstance();
 	this.membership = membership;
+	this.updateOperation = true;
+	initRegistrationChecker();
+	initCancelBtn();
+}
+
+public ManageMembershipController(ManageMembershipDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	this.view = view;
+	this.membershipModel = MembershipManager.getInstance();
+	this.updateOperation = false;
 	initRegistrationChecker();
 	initCancelBtn();
 }
@@ -46,6 +56,16 @@ private void initCancelBtn() {
 		}
 	
 	});
+}
+//id, "false", name, price
+//"ID", "Name", "Price"
+
+public int validateFields(String[] info) {
+	if(!Validator.isUUIDFormat(info[0])) return 0;
+	if(!Validator.isNameFormat(info[2])) return 1;
+	if(!Validator.isNumberFormat(info[3])) return 2;
+
+	return -1;
 }
 
 public void initRegistrationChecker() {
@@ -66,33 +86,43 @@ public void initRegistrationChecker() {
 			if (emptyCheckList.contains("")) {
 				JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
 			} else {
+
+				StringBuilder sb = new StringBuilder();
+				for (String s: emptyCheckList) {
+					sb.append(s + "|");
+				}
 				
-				Pattern idPattern = Pattern.compile(RegexP.ID.pattern);
-				Pattern namePattern = Pattern.compile(RegexP.NAME.pattern);
-				Pattern pricePattern = Pattern.compile(RegexP.NUMBER.pattern);
+				String[] infoArray = sb.toString().split("\\|");
+				String[] errorName = {"ID", "Name", "Price"};
 				
-			
-				if (!idPattern.matcher(id).find() ||
-					!namePattern.matcher(name).find() ||
-					!pricePattern.matcher(price).find()) {
-					
-					JOptionPane.showMessageDialog(null,"One or more type mismatches", "Error", JOptionPane.WARNING_MESSAGE);
+				int errorIndex = validateFields(infoArray);
+				if (errorIndex != -1) {
+					JOptionPane.showMessageDialog(null,errorName[errorIndex] +" format Error", "Error", JOptionPane.WARNING_MESSAGE);
 				} else {
-					StringBuilder sb = new StringBuilder();
-					for (String s: emptyCheckList) {
-						sb.append(s + "|");
-					}
 					try {
-						if (membershipModel.updateMembership(sb.toString().split("\\|"), membership.getIdentification() )) {
+						if(updateOperation) {
+							if (membershipModel.updateMembership(sb.toString().split("\\|"), membership.getIdentification() )) {
 							JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
 							view.dispose();
 							view.setVisible(false);
 							return;
-
+	
+							} else {
+								JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+							}
 						} else {
-							JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+							if (membershipModel.createMembership(sb.toString().split("\\|"))) {
+								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
+								view.dispose();
+								view.setVisible(false);
+								return;
+
+							} else {
+								JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+
+							}
 						}
 					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 							| IOException e1) {

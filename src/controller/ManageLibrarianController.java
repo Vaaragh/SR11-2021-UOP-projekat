@@ -9,26 +9,39 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
-import dialogWindows.ManageAdminDialog;
-import managers.AdminManager;
-import models.Admin;
+import dialogWindows.ManageLibrarianDialog;
+import managers.LibrarianManager;
+import models.Librarian;
 import tools.Validator;
 
-public class UpdateAdminController {
+public class ManageLibrarianController {
 
 
-	private AdminManager adminModel;
-	private ManageAdminDialog view;
-	private Admin admin;
+
+	private LibrarianManager librarianModel;
+	private ManageLibrarianDialog view;
+	private Librarian librarian;
+	private boolean updateOperation;
 
 	
-	public UpdateAdminController(ManageAdminDialog view, Admin admin) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public ManageLibrarianController(ManageLibrarianDialog view, Librarian librarian) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
-		this.adminModel = AdminManager.getInstance();
-		this.admin = admin;
+		this.librarianModel = LibrarianManager.getInstance();
+		this.librarian = librarian;
+		this.updateOperation = true;
 		initRegistrationChecker();
 		initCancelBtn();
 	}
+	
+	public ManageLibrarianController(ManageLibrarianDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		this.view = view;
+		this.librarianModel = LibrarianManager.getInstance();
+		this.updateOperation = false;
+		initRegistrationChecker();
+		initCancelBtn();
+	}
+	
+	
 	
 	public void initController() {
 		this.view.setVisible(true);
@@ -56,7 +69,6 @@ public class UpdateAdminController {
 		if(!Validator.isNickFormat(info[8])) return 6;
 		if(!Validator.isNickFormat(info[7])) return 7;
 
-		
 		return -1;
 	}
 	
@@ -97,16 +109,30 @@ public class UpdateAdminController {
 					} else {
 					
 						try {
-							if (adminModel.updateAdmin(infoArray, admin.getIdentification())) {
-								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
-	
-								view.dispose();
-								view.setVisible(false);
-								return;
-	
+							if(updateOperation) {
+								if (librarianModel.updateLibrarian(infoArray, librarian.getIdentification())) {
+									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+		
+									view.dispose();
+									view.setVisible(false);
+									return;
+		
+								} else {
+									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+		
+								}
 							} else {
-								JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
-	
+								if (librarianModel.createLibrarian(infoArray)) {
+									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+		
+									view.dispose();
+									view.setVisible(false);
+									return;
+		
+								} else {
+									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+		
+								}
 							}
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 								| IOException e1) {

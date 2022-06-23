@@ -6,26 +6,37 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
 import dialogWindows.ManageBookCopyDialog;
-import enums.RegexP;
 import managers.BookCopyManager;
 import managers.BookManager;
+import models.BookCopy;
+import tools.Validator;
 
-
-public class CreateBookCopyController {
+public class ManageBookCopyController {
 
 
 	private BookCopyManager bookCopyModel;
 	private ManageBookCopyDialog view;
+	private BookCopy bookCopy;
+	private boolean updateOperation;
 
 	
-	public CreateBookCopyController(ManageBookCopyDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public ManageBookCopyController(ManageBookCopyDialog view, BookCopy bookCopy) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
 		this.bookCopyModel = BookCopyManager.getInstance();
+		this.bookCopy = bookCopy;
+		this.updateOperation = true;
+		initRegistrationChecker();
+		initCancelBtn();
+	}
+	
+	public ManageBookCopyController(ManageBookCopyDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		this.view = view;
+		this.bookCopyModel = BookCopyManager.getInstance();
+		this.updateOperation = false;
 		initRegistrationChecker();
 		initCancelBtn();
 	}
@@ -45,6 +56,16 @@ public class CreateBookCopyController {
 		
 		});
 	}
+
+	public int validateFields(String[] info) {
+		if(!Validator.isUUIDFormat(info[1])) return 0;
+		if(!Validator.isUUIDFormat(info[2])) return 1;
+		if(!Validator.isNumberFormat(info[5])) return 2;
+		if(!Validator.isYearFormat(info[6])) return 3;
+		if(!Validator.isTextFormat(info[8])) return 4;
+		
+		return -1;
+	}	
 	
 	public void initRegistrationChecker() {
 		this.view.getSubmitBtn().addActionListener(new ActionListener() {
@@ -63,7 +84,6 @@ public class CreateBookCopyController {
 					book = temp;
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 						| IOException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				String pages = view.getPagesTextField().getText().trim();
@@ -71,38 +91,49 @@ public class CreateBookCopyController {
 				String binding = view.getBindingBox().getSelectedItem().toString();
 				String language = view.getLanguageBox().getSelectedItem().toString();
 				String available = String.valueOf(view.getAvailabelBox().isSelected());
-				
-				
-				
-				
+								
 				emptyCheckList.addAll(Arrays.asList(binding, book, id, available, "false", pages, year, language, title));
 				
 				if (emptyCheckList.contains("")) {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
 				} else {
 					
-					Pattern idPattern = Pattern.compile(RegexP.ID.pattern);
-
+					StringBuilder sb = new StringBuilder();
+					for (String s: emptyCheckList) {
+						sb.append(s + "|");
+					}
 					
-					if (!idPattern.matcher(id).find()){
-						
-						JOptionPane.showMessageDialog(null,"One or more type mismatches", "Error", JOptionPane.WARNING_MESSAGE);
+					String[] infoArray = sb.toString().split("\\|");
+					String[] errorName = {"Book Id", "ID", "Pages", "Print Year", "Title"};
+					
+					int errorIndex = validateFields(infoArray);
+					if (errorIndex != -1) {
+						JOptionPane.showMessageDialog(null,errorName[errorIndex] +" format Error", "Error", JOptionPane.WARNING_MESSAGE);
 					} else {
-						StringBuilder sb = new StringBuilder();
-						for (String s: emptyCheckList) {
-							sb.append(s + "|");
-						}
+						
 						try {
-							if (bookCopyModel.createBookCopy(sb.toString().split("\\|"))) {
-								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+							if(updateOperation) {
+								if (bookCopyModel.updateBookCopy(sb.toString().split("\\|"), bookCopy.getIdentification())) {
+									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+	
+									view.dispose();
+									view.setVisible(false);
+									return;
+	
+								} else {
+									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+								}
+							}else {
+								if (bookCopyModel.createBookCopy(sb.toString().split("\\|"))) {
+									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
-								view.dispose();
-								view.setVisible(false);
-								return;
+									view.dispose();
+									view.setVisible(false);
+									return;
 
-							} else {
-								JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
-
+								} else {
+									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+								}
 							}
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 								| IOException e1) {

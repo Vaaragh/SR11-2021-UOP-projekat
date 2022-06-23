@@ -6,28 +6,37 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
 import dialogWindows.ManageMemberDialog;
-import enums.RegexP;
 import managers.MemberManager;
 import managers.MembershipManager;
 import models.Member;
+import tools.Validator;
 
-public class UpdateMemberController {
+public class ManageMemberController {
 
 
 	private MemberManager memberModel;
 	private ManageMemberDialog view;
 	private Member member;
+	private boolean updateOperation;
 
 	
-	public UpdateMemberController(ManageMemberDialog view, Member member) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public ManageMemberController(ManageMemberDialog view, Member member) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view = view;
 		this.memberModel = MemberManager.getInstance();
 		this.member = member;
+		this.updateOperation = true;
+		initRegistrationChecker();
+		initCancelBtn();
+	}
+	
+	public ManageMemberController(ManageMemberDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		this.view = view;
+		this.memberModel = MemberManager.getInstance();
+		this.updateOperation = false;
 		initRegistrationChecker();
 		initCancelBtn();
 	}
@@ -46,6 +55,19 @@ public class UpdateMemberController {
 			}
 		
 		});
+	}
+	
+	public int validateFields(String[] info) {
+		if(!Validator.isTextFormat(info[0])) return 0;
+		if(!Validator.isNameFormat(info[1])) return 1;
+		if(!Validator.isNameFormat(info[2])) return 2;
+		if(!Validator.isUUIDFormat(info[4])) return 3;
+		if(!Validator.isJmbgFormat(info[7])) return 4;
+		if(!Validator.isDateFormat(info[8])) return 5;
+		if(!Validator.isNumberFormat(info[9])) return 6;
+		if(!Validator.isUUIDFormat(info[10])) return 7;
+
+		return -1;
 	}
 	
 	public void initRegistrationChecker() {
@@ -74,42 +96,49 @@ public class UpdateMemberController {
 				}
 				String active = String.valueOf(view.getActiveCheckBox().isSelected());
 
-				
 				emptyCheckList.addAll(Arrays.asList(address, lastName, firstName, gender, id, active, "false", jmbg, lastPayement, membershipLength, membershipNumber, membershipType));
 				
 				if (emptyCheckList.contains("")) {
 					JOptionPane.showMessageDialog(null,"All fields are required.", "Error", JOptionPane.WARNING_MESSAGE);				
 				} else {
+
+					StringBuilder sb = new StringBuilder();
+					for (String s: emptyCheckList) {
+						sb.append(s + "|");
+					}
 					
-					Pattern idPattern = Pattern.compile(RegexP.ID.pattern);
-					Pattern namePattern = Pattern.compile(RegexP.NAME.pattern);
-					Pattern jmbgPattern = Pattern.compile(RegexP.JMBG.pattern);
-					Pattern textPattern = Pattern.compile(RegexP.TEXT.pattern);
-					Pattern wagePattern = Pattern.compile(RegexP.NUMBER.pattern);
-				
-					if (!idPattern.matcher(id).find() ||
-						!namePattern.matcher(firstName).find() ||
-						!namePattern.matcher(lastName).find() ||
-						!jmbgPattern.matcher(jmbg).find() ||
-						!textPattern.matcher(address).find()) {
-						
-						JOptionPane.showMessageDialog(null,"One or more type mismatches", "Error", JOptionPane.WARNING_MESSAGE);
+					String[] infoArray = sb.toString().split("\\|");
+					String[] errorName = {"Address", "Last name", "Name", "ID", "JMBG", "Last Payment", "Membership length", "Membership Id"};
+					
+					int errorIndex = validateFields(infoArray);
+					if (errorIndex != -1) {
+						JOptionPane.showMessageDialog(null,errorName[errorIndex] +" format Error", "Error", JOptionPane.WARNING_MESSAGE);
 					} else {
-						StringBuilder sb = new StringBuilder();
-						for (String s: emptyCheckList) {
-							sb.append(s + "|");
-						}
+						
 						try {
-							if (memberModel.updateMember(sb.toString().split("\\|"),member.getIdentification())) {
-								JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
-
-								view.dispose();
-								view.setVisible(false);
-								return;
-
+							if(updateOperation) {
+							
+								if (memberModel.updateMember(sb.toString().split("\\|"),member.getIdentification())) {
+									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+	
+									view.dispose();
+									view.setVisible(false);
+									return;
+	
+								} else {
+									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+								}
 							} else {
-								JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+								if (memberModel.createMember(sb.toString().split("\\|"))) {
+									JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
 
+									view.dispose();
+									view.setVisible(false);
+									return;
+
+								} else {
+									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
+								}
 							}
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 								| IOException e1) {
