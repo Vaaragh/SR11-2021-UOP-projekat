@@ -850,6 +850,10 @@ public class MainViewController {
 		if (confirmDelete()) {
 			Rental rental = RentalManager.getInstance().rentalStatusList(false).get(this.view.getRentalTable().getSelectedRow());
 			if(RentalManager.getInstance().deleteRental(rental.getIdentification())) {
+				for (BookCopy bookCopy: rental.getBookList().values()) {
+					BookCopyManager.getInstance().setAvailability(bookCopy.getIdentification(), true);
+				}
+				this.initBookCopyTable();
 				this.initRentalTable();
 			}else {
 				JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
