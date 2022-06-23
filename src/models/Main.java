@@ -38,6 +38,12 @@ public class Main {
 //		System.out.println(Validator.isYearFormat("2000"));
 //		System.out.println(Validator.isJmbgFormat("1234567890123"));
 		
+//		LocalDate last = LocalDate.of(2022, 6, 22);
+//		LocalDate now = LocalDate.now();
+//		System.out.println((now.toEpochDay()- last.toEpochDay()));
+		
+		
+		
 //		// Files
 //		String ADMIN_FILE = "text/admin.txt";
 //		String LIBRARIAN_FILE = "text/librarian.txt";

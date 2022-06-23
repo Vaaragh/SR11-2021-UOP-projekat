@@ -47,6 +47,10 @@ public class Validator {
 		return Pattern.matches("([1-9]+[0-9]*)", string);
 	}
 	
+	public static boolean isNumber0Format(String string) {
+		return Pattern.matches("([0-9]+)", string);
+	}
+	
 	//Print year, publish year
 	public static boolean isYearFormat(String string) {
 		return Pattern.matches("([1-9]{1}[0-9]{0,3})", string);

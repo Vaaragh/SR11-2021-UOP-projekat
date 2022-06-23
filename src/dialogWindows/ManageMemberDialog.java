@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import javax.swing.DefaultComboBoxModel;
@@ -142,7 +143,7 @@ public class ManageMemberDialog extends JDialog {
 		this.adressTextField = new JTextField(); 
 		this.genderComboBox = new JComboBox<Gender>(Gender.values()); 
 		this.membershipNumberTextField = new JTextField(UUID.randomUUID().toString());
-		this.lastPayementTextField = new JTextField();
+		this.lastPayementTextField = new JTextField(LocalDate.now().toString());
 		this.membershipLengthTextField = new JTextField();
 		this.membershipTypeBox = new JComboBox<Membership>(membershipNames);
 		this.activeCheckBox = new JCheckBox();

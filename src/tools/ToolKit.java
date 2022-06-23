@@ -41,7 +41,7 @@ public class ToolKit {
 	
 	// evaluate time passage
 	public static boolean evaluateTime(LocalDate date, int increment) {
-		return date.plusMonths(increment).isAfter(LocalDate.now());
+		return date.plusDays(increment).isAfter(LocalDate.now());
 	}
 	
 	// ---- SUPPORTING TOOLS FOR R/W ---- //

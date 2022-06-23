@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+import dialogWindows.ExtendMembershipDialog;
 import dialogWindows.ManageAdminDialog;
 import dialogWindows.ManageBookCopyDialog;
 import dialogWindows.ManageBookDialog;
@@ -389,7 +390,11 @@ public class MainViewController {
 	
 	public void initMemberButtons() {
 		this.view.getExtendMembership().addActionListener(e -> {
-			this.extendMembership();
+			try {
+				this.extendMembership();
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | IOException e1) {
+				e1.printStackTrace();
+			}
 		});
 		
 		this.view.getViewMember().addActionListener(e -> {
@@ -420,17 +425,18 @@ public class MainViewController {
 				e1.printStackTrace();
 			}
 		});;
-		this.view.getExtendMembership().addActionListener(e -> {
-			System.out.println("Nesto");
-		});
 	}
 	
-	public void extendMembership() {
+	public void extendMembership() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		if (this.view.getMemberTable().getSelectedRow() == -1) {
 			JOptionPane.showMessageDialog(null,"Must select row to extend membership", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		System.out.println("gg, you extendeded it");
+		Member member = MemberManager.getInstance().memberStatusList(false).get(this.view.getMemberTable().getSelectedRow());
+		ExtendMembershipDialog extendDialog = new ExtendMembershipDialog(this.view, "",true, member);
+		ExtendMembershipController control = new ExtendMembershipController(extendDialog, member);
+		control.initController();
+		this.initMemberTable();
 	}
 	
 	public void viewMember() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {

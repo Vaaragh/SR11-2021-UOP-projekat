@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -207,7 +208,8 @@ public class MemberManager {
 		ArrayList<Member> activeMembers = this.memberStatusList(false);
 		for (Member member: activeMembers) {
 			member.setActive(ToolKit.evaluateTime(member.getLastPayment(), member.getMembershipLength()));
-			
+			int left = (int) (member.getLastPayment().toEpochDay()+member.getMembershipLength()-LocalDate.now().toEpochDay());
+			member.setMembershipLength(left>0 ? left:0);
 		}
 
 	}

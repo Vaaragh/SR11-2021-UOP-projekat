@@ -64,7 +64,7 @@ public class ManageMemberController {
 		if(!Validator.isUUIDFormat(info[4])) return 3;
 		if(!Validator.isJmbgFormat(info[7])) return 4;
 		if(!Validator.isDateFormat(info[8])) return 5;
-		if(!Validator.isNumberFormat(info[9])) return 6;
+		if(!Validator.isNumber0Format(info[9])) return 6;
 		if(!Validator.isUUIDFormat(info[10])) return 7;
 
 		return -1;
@@ -129,7 +129,7 @@ public class ManageMemberController {
 									JOptionPane.showMessageDialog(null,"Info collision", "Error", JOptionPane.WARNING_MESSAGE);
 								}
 							} else {
-								if (Integer.parseInt(infoArray[9])>3) {
+								if (Integer.parseInt(infoArray[9])>90) {
 									JOptionPane.showMessageDialog(null,"Maximum membership length is 3 months on registration", "Error", JOptionPane.WARNING_MESSAGE);
 
 								}else {
