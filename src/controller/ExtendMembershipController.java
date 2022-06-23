@@ -102,40 +102,50 @@ public class ExtendMembershipController {
 //				member.setLastPayment(LocalDate.now());
 //				member.setMembershipLength(newLength);
 				
+				if (confirmExtend()) {
+					
+					String[] infoArray = {
+							member.getAdress(),
+							member.getFamilyName(),
+							member.getFirstName(),
+							member.getGender().toString(),
+							member.getIdentification(),
+							"true",
+							"false",
+							member.getJmbg(),
+							LocalDate.now().toString(),
+							String.valueOf(newLength),
+							member.getMembershipNumber(),
+							member.getMembershipType().getIdentification()
+					};
+					try {
+						if (memberModel.updateMember(infoArray,member.getIdentification())) {
+							JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
+							
+							view.dispose();
+							view.setVisible(false);
+							return;
+						}else {
+							JOptionPane.showMessageDialog(null,"Unexpected error", "Error", JOptionPane.WARNING_MESSAGE);
+	
+						}
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+							| IOException e2) {
+						e2.printStackTrace();
+					}				
+				}
 				
-				
-				String[] infoArray = {
-						member.getAdress(),
-						member.getFamilyName(),
-						member.getFirstName(),
-						member.getGender().toString(),
-						member.getIdentification(),
-						"true",
-						"false",
-						member.getJmbg(),
-						LocalDate.now().toString(),
-						String.valueOf(newLength),
-						member.getMembershipNumber(),
-						member.getMembershipType().getIdentification()
-				};
-				try {
-					if (memberModel.updateMember(infoArray,member.getIdentification())) {
-						JOptionPane.showMessageDialog(null,"Congration, you done it", "Yay!", JOptionPane.INFORMATION_MESSAGE);
-						
-						view.dispose();
-						view.setVisible(false);
-						return;
-					}else {
-						JOptionPane.showMessageDialog(null,"Unexpected error", "Error", JOptionPane.WARNING_MESSAGE);
-
-					}
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-						| IOException e2) {
-					e2.printStackTrace();
-				}				
 			}
-			
 		});
+	
+	}
+	
+	private boolean confirmExtend() {
+		int check = JOptionPane.showConfirmDialog(null, "Extend membership?", "Extend", JOptionPane.YES_NO_OPTION);
+		if (check == 0) {
+			return true;
+		}
+		return false;
 	}
 
 }

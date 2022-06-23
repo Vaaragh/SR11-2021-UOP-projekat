@@ -30,7 +30,7 @@ public class ManageRentalController {
 		this.rental = rental;
 		this.updateOperation = true;
 		initRegistrationChecker();
-		initCancelBtn();
+		initCancelFullBtn();
 	}
 	
 	public ManageRentalController(ManageRentalDialog view) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
@@ -38,14 +38,14 @@ public class ManageRentalController {
 		this.rentalModel = RentalManager.getInstance();
 		this.updateOperation = false;
 		initRegistrationChecker();
-		initCancelBtn();
+		initCancelEmptyBtn();
 	}
 	
 	public void initController() {
 		this.view.setVisible(true);
 	}
 	
-	private void initCancelBtn() {
+	private void initCancelFullBtn() {
 		this.view.getCancelBtn().addActionListener(new ActionListener() {
 
 			@Override
@@ -56,6 +56,17 @@ public class ManageRentalController {
 						| IOException e1) {
 					e1.printStackTrace();
 				}
+				view.dispose();
+				view.setVisible(false);
+			}
+		
+		});
+	}
+	private void initCancelEmptyBtn() {
+		this.view.getCancelBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				view.dispose();
 				view.setVisible(false);
 			}

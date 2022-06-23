@@ -67,11 +67,14 @@ public class ManageRentalDialog extends JDialog{
 	private ArrayList<Employee> employeeObjects = new ArrayList<Employee>();
 	private String employeeId;
 	
+	private String activeEmployee;
 	
-	public ManageRentalDialog(JFrame parent, String title, boolean x, Rental rental, boolean check) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	
+	public ManageRentalDialog(JFrame parent, String title, boolean x, Rental rental, boolean check, Employee employee) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		super(parent, "Update Rental", x);
 		this.memberId = rental.getMember().getIdentification();
 		this.employeeId = rental.getEmployee().getIdentification();
+		this.activeEmployee = employee.getIdentification();
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(parent);
 		findBookCopies(rental);
@@ -86,10 +89,11 @@ public class ManageRentalDialog extends JDialog{
 		
 	}
 	
-	public ManageRentalDialog(JFrame parent, String title, boolean x, Rental rental) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public ManageRentalDialog(JFrame parent, String title, boolean x, Rental rental, Employee employee) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		super(parent, "Update Rental", x);
 		this.memberId = rental.getMember().getIdentification();
 		this.employeeId = rental.getEmployee().getIdentification();
+		this.activeEmployee = employee.getIdentification();
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(parent);
 		findBookCopies(rental);
@@ -105,8 +109,9 @@ public class ManageRentalDialog extends JDialog{
 		
 	}
 	
-	public ManageRentalDialog(JFrame parent, String title, boolean x) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	public ManageRentalDialog(JFrame parent, String title, boolean x, Employee employee) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		super(parent, "Create Rental", x);
+		this.activeEmployee = employee.getIdentification();
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(parent);
 		fillBookLists();
@@ -138,9 +143,7 @@ public class ManageRentalDialog extends JDialog{
 			if (this.employeeId.equals(this.employeeKeys.get(i))) {
 				employeeIndex = i;
 			}
-		}
-		System.out.println(employeeIndex);
-		
+		}		
 		
 		// Memeber JComboBox Constructor
 		DefaultComboBoxModel members = new DefaultComboBoxModel();
@@ -195,6 +198,12 @@ public class ManageRentalDialog extends JDialog{
 		for (Employee employee: this.employeeObjects) {
 			employees.addElement(employee.getFirstName());
 		}
+		int employeeIndex = 0;
+		for (int i=0; i<this.employeeObjects.size(); i++) {
+			if (this.activeEmployee.equals(this.employeeKeys.get(i))) {
+				employeeIndex = i;
+			}
+		}	
 		
 		
 		
@@ -218,6 +227,7 @@ public class ManageRentalDialog extends JDialog{
 		this.rentDateField = new JTextField();
 		this.dueDateField = new JTextField();
 		this.employeeBox = new JComboBox(employees);
+		employeeBox.setSelectedIndex(employeeIndex);
 		this.memberBox = new JComboBox(members);
 		this.bookBox = new JList(books);	
 	
@@ -532,6 +542,15 @@ public class ManageRentalDialog extends JDialog{
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
+
+	public String getActiveEmployee() {
+		return activeEmployee;
+	}
+
+	public void setActiveEmployee(String activeEmployee) {
+		this.activeEmployee = activeEmployee;
+	}
+	
 	
 	
 

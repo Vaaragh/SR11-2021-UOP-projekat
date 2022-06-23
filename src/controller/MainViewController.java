@@ -201,12 +201,14 @@ public class MainViewController {
 			JOptionPane.showMessageDialog(null,"Must select row to delete", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Admin admin = AdminManager.getInstance().adminStatusList(false).get(this.view.getAdminTable().getSelectedRow());
-		System.out.println(admin);
-		if (AdminManager.getInstance().deleteAdmin(admin.getIdentification())) {
-			this.initAdminTable();			
-		} else {
-			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		if (confirmDelete()) {
+			Admin admin = AdminManager.getInstance().adminStatusList(false).get(this.view.getAdminTable().getSelectedRow());
+			System.out.println(admin);
+			if (AdminManager.getInstance().deleteAdmin(admin.getIdentification())) {
+				this.initAdminTable();			
+			} else {
+				JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 	
@@ -289,13 +291,15 @@ public class MainViewController {
 			JOptionPane.showMessageDialog(null,"Must select row to delete", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Librarian librarian = LibrarianManager.getInstance().librarianStatusList(false).get(this.view.getLibrarianTable().getSelectedRow());
-		
-		if(LibrarianManager.getInstance().deleteLibrarian(librarian.getIdentification())) {
-			this.initLibrarianTable();			
-		}else {
-			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
-
+		if (confirmDelete()) {
+			Librarian librarian = LibrarianManager.getInstance().librarianStatusList(false).get(this.view.getLibrarianTable().getSelectedRow());
+			
+			if(LibrarianManager.getInstance().deleteLibrarian(librarian.getIdentification())) {
+				this.initLibrarianTable();			
+			}else {
+				JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+	
+			}
 		}
 	}
 	
@@ -378,12 +382,14 @@ public class MainViewController {
 			JOptionPane.showMessageDialog(null,"Must select row to delete", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Membership membership = MembershipManager.getInstance().membershipStatusList(false).get(this.view.getMembershipTable().getSelectedRow());
-		if(MembershipManager.getInstance().deleteMembership(membership.getIdentification())) {
-			this.initMembershipTable();
-		}else {
-			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
-		}			
+		if (confirmDelete()) {
+			Membership membership = MembershipManager.getInstance().membershipStatusList(false).get(this.view.getMembershipTable().getSelectedRow());
+			if(MembershipManager.getInstance().deleteMembership(membership.getIdentification())) {
+				this.initMembershipTable();
+			}else {
+				JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+			}	
+		}
 	}
 	
 	
@@ -485,13 +491,14 @@ public class MainViewController {
 			JOptionPane.showMessageDialog(null,"Must select row to delete", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Member member = MemberManager.getInstance().memberStatusList(false).get(this.view.getMemberTable().getSelectedRow());
-		if (MemberManager.getInstance().deleteMember(member.getIdentification())) {
-			this.initMemberTable();
-		}else {
-			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		if (confirmDelete()) {
+			Member member = MemberManager.getInstance().memberStatusList(false).get(this.view.getMemberTable().getSelectedRow());
+			if (MemberManager.getInstance().deleteMember(member.getIdentification())) {
+				this.initMemberTable();
+			}else {
+				JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
-		
 	}
 	
 	
@@ -573,13 +580,14 @@ public class MainViewController {
 			JOptionPane.showMessageDialog(null,"Must select row to delete", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Genre genre = GenreManager.getInstance().genreStatusList(false).get(this.view.getGenreTable().getSelectedRow());
-		if(GenreManager.getInstance().deleteGenre(genre.getIdentification())) {
-			this.initGenreTable();
-		}else {
-			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		if (confirmDelete()) {
+			Genre genre = GenreManager.getInstance().genreStatusList(false).get(this.view.getGenreTable().getSelectedRow());
+			if(GenreManager.getInstance().deleteGenre(genre.getIdentification())) {
+				this.initGenreTable();
+			}else {
+				JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
-		
 	}
 
 	
@@ -661,11 +669,13 @@ public class MainViewController {
 			JOptionPane.showMessageDialog(null,"Must select row to delete", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Book book = BookManager.getInstance().bookStatusList(false).get(this.view.getBookTable().getSelectedRow());
-		if(BookManager.getInstance().deleteBook(book.getIdentification())) {
-			this.initBookTable();
-		}else {
-			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		if (confirmDelete()) {
+			Book book = BookManager.getInstance().bookStatusList(false).get(this.view.getBookTable().getSelectedRow());
+			if(BookManager.getInstance().deleteBook(book.getIdentification())) {
+				this.initBookTable();
+			}else {
+				JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
@@ -748,13 +758,14 @@ public class MainViewController {
 			JOptionPane.showMessageDialog(null,"Must select row to delete", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		BookCopy bookCopy = BookCopyManager.getInstance().bookCopyStatusList(false).get(this.view.getBookCopyTable().getSelectedRow());
-		if(BookCopyManager.getInstance().deleteBookCopy(bookCopy.getIdentification())) {
-			this.initBookCopyTable();
-		}else {
-			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		if (confirmDelete()) {
+			BookCopy bookCopy = BookCopyManager.getInstance().bookCopyStatusList(false).get(this.view.getBookCopyTable().getSelectedRow());
+			if(BookCopyManager.getInstance().deleteBookCopy(bookCopy.getIdentification())) {
+				this.initBookCopyTable();
+			}else {
+				JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
-		
 	}
 	
 	
@@ -803,7 +814,7 @@ public class MainViewController {
 			return;
 		}
 		Rental rental = RentalManager.getInstance().rentalStatusList(false).get(this.view.getRentalTable().getSelectedRow());
-		ManageRentalDialog manageDialog = new ManageRentalDialog(this.view, "", true, rental, true);
+		ManageRentalDialog manageDialog = new ManageRentalDialog(this.view, "", true, rental, true, employee);
 		manageDialog.setVisible(true);
 	}
 	
@@ -814,7 +825,7 @@ public class MainViewController {
 			return;
 		}
 		Rental rental = RentalManager.getInstance().rentalStatusList(false).get(this.view.getRentalTable().getSelectedRow());
-		ManageRentalDialog manageDialog = new ManageRentalDialog(this.view, "", true, rental);
+		ManageRentalDialog manageDialog = new ManageRentalDialog(this.view, "", true, rental, employee);
 		ManageRentalController control = new ManageRentalController(manageDialog,rental);
 		control.initController();
 		this.initRentalTable();
@@ -823,7 +834,7 @@ public class MainViewController {
 	}
 	
 	public void createRental() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		ManageRentalDialog manageDialog = new ManageRentalDialog(this.view, "", true);
+		ManageRentalDialog manageDialog = new ManageRentalDialog(this.view, "", true, employee);
 		ManageRentalController control = new ManageRentalController(manageDialog);
 		control.initController();
 		this.initRentalTable();
@@ -836,12 +847,26 @@ public class MainViewController {
 			JOptionPane.showMessageDialog(null,"Must select row to delete", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Rental rental = RentalManager.getInstance().rentalStatusList(false).get(this.view.getRentalTable().getSelectedRow());
-		if(RentalManager.getInstance().deleteRental(rental.getIdentification())) {
-			this.initRentalTable();
-		}else {
-			JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+		if (confirmDelete()) {
+			Rental rental = RentalManager.getInstance().rentalStatusList(false).get(this.view.getRentalTable().getSelectedRow());
+			if(RentalManager.getInstance().deleteRental(rental.getIdentification())) {
+				this.initRentalTable();
+			}else {
+				JOptionPane.showMessageDialog(null,"Entity in use elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
+	}
+	
+	
+	// yes/no question
+	
+	
+	private boolean confirmDelete() {
+		int check = JOptionPane.showConfirmDialog(null, "Delete entity?", "Delete", JOptionPane.YES_NO_OPTION);
+		if (check == 0) {
+			return true;
+		}
+		return false;
 	}
 	
 	
