@@ -19,6 +19,7 @@ public class ExtendMembershipController {
 	private ExtendMembershipDialog view;
 	private Member member;
 	private double price = 0;
+	private double saved = 0;
 	private int newLength;
 	
 	public ExtendMembershipController(ExtendMembershipDialog view, Member member) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
@@ -69,12 +70,16 @@ public class ExtendMembershipController {
 
 					if(extension > 11) {
 						price += extension * monthlyPrice * 0.8;
+						saved += extension * monthlyPrice * 0.2;
 					} else if(extension > 5) {
 						price += extension * monthlyPrice * 0.9;
+						saved += extension * monthlyPrice * 0.1;
 					} else {
 						price += extension * monthlyPrice;
 					}
-					JOptionPane.showMessageDialog(null,"Amount due: " + price + "\nNew Length: " + newLength, "Yay!", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Amount due: " + price
+													+ "\nNew Length: " + newLength
+													+ "\nMoney saved: " + saved, "Yay!", JOptionPane.INFORMATION_MESSAGE);
 					view.getMembershipLengthTextField().setText(String.valueOf(newLength));
 					view.getLastPayementTextField().setText(LocalDate.now().toString());
 					view.getAmountDueField().setText(String.valueOf(price));

@@ -159,6 +159,7 @@ public class MainView extends JFrame {
 		tabsPanel = new JTabbedPane();
 		getContentPane().add(tabsPanel, BorderLayout.CENTER);
 		
+		tabsPanel.addTab("Memberships", null, membershipPanel, "Show all memberships");
 		tabsPanel.addTab("Members", null, memberPanel, "Show all books copy");
 		tabsPanel.addTab("Genres", null, genrePanel, "Show all genres");
 		tabsPanel.addTab("Books", null, bookPanel, "Show all memberships");
@@ -169,6 +170,7 @@ public class MainView extends JFrame {
 		fillLibraryPanel();
 		disableLibraryEdit();
 		
+		createMembershipTable();
 		createMemberTable();
 		createGenreTable();
 		createBookTable();
@@ -176,6 +178,7 @@ public class MainView extends JFrame {
 		createRentalTable();
 		
 		
+		fillButtonPanel(membershipPanel, membershipContentPanel, Arrays.asList(addMembership, deleteMembership, updateMembership, viewMembership), "Manage Memberships");
 		fillButtonPanel(memberPanel, memberContentPanel, Arrays.asList(addMember, deleteMember, updateMember, viewMember, extendMembership), "Manage Members");
 		fillButtonPanel(genrePanel, genreContentPanel, Arrays.asList(addGenre, deleteGenre, updateGenre, viewGenre), "Manage Genres");
 		fillButtonPanel(bookPanel, bookContentPanel, Arrays.asList(addBook, deleteBook, updateBook, viewBook), "Manage Books");
@@ -262,7 +265,8 @@ public class MainView extends JFrame {
 		libAddressField.setEditable(false);
 		libPhoneField.setEditable(false);
 		libOpensField.setEditable(false);
-		libClosesField.setEditable(false);		
+		libClosesField.setEditable(false);
+		updateLibrary.setEnabled(false);
 	}
 	
 	private void createAdminTable() {

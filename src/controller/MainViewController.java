@@ -89,12 +89,16 @@ public class MainViewController {
 		
 		this.initRentalTable();
 		this.initRentalButtons();
+		
 		this.initLibraryUpdate();	
 
 	}
 	
 	public void initLibrarianController() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		this.view.setVisible(true);
+		
+		this.initMembershipTable();
+		this.initMembershipButtons();
 	
 		this.initMemberTable();
 		this.initMemberButtons();
@@ -110,6 +114,9 @@ public class MainViewController {
 		
 		this.initRentalTable();
 		this.initRentalButtons();
+		
+//		 Librarians can't change the libraries info
+//		this.initLibraryUpdate();
 	
 	}
 	
